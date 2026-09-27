@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企業全端 ERP 系統開發架構與實務｜財團法人人工智慧科技推動基金會</title>
+  
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-accent: #2563eb;
+      --secondary: #0f172a;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --badge-bg: #e0e7ff;
+      --badge-text: #3730a3;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      padding: 36px 24px;
+    }
+
+    .wrapper {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    /* 頂部機構橫幅與主題 */
+    .hero-section {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .foundation-tag {
+      display: inline-block;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+    h1 {
+      font-size: 2.1rem;
+      color: var(--secondary);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 0 auto 24px auto;
+    }
+
+    /* 架構對照圖 */
+    .diagram-container {
+      width: 100%;
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12);
+      margin-bottom: 32px;
+      border: 1px solid var(--border);
+    }
+    .diagram-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* 應用情境盒 */
+    .scenario-box {
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 24px 32px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+    .scenario-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .scenario-item {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary-accent);
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+    .scenario-item strong {
+      color: #0f172a;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    /* 快捷鍵提示標籤 */
+    .shortcut-indicator {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .kbd-badge {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-bottom: 2px solid #94a3b8;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 0.8rem;
+    }
+
+    /* 四階段互動切換導航列 */
+    .stepper-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .step-btn {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-sm);
+      outline: none;
+      text-align: left;
+    }
+    .step-btn:hover {
+      border-color: #93c5fd;
+      transform: translateY(-2px);
+    }
+    .step-btn.active {
+      background: #ffffff;
+      border: 2px solid var(--primary-accent);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+    
+    .btn-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .step-btn.active .btn-num {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .btn-text {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #334155;
+    }
+    .step-btn.active .btn-text {
+      color: var(--primary-accent);
+    }
+    .btn-arrow {
+      color: #94a3b8;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-left: 4px;
+    }
+    .step-btn.active .btn-arrow {
+      color: var(--primary-accent);
+    }
+
+    /* 單一呈現卡片 (主展示區) */
+    .content-area {
+      min-height: 320px;
+      margin-bottom: 32px;
+    }
+    .stage-card {
+      display: none;
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 36px 36px 32px 36px;
+      box-shadow: var(--shadow-md);
+      animation: fadeIn 0.25s ease-out;
+    }
+    .stage-card.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .main-step-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 1.35rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
+    }
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+
+    .purpose-box {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary-accent);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      font-size: 1rem;
+      color: #1e40af;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+    .step-list {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+    .step-list li {
+      position: relative;
+      padding-left: 26px;
+      font-size: 0.98rem;
+      color: #334155;
+      margin-bottom: 14px;
+      line-height: 1.65;
+    }
+    .step-list li::before {
+      content: "•";
+      position: absolute;
+      left: 6px;
+      color: var(--primary-accent);
+      font-weight: bold;
+      font-size: 1.4rem;
+      line-height: 1.2;
+    }
+    .step-list li strong {
+      color: #0f172a;
+    }
+
+    .card-footer-tip {
+      font-size: 0.92rem;
+      color: #64748b;
+      border-top: 1px dashed var(--border);
+      padding-top: 18px;
+      background: #fafafa;
+      margin: 0 -36px -32px -36px;
+      padding-left: 36px;
+      padding-right: 36px;
+      padding-bottom: 22px;
+      border-radius: 0 0 16px 16px;
+      line-height: 1.6;
+    }
+
+    /* 底部延伸落地通道：串聯至五（r.html） */
+    .action-footer {
+      text-align: center;
+      padding: 16px 0 24px 0;
+    }
+    .btn-link-course {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      color: var(--primary);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s ease;
+    }
+    .btn-link-course:hover {
+      background: #f8fafc;
+      border-color: var(--primary-accent);
+      color: var(--primary-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-link-course .link-arrow {
+      color: var(--primary-accent);
+      font-weight: bold;
+      transition: transform 0.2s ease;
+    }
+    .btn-link-course:hover .link-arrow {
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 900px) {
+      .stepper-nav {
+        grid-template-columns: 1fr 1fr;
+      }
+      body {
+        padding: 20px 12px;
+      }
+      h1 {
+        font-size: 1.7rem;
+      }
+      .stage-card {
+        padding: 24px;
+      }
+      .card-footer-tip {
+        margin: 0 -24px -24px -24px;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .btn-link-course {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- 頂部官方機構橫幅與主題 -->
+  <div class="hero-section">
+    <span class="foundation-tag">財團法人人工智慧科技推動基金會｜教學演示專用</span>
+    <h1>企業全端 ERP 系統開發架構與實務</h1>
+    <p class="hero-desc">
+      企業數位化受挫，往往不是技術門檻太高，而是現場作業習慣與後端設計嚴重脫節。透過四個實務階段，我們將管理規則與資安防線化為無形，建立高誠信度的營運骨幹。
+    </p>
+  </div>
+
+  <!-- 架構對照圖 -->
+  <div class="diagram-container">
+    <img src="4.jpeg" alt="企業系統架構對照：手動人工作業與現代化安全後台" class="diagram-img">
+  </div>
+
+  <!-- 企業常見應用情境 -->
+  <div class="scenario-box">
+    <div class="scenario-title">
+      🏢 <strong>學會這套架構後，能為企業直接轉化為經營效益的三大場景：</strong>
+    </div>
+    <div class="scenario-grid">
+      <div class="scenario-item">
+        <strong>一、門市結算與零用金核對</strong>
+        將原本門市下班後耗時 45 分鐘的人肉對帳，縮短為 30 秒清點現鈔送出；系統自動比對營業額與差額，對帳實現零延遲。
+      </div>
+      <div class="scenario-item">
+        <strong>二、跨單位耗材領用與責任歸屬</strong>
+        每次領料均精確綁定人員與時間戳記，庫存即時連動，徹底杜絕每逢月底盤點帳實不符、3% 至 5% 不明耗損的懸案。
+      </div>
+      <div class="scenario-item">
+        <strong>三、營運數據彙整與定期報表</strong>
+        告別各部門助理耗時兩週手動拼貼 Excel 的漫長等待，管理階層打開後台隨時擁有當日全局數據，支援即時穿透決策。
+      </div>
+    </div>
+  </div>
+
+  <!-- 鍵盤快捷提示 -->
+  <div class="shortcut-indicator">
+    <span>切換階段：直接點選上方導航，或在鍵盤按下</span>
+    <span class="kbd-badge">←</span>
+    <span class="kbd-badge">→</span>
+    <span>鍵進行快速切換</span>
+  </div>
+
+  <!-- 四階段按鈕切換列 -->
+  <div class="stepper-nav" role="tablist">
+    <button class="step-btn active" onclick="switchStage(1)" id="btn-stage-1">
+      <div class="btn-left">
+        <span class="btn-num">1</span>
+        <span class="btn-text">訪談與規格定錨</span>
+      </div>
+      <span class="btn-arrow">➔</span>
+    </button>
+    <button class="step-btn" onclick="switchStage(2)" id="btn-stage-2">
+      <div class="btn-left">
+        <span class="btn-num">2</span>
+        <span class="btn-text">打樣與無機敏串接</span>
+      </div>
+      <span class="btn-arrow">➔</span>
+    </button>
+    <button class="step-btn" onclick="switchStage(3)" id="btn-stage-3">
+      <div class="btn-left">
+        <span class="btn-num">3</span>
+        <span class="btn-text">門禁與全球部署</span>
+      </div>
+      <span class="btn-arrow">➔</span>
+    </button>
+    <button class="step-btn" onclick="switchStage(4)" id="btn-stage-4">
+      <div class="btn-left">
+        <span class="btn-num">4</span>
+        <span class="btn-text">戰情儀表與稽核</span>
+      </div>
+      <span class="btn-arrow">✓</span>
+    </button>
+  </div>
+
+  <!-- 單一卡片主展示區 -->
+  <div class="content-area">
+
+    <!-- 階段 1 -->
+    <div class="stage-card active" id="card-stage-1">
+      <div class="card-header">
+        <div class="main-step-number">1</div>
+        <div class="card-title">第一階段：現場訪談與規格定錨</div>
+      </div>
+      <div class="purpose-box">
+        核心目的：穿透第一線作業盲點，將管理制度固化在資料庫底層，而不是寄託在人員的道德與記性上
+      </div>
+      <ul class="step-list">
+        <li><strong>深入現場釐清作業摩擦：</strong> 親自走進櫃檯與行政第一線，觀察日常通訊軟體回報時容易產生的「重複報、補報漏報、打錯字」等人性盲區，找出制度與習慣的衝突點。</li>
+        <li><strong>梳理資料結構與欄位定義：</strong> 明確定義資料型別、必填規則與依賴關係，消除欄位歧義，從源頭杜絕髒資料流入系統骨幹。</li>
+        <li><strong>自動化熱更新（Upsert）與歷史歸檔：</strong> 允許同仁隨時修正提交，主表自動秒級覆蓋為最新真相；覆蓋前的舊數據則由觸發器自動轉入稽核日誌，並設定保留期定期滾動清理，兼顧即時性與追溯力。</li>
+      </ul>
+      <div class="card-footer-tip">
+        本階段產出：具備生命週期治理的資料綱要（Schema），確保主表永遠呈現最新真相，歷史軌跡完全可考。
+      </div>
+    </div>
+
+    <!-- 階段 2 -->
+    <div class="stage-card" id="card-stage-2">
+      <div class="card-header">
+        <div class="main-step-number">2</div>
+        <div class="card-title">第二階段：原型打樣與無機敏串接</div>
+      </div>
+      <div class="purpose-box">
+        核心目的：以最短時間交付前線採集介面，簡化現場認知負擔，並在物理層面隔離核心機敏資料
+      </div>
+      <ul class="step-list">
+        <li><strong>敏捷打樣輕量前端介面：</strong> 快速做出符合手機與平板直覺操作的原型，省去繁瑣欄位，讓前線同仁在最短時間內完成實地驗證。</li>
+        <li><strong>現場僅需陳述客觀現狀：</strong> 同仁不需手動計算營收毛利或複雜損益，只需單純清點抽屜現鈔與單據張數，由系統後端自動完成雙軌對帳。</li>
+        <li><strong>密鑰職責實體隔離：</strong> 前端介面僅配置公開連線憑證（Anon Key），核心財務帳務與敏感資料在後端完全阻斷，即便前端原始碼外流也不影響金庫安全。</li>
+      </ul>
+      <div class="card-footer-tip">
+        本階段產出：具備即時回饋的無機敏回報介面（PoC），兼顧極致的操作順暢度與第一線資安防禦。
+      </div>
+    </div>
+
+    <!-- 階段 3 -->
+    <div class="stage-card" id="card-stage-3">
+      <div class="card-header">
+        <div class="main-step-number">3</div>
+        <div class="card-title">第三階段：安全門禁與全球化部署</div>
+      </div>
+      <div class="purpose-box">
+        核心目的：建立零信任身分鑑別機制，將權限控管深植於資料庫核心，並以現場真實需求驅動介面優化
+      </div>
+      <ul class="step-list">
+        <li><strong>導入標準身分管制（OAuth 2.0 / SSO）：</strong> 為每位員工配置專屬數位鑰匙與角色權限（RBAC），徹底解決帳號共用與離職未交接的安全漏洞。</li>
+        <li><strong>配置行級安全策略（Row-Level Security, RLS）：</strong> 權限檢核由資料庫引擎直接接管。基層同仁僅能讀取自身業務紀錄，即便在網頁端竄改參數，資料庫依然回傳空集合。</li>
+        <li><strong>依前線真實需求微調 UI/UX：</strong> 系統在全球雲端節點部署的同時，直接根據同仁實際操作習慣客製化介面。脫離第一線實際需求的架構都是空中樓閣；我們在守住資安底線的前提下，讓現場用得最順手。</li>
+      </ul>
+      <div class="card-footer-tip">
+        本階段產出：達到企業級零信任標準的正式營運系統，既有堅不可摧的資安防禦，又有完全貼合現場實務的高流暢體驗。
+      </div>
+    </div>
+
+    <!-- 階段 4 -->
+    <div class="stage-card" id="card-stage-4">
+      <div class="card-header">
+        <div class="main-step-number">4</div>
+        <div class="card-title">第四階段：管理戰情儀表板與稽核追溯</div>
+      </div>
+      <div class="purpose-box">
+        核心目的：為決策層提供全景可觀測性，宏觀掌握事業體營運節奏，微觀精準追溯異常異動
+      </div>
+      <ul class="step-list">
+        <li><strong>動態視覺化營運儀表板：</strong> 將乾淨的底層數據轉化為高階決策指標，直觀呈現各門市現金流動態與耗材吞吐量，決策不再受限於延遲的跨月報表。</li>
+        <li><strong>不可塗銷的稽核日誌（Audit Log）：</strong> 關鍵數據的任何變更與覆蓋，系統皆自動記錄異動人員、修改前後差異與確切時間標籤，落實全流程的責任定錨。</li>
+        <li><strong>支援即時結構化報表輸出：</strong> 一鍵匯出標準 Excel 與 CSV 檔案，便於外部查帳、主管檢視與跨部門協調，將繁重的人工行政整理工時縮減至趨近於零。</li>
+      </ul>
+      <div class="card-footer-tip">
+        本階段產出：具備穿透式管理能力的決策控制台，讓管理階層向上能規劃戰略，向下能掌握營運真實細節。
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部延伸落地通道：串聯至五（r.html） -->
+  <div class="action-footer">
+    <a href="r.html" class="btn-link-course">
+      <span>📐 進入下一單元：企業導入落地與反脆弱架構之 5S 檢驗標準</span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+</div>
+
+<script>
+  let currentStage = 1;
+  const totalStages = 4;
+
+  function updateUI() {
+    for (let i = 1; i <= totalStages; i++) {
+      document.getElementById(`btn-stage-${i}`).classList.remove('active');
+      document.getElementById(`card-stage-${i}`).classList.remove('active');
+    }
+    document.getElementById(`btn-stage-${currentStage}`).classList.add('active');
+    document.getElementById(`card-stage-${currentStage}`).classList.add('active');
+  }
+
+  function switchStage(stageNum) {
+    if (stageNum < 1 || stageNum > totalStages) return;
+    currentStage = stageNum;
+    updateUI();
+  }
+
+  function navigateStage(direction) {
+    const nextStage = currentStage + direction;
+    if (nextStage >= 1 && nextStage <= totalStages) {
+      currentStage = nextStage;
+      updateUI();
+    }
+  }
+
+  // 鍵盤監聽事件：左右箭頭秒級快速響應
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      navigateStage(1);
+    } else if (e.key === 'ArrowLeft') {
+      navigateStage(-1);
+    }
+  });
+
+  // 初始化狀態
+  updateUI();
+</script>
+
+</body>
+</html>
