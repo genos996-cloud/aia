@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邱小民社會 - 智慧學員資料確認</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800&display=swap');
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "PingFang TC", sans-serif; background-color: #090D1A; color: #E2E8F0; }
+        .glass-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .input-field { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s ease; }
+        .input-field:focus { border-color: #38bdf8; background: rgba(255, 255, 255, 0.06); outline: none; box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 antialiased overflow-x-hidden">
+
+    <!-- 🌟 首屏純文字導引：3 秒後自動進入表單 -->
+    <div id="intro-screen" class="w-full max-w-lg glass-card rounded-3xl p-8 text-center space-y-5 my-6 shadow-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+            ✨ 邱小民社會線上學院
+        </div>
+        <h2 class="text-xl font-bold text-slate-100">學籍與教材寄送系統</h2>
+        <div class="text-sm text-slate-300 space-y-2 leading-relaxed bg-slate-900/60 p-5 rounded-2xl border border-white/5 text-left">
+            <p>📖 在這個重視素養與理解的升學時代</p>
+            <p>❌ 死記硬背早已不足以應付會考與段考的命題趨勢</p>
+            <p>✅ 真正能幫助孩子突破的，是一位 懂方法、會引導的老師</p>
+        </div>
+        <p class="text-xs text-slate-400">
+            系統將在 <span id="countdown" class="text-sky-400 font-bold font-mono text-sm">3</span> 秒後自動跳轉至填寫頁...
+        </p>
+        <button onclick="goToFormImmediately()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium py-2.5 rounded-xl border border-white/10 transition-colors">
+            若未自動跳轉，請點此立即填寫 →
+        </button>
+    </div>
+
+    <!-- 🌟 學籍與教材收件表單 -->
+    <div id="main-form-container" class="w-full max-w-xl glass-card rounded-3xl p-8 shadow-2xl my-6 hidden">
+        <div class="text-center mb-8">
+            <div class="text-xs font-bold tracking-widest text-sky-400 uppercase mb-2">邱小民社會線上學院</div>
+            <h1 class="text-2xl font-bold text-slate-100 tracking-tight">填寫學籍與教材收件資料</h1>
+            <p class="text-xs text-slate-400 mt-2">請協助核對與補全資訊，後勤同仁將依據此資料發送實體教材</p>
+        </div>
+
+        <form id="profile-form" class="space-y-6" onsubmit="submitStudentProfile(event)">
+            <input type="hidden" id="field-uid">
+            <input type="hidden" id="field-course">
+
+            <div class="p-4 bg-slate-900/50 border border-white/5 rounded-xl flex justify-between items-center">
+                <span class="text-xs font-medium text-slate-400">已報名課程</span>
+                <span id="display-course" class="text-sm font-bold text-sky-400">讀取中...</span>
+            </div>
+
+            <!-- 1. 學生基本資料 -->
+            <div class="space-y-4">
+                <h3 class="text-xs font-bold tracking-wide text-slate-400 uppercase border-b border-white/5 pb-2">1. 學生基本資料</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">學生姓名 <span class="text-rose-500">*</span></label>
+                        <input type="text" id="student-name" required class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-100 font-medium" placeholder="請輸入學生姓名">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">就讀年級 <span class="text-rose-500">*</span></label>
+                        <select id="student-grade" required class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-300 bg-[#090D1A]">
+                            <option value="">請選擇年級</option>
+                            <option value="國一">國一</option>
+                            <option value="國二">國二</option>
+                            <option value="國三">國三</option>
+                            <option value="高一">高一</option>
+                            <option value="高二">高二</option>
+                            <option value="高三">高三</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">就讀學校 <span class="text-rose-500">*</span></label>
+                        <input type="text" id="student-school" required class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-100" placeholder="例如：敦化國中">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">聯絡信箱 (Email) <span class="text-rose-500">*</span></label>
+                        <input type="email" id="student-email" required class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-100 font-mono" placeholder="example@email.com">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 講義教材收件資料 -->
+            <div class="space-y-4">
+                <h3 class="text-xs font-bold tracking-wide text-slate-400 uppercase border-b border-white/5 pb-2">2. 講義教材收件資料</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">家長姓名 <span class="text-rose-500">*</span></label>
+                        <input type="text" id="shipping-name" required class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-100" placeholder="姓名">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">聯絡電話 <span class="text-rose-500">*</span></label>
+                        <input type="tel" id="shipping-phone" required class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-100 font-mono" placeholder="0900000000">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="col-span-1">
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">郵遞區號 <span class="text-slate-500">(選填)</span></label>
+                        <input type="text" id="shipping-zip" class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-100 font-mono" placeholder="區號">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs text-slate-400 mb-1.5 font-medium">收件縣市 <span class="text-rose-500">*</span></label>
+                        <select id="shipping-city" required class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-300 bg-[#090D1A]">
+                            <option value="">請選擇縣市</option>
+                            <option value="基隆市">基隆市</option><option value="台北市">台北市</option><option value="新北市">新北市</option>
+                            <option value="桃園市">桃園市</option><option value="新竹市">新竹市</option><option value="新竹縣">新竹縣</option>
+                            <option value="苗栗縣">苗栗縣</option><option value="台中市">台中市</option><option value="彰化縣">彰化縣</option>
+                            <option value="南投縣">南投縣</option><option value="雲林縣">雲林縣</option><option value="嘉義市">嘉義市</option>
+                            <option value="嘉義縣">嘉義縣</option><option value="台南市">台南市</option><option value="高雄市">高雄市</option>
+                            <option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option>
+                            <option value="台東縣">台東縣</option><option value="澎湖縣">澎湖縣</option><option value="金門縣">金門縣</option>
+                            <option value="連江縣">連江縣</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1.5 font-medium">收件詳細地址 <span class="text-rose-500">*</span></label>
+                    <input type="text" id="shipping-address" required class="w-full input-field rounded-xl px-4 py-3 text-sm text-slate-100" placeholder="請直接從鄉鎮市區開始填寫（免重複填縣市）">
+                </div>
+            </div>
+
+            <!-- 3. 個資保護條款 -->
+            <div class="space-y-3 bg-slate-900/30 p-4 border border-white/5 rounded-xl">
+                <label class="block text-xs font-bold tracking-wide text-slate-400 uppercase">3. 個人資料保護與隱私權條款</label>
+                <div class="text-[11px] text-slate-500 h-20 overflow-y-auto bg-slate-950/50 p-2.5 rounded-lg leading-relaxed font-normal">
+                    本班（邱小民社會）依據個人資料保護法規定，蒐集您的個人資料（如姓名、年級、電話、地址、信箱等），僅限於本班進行課程開通、教材寄送、學習狀況關懷及行政庶務聯繫使用。我們承諾採取嚴密的防護措施保護您的隱私，絕不將您的個人資料外洩或提供給第三方機構。當您按下同意並送出時，即視為您已閱讀並同意上述條款。
+                </div>
+                <div class="flex items-start gap-2.5 pt-1">
+                    <input type="checkbox" id="privacy-check" required class="mt-0.5 w-4 h-4 rounded border-white/20 bg-transparent text-sky-500 focus:ring-0 cursor-pointer">
+                    <label for="privacy-check" class="text-xs text-slate-400 cursor-pointer font-medium select-none leading-tight">我已閱讀並同意上述個人資料保護條款 <span class="text-rose-500">*</span></label>
+                </div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="w-full bg-slate-100 hover:bg-white text-slate-950 text-sm font-bold py-4 rounded-xl shadow-lg transition-all tracking-wide transform active:scale-[0.99]">
+                確認無誤，送出資料
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://gpajuhalqqijeioxcblg.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwYWp1aGFscXFpamVpb3hjYmxnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDkxODMxMywiZXhwIjoyMDk2NDk0MzEzfQ.SjIr-fClGEYzgXy0zzzgBt4lg0TTNtHYKVIvOesveYg';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let existingProfileId = null;
+        let existingCreatedAt = null;
+        let countdownTimer = null;
+
+        function startCountdown() {
+            let seconds = 3;
+            const cdDisplay = document.getElementById('countdown');
+            countdownTimer = setInterval(() => {
+                seconds--;
+                if (cdDisplay) cdDisplay.innerText = seconds;
+                if (seconds <= 0) {
+                    clearInterval(countdownTimer);
+                    goToFormImmediately();
+                }
+            }, 1000);
+        }
+
+        function goToFormImmediately() {
+            if (countdownTimer) clearInterval(countdownTimer);
+            const intro = document.getElementById('intro-screen');
+            const form = document.getElementById('main-form-container');
+            if (intro) intro.style.display = 'none';
+            if (form) form.classList.remove('hidden');
+        }
+
+        const generateValidUUID = () => {
+            if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            startCountdown();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const uid = urlParams.get('uid') || urlParams.get('lineId') || urlParams.get('line_user_id');
+            let course = urlParams.get('course') || urlParams.get('course_name') || '未指定商品';
+
+            if (!uid) {
+                alert('安全性防禦警報：缺少用戶識別碼！請重新由 LINE 智慧視窗進入。');
+                document.getElementById('submit-btn').disabled = true;
+                return;
+            }
+
+            document.getElementById('field-uid').value = uid;
+            document.getElementById('field-course').value = course;
+            document.getElementById('display-course').innerText = course;
+
+            try {
+                const { data: orderData, error: orderErr } = await supabaseClient
+                    .from('orders')
+                    .select('course_name')
+                    .eq('line_user_id', uid)
+                    .order('paid_at', { ascending: false })
+                    .limit(1)
+                    .maybeSingle();
+
+                if (!orderErr && orderData && orderData.course_name) {
+                    course = orderData.course_name;
+                    document.getElementById('field-course').value = course;
+                    document.getElementById('display-course').innerText = course;
+                    document.getElementById('display-course').classList.remove('text-sky-400');
+                    document.getElementById('display-course').classList.add('text-emerald-400');
+                }
+
+                const { data: pData, error: pErr } = await supabaseClient
+                    .from('student_profiles')
+                    .select('*')
+                    .eq('line_user_id', uid)
+                    .maybeSingle();
+
+                if (pData) {
+                    existingProfileId = pData.profile_id;
+                    existingCreatedAt = pData.created_at;
+                    document.getElementById('student-name').value = pData.student_name || '';
+                    document.getElementById('student-school').value = pData.school_name || '';
+                    document.getElementById('student-email').value = pData.email || '';
+                    document.getElementById('shipping-name').value = pData.parent_name || '';
+                    document.getElementById('shipping-phone').value = pData.contact_phone || '';
+                    document.getElementById('shipping-zip').value = pData.shipping_zip || '';
+                    document.getElementById('shipping-city').value = pData.shipping_city || '';
+                    document.getElementById('shipping-address').value = pData.shipping_address || '';
+
+                    let displayGrade = pData.student_grade || '';
+                    if (displayGrade === '國七') displayGrade = '國一';
+                    else if (displayGrade === '國八') displayGrade = '國二';
+                    else if (displayGrade === '國九') displayGrade = '國三';
+                    document.getElementById('student-grade').value = displayGrade;
+
+                    document.getElementById('submit-btn').innerText = '確認資料無誤，更新學籍資料';
+                }
+            } catch (err) {
+                console.error('初始化歷史資料庫失敗:', err);
+            }
+        });
+
+        async function submitStudentProfile(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submit-btn');
+            btn.innerText = '中台密鑰校驗中，資料正在同步落碑...';
+            btn.disabled = true;
+
+            const uid = document.getElementById('field-uid').value;
+            const course = document.getElementById('field-course').value;
+            const name = document.getElementById('student-name').value.trim();
+            const rawGrade = document.getElementById('student-grade').value;
+            const school = document.getElementById('student-school').value.trim();
+            const email = document.getElementById('student-email').value.trim();
+            const shipCity = document.getElementById('shipping-city').value;
+            const shipZip = document.getElementById('shipping-zip').value.trim();
+            const shipAddress = document.getElementById('shipping-address').value.trim();
+            const shipName = document.getElementById('shipping-name').value.trim();
+            const shipPhone = document.getElementById('shipping-phone').value.trim();
+
+            let targetGrade = rawGrade;
+            if (rawGrade === '國一') targetGrade = '國七';
+            else if (rawGrade === '國二') targetGrade = '國八';
+            else if (rawGrade === '國三') targetGrade = '國九';
+
+            const zipString = shipZip ? `[${shipZip}] ` : '';
+            const fullAddressForTicket = `${zipString}${shipCity}${shipAddress}`;
+            const currentTimeIso = new Date().toISOString();
+
+            try {
+                // 1. users 表防禦性 Upsert，防外鍵約束阻擋
+                const userNickname = shipName ? `${shipName}(${name})` : name;
+                await supabaseClient
+                    .from('users')
+                    .upsert({
+                        line_user_id: uid,
+                        line_nickname: userNickname,
+                        status_flag: 1
+                    }, { onConflict: 'line_user_id' });
+
+                // 2. student_profiles 表 Upsert
+                const profilePayload = {
+                    profile_id: existingProfileId || generateValidUUID(),
+                    line_user_id: uid,
+                    student_name: name,
+                    student_grade: targetGrade,
+                    school_name: school,
+                    email: email,
+                    parent_name: shipName,
+                    contact_phone: shipPhone,
+                    shipping_city: shipCity,
+                    shipping_zip: shipZip || null,
+                    shipping_address: shipAddress,
+                    course_intent: course,
+                    updated_at: currentTimeIso
+                };
+                profilePayload.created_at = existingCreatedAt || currentTimeIso;
+
+                const { error: profileError } = await supabaseClient
+                    .from('student_profiles')
+                    .upsert(profilePayload, { onConflict: 'line_user_id' });
+
+                if (profileError) throw profileError;
+
+                // 3. tickets 表處理，避免 409 衝突
+                const ticketDescription = `【新學籍成立 - 自動觸發教材寄送】\n\n學生姓名：${name}\n就讀年級：${targetGrade}\n就讀學校：${school}\n聯絡信箱：${email}\n報名課程：${course}\n-------------------------\n講義收件人：${shipName}\n聯絡電話：${shipPhone}\n寄送地址：${fullAddressForTicket}`;
+
+                const { data: existingTicket } = await supabaseClient
+                    .from('tickets')
+                    .select('ticket_id')
+                    .eq('line_user_id', uid)
+                    .neq('status', '寄送完成結案')
+                    .maybeSingle();
+
+                if (existingTicket && existingTicket.ticket_id) {
+                    await supabaseClient
+                        .from('tickets')
+                        .update({
+                            description: ticketDescription,
+                            urgency: 'medium'
+                        })
+                        .eq('ticket_id', existingTicket.ticket_id);
+                } else {
+                    const { error: ticketError } = await supabaseClient
+                        .from('tickets')
+                        .insert({
+                            ticket_id: generateValidUUID(),
+                            line_user_id: uid,
+                            issue_type: '教材寄送',
+                            description: ticketDescription,
+                            status: 'Open',
+                            urgency: 'medium',
+                            created_at: currentTimeIso
+                        });
+                    if (ticketError) throw ticketError;
+                }
+
+                document.body.innerHTML = `
+                    <div class="w-full max-w-md glass-card rounded-3xl p-8 text-center shadow-2xl">
+                        <div class="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-100 mb-2">學籍建檔完成！</h2>
+                        <p class="text-sm text-slate-400 leading-relaxed">您的資料已成功同步。教材寄送工單已建立，後勤同仁將火速為孩子寄出實體講義！您可以直接關閉此網頁並返回 LINE 視窗。</p>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('資料傳輸異常:', error);
+                alert('Q-CORE 資料寫入衝突，請聯絡行政導師協助建檔。錯誤訊息: ' + error.message);
+                btn.innerText = '確認無誤，送出資料';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
