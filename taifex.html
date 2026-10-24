@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAIFEX VOLATILITY MATRIX // QUANTITATIVE TERMINAL</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-terminal: #0a0d14;
+      --bg-surface: #0e131d;
+      --panel-border: #1a2332;
+      --panel-border-bright: #2d3e58;
+      --bb-amber: #ff9e00;
+      --bb-amber-dim: #995f00;
+      --bb-red: #ff1e44;
+      --bb-green: #00e676;
+      --bb-cyan: #00e5ff;
+      --terminal-muted: #5c7088;
+    }
+
+    body {
+      background-color: var(--bg-terminal);
+      color: #9eb1c7;
+      font-family: 'JetBrains Mono', 'Share Tech Mono', monospace;
+      letter-spacing: -0.015em;
+    }
+
+    .font-hud {
+      font-family: 'Chakra Petch', sans-serif;
+    }
+
+    /* 機構鎖定框雷達發光 */
+    .terminal-active-row {
+      background: linear-gradient(90deg, rgba(255, 30, 68, 0.14) 0%, rgba(20, 28, 42, 0.95) 100%) !important;
+      border-color: var(--bb-red) !important;
+      box-shadow: inset 0 0 16px rgba(255, 30, 68, 0.15);
+    }
+
+    .terminal-active-row::before {
+      content: '▶ ENGAGED';
+      position: absolute;
+      top: -9px;
+      left: 18px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      background: var(--bb-red);
+      color: #000;
+      padding: 1px 6px;
+      border-radius: 2px;
+    }
+
+    /* 緊湊微型滾動條 */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-terminal); }
+    ::-webkit-scrollbar-thumb { background: #1a2433; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2f4565; }
+
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+
+    /* 呼吸警報動畫 */
+    @keyframes beaconBlink {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 5px currentColor); }
+      50% { opacity: 0.35; filter: none; }
+    }
+    .status-beacon { animation: beaconBlink 1.2s infinite ease-in-out; }
+  </style>
+</head>
+<body class="min-h-screen text-[13px] flex flex-col justify-between p-3 md:p-6 select-none">
+
+  <!-- 頂部高密度 HUD 控制列 -->
+  <header class="border border-[#1a2332] bg-[#0e131d] rounded-none mb-4">
+    <!-- Top Meta Status Strip -->
+    <div class="px-3 py-1.5 border-b border-[#141b27] flex flex-wrap items-center justify-between text-[11px] text-[#5c7088]">
+      <div class="flex items-center gap-4">
+        <span class="text-[#00e5ff] font-bold tracking-wider">TERMINAL // TAIFEX-QVOL-99</span>
+        <span class="hidden sm:inline">DESK: <strong class="text-white">ALPHA-VOL-ALLOCATOR</strong></span>
+        <span class="hidden md:inline">FEED: <strong class="text-[#00e676]">TWSE/TAIFEX LOW-LATENCY</strong></span>
+        <span>SECURITY: <strong class="text-[#ff9e00]">RESTRICTED</strong></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>TPE: <strong id="tpeTime" class="text-white tabular-nums">--:--:--</strong></span>
+        <span class="hidden sm:inline">NYC (EDT): <strong id="nycTime" class="text-[#8ba2be] tabular-nums">--:--:--</strong></span>
+        <span class="hidden md:inline">UTC: <strong id="utcTime" class="text-[#8ba2be] tabular-nums">--:--:--</strong></span>
+      </div>
+    </div>
+
+    <!-- Main Command Header -->
+    <div class="p-4 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-6 bg-[#ff9e00]"></div>
+          <div>
+            <h1 class="text-xl md:text-2xl font-black font-hud tracking-tight text-white flex items-center gap-3">
+              TAIFEX HIGH-OCTANE VOLATILITY MATRIX
+              <span class="text-[10px] tracking-widest font-mono text-[#00e5ff] border border-[#00e5ff]/40 bg-[#00e5ff]/10 px-2 py-0.5 uppercase">Direct Execution Filter</span>
+            </h1>
+            <div class="text-[11px] text-[#5c7088] font-mono mt-0.5">
+              19H SESSION VOLATILITY MAP // 嚴格時間序列排列 // 90% 偽突破噪音過濾 // 專注高勝率百點突破衝刺窗口
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右側聲學監聽器與快取狀態 -->
+      <div class="flex flex-wrap items-center gap-2.5 w-full xl:w-auto justify-start xl:justify-end">
+        <!-- 聲音引擎開關 -->
+        <button id="soundArmBtn" onclick="toggleAcousticMaster()" class="px-3 py-2 border border-[#00e676]/60 bg-[#00e676]/10 text-[#00e676] hover:bg-[#00e676]/20 transition flex items-center gap-2 text-xs font-bold font-hud tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-[#00e676] status-beacon"></span>
+          <span id="soundBtnLabel">ACOUSTIC MONITOR: ARMED</span>
+        </button>
+
+        <!-- 試聽群組 -->
+        <div class="flex items-center border border-[#1a2332] bg-[#0a0d14] px-1 py-1 text-[11px]">
+          <span class="text-[#5c7088] px-2 font-mono">TEST AUDIT:</span>
+          <button onclick="synthesizeAlert('CRITICAL')" class="px-2 py-1 text-[#ff1e44] hover:bg-[#ff1e44]/15 font-bold transition">CRIT-3B</button>
+          <span class="text-[#1a2433]">|</span>
+          <button onclick="synthesizeAlert('HIGH')" class="px-2 py-1 text-[#ff9e00] hover:bg-[#ff9e00]/15 font-bold transition">HIGH-2B</button>
+          <span class="text-[#1a2433]">|</span>
+          <button onclick="synthesizeAlert('ELEVATED')" class="px-2 py-1 text-[#00e5ff] hover:bg-[#00e5ff]/15 font-bold transition">ELEV-1B</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 華爾街雷達鎖定看板 (HUD PRIMARY TARGET BANNER) -->
+  <section id="hudRadarBox" class="border border-[#1a2332] bg-[#0e131d] p-4 md:p-5 mb-4 relative transition-all duration-300">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+      <div class="flex items-start md:items-center gap-4">
+        <!-- 雷達方塊標靶 -->
+        <div class="w-12 h-12 border border-[#233146] bg-[#0a0d14] flex items-center justify-center relative flex-shrink-0">
+          <div class="absolute inset-1 border border-dashed border-[#1a2332]"></div>
+          <span id="hudCrosshair" class="text-lg font-bold text-[#5c7088] font-mono">+</span>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] tracking-widest uppercase font-bold text-[#5c7088]" id="hudStatusBadge">SURVEILLANCE RADAR // STANDBY</span>
+            <span id="hudSessionCode" class="text-[10px] text-[#ff9e00] bg-[#ff9e00]/10 border border-[#ff9e00]/30 px-1.5 font-mono">--</span>
+          </div>
+          <div class="text-lg md:text-xl font-bold font-hud text-white mt-0.5 tracking-tight flex items-center gap-2" id="hudWindowHeadline">
+            INITIALIZING SURVEILLANCE MATRIX...
+          </div>
+          <div class="text-xs text-[#5c7088] mt-0.5" id="hudWindowSub">
+            系統正對齊 TAIFEX 交易伺服器時序架構
+          </div>
+        </div>
+      </div>
+
+      <!-- 倒數定錨計時器 (大字高頻顯示) -->
+      <div class="border border-[#1a2332] bg-[#0a0d14] px-5 py-3 flex items-center gap-5 w-full lg:w-auto justify-between lg:justify-end">
+        <div>
+          <div class="text-[10px] uppercase tracking-widest text-[#5c7088] font-bold" id="countdownLabel">TARGET WINDOW RELATIVE</div>
+          <div class="text-[11px] text-[#7890a8]" id="countdownNote">TICK INTERVAL: 1000MS</div>
+        </div>
+        <div class="font-mono text-2xl md:text-3xl font-extrabold text-[#ff9e00] tabular-nums tracking-wider" id="countdownDigits">
+          --:--:--
+        </div>
+      </div>
+    </div>
+
+    <!-- 24H 戰術時間進度刻度條 -->
+    <div class="mt-4 pt-3 border-t border-[#141b27]">
+      <div class="flex justify-between text-[10px] text-[#5c7088] font-mono mb-1">
+        <span>08:00 (DAY OPEN)</span>
+        <span>10:30 (DAY EXHAUST)</span>
+        <span>15:00 (NIGHT ARBITRAGE)</span>
+        <span>21:30 (US CASH OPEN)</span>
+        <span>05:00 (CLOSE)</span>
+      </div>
+      <div class="h-1.5 bg-[#0a0d14] w-full relative overflow-hidden border border-[#141b27]">
+        <div id="dayTimelineBar" class="h-full bg-gradient-to-r from-[#00e5ff] via-[#ff9e00] to-[#ff1e44] transition-all duration-1000" style="width: 0%"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 嚴格時間序列高頻監控清單 (HIGH DENSITY MATRIX TABLE) -->
+  <main class="border border-[#1a2332] bg-[#0e131d] overflow-x-auto">
+    <table class="w-full text-left border-collapse font-mono">
+      <thead>
+        <tr class="border-b border-[#141b27] bg-[#0a0d14] text-[11px] text-[#5c7088] uppercase tracking-wider">
+          <th class="py-2.5 px-3 w-12 text-center">SEQ</th>
+          <th class="py-2.5 px-4 w-36">TIME WINDOW</th>
+          <th class="py-2.5 px-3 w-28">SESSION</th>
+          <th class="py-2.5 px-3 w-32">VOLATILITY TIER</th>
+          <th class="py-2.5 px-4">TACTICAL CODE & INSTITUTIONAL FOCUS</th>
+          <th class="py-2.5 px-4 hidden md:table-cell text-[#5c7088]">MICROSTRUCTURE BEHAVIOR</th>
+          <th class="py-2.5 px-4 text-right w-36">REL STATUS</th>
+        </tr>
+      </thead>
+      <tbody id="matrixTableBody" class="divide-y divide-[#141b27] text-[12px]">
+        <!-- 嚴格依時間序列動態渲染 -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- 終端機底部註記與監管定錨 -->
+  <footer class="mt-4 border-t border-[#141b27] pt-3 flex flex-col md:flex-row justify-between items-center text-[11px] text-[#415369] font-mono gap-2">
+    <div class="flex items-center gap-3">
+      <span class="w-1.5 h-1.5 bg-[#00e5ff]"></span>
+      <span>DISCIPLINE PROTOCOL: STRICT EXIT DURING NOISE / SURGE STRIKE AT ROUND BOUNDARIES ONLY</span>
+    </div>
+    <div>ENGINE // HTML5 WEB-AUDIO SYNTHESIZER [ZERO EXTERNAL ASSET]</div>
+  </footer>
+
+  <script>
+    // 嚴格按時間序列由早至晚排序（08:45 -> 23:00）的 8 大關鍵波動視窗
+    const VOL_CHRONO_WINDOWS = [
+      {
+        id: "W01",
+        start: "08:45",
+        end: "09:00",
+        market: "DAY-OPEN",
+        marketZh: "日盤開盤",
+        tier: "CRITICAL",
+        tierZh: "【極高】",
+        tierColor: "#ff1e44",
+        badgeBg: "bg-[#ff1e44]/15 text-[#ff1e44] border-[#ff1e44]/60",
+        code: "OPENING SURGE // 跳空定價盤",
+        descZh: "吸收美股盤後及早盤突發資訊，期貨開盤 15 分鐘衝刺，極易誘發假突破甩轎。",
+        tactics: "密切關注昨收與開盤價差，防範高頻掃止損單。"
+      },
+      {
+        id: "W02",
+        start: "09:00",
+        end: "09:30",
+        market: "DAY-EARLY",
+        marketZh: "日盤早盤",
+        tier: "CRITICAL",
+        tierZh: "【極高】",
+        tierColor: "#ff1e44",
+        badgeBg: "bg-[#ff1e44]/15 text-[#ff1e44] border-[#ff1e44]/60",
+        code: "CASH HEAVYWEIGHT // 現貨主力砸盤",
+        descZh: "加權指數 09:00 現貨正式撮合，權值股（TSMC等）帶量砸盤，全天量價中軸奠定。",
+        tactics: "全天最高能量密度區，順應現貨大單方向貫穿百點整數大關。"
+      },
+      {
+        id: "W03",
+        start: "09:30",
+        end: "10:00",
+        market: "DAY-MID",
+        marketZh: "日盤早盤",
+        tier: "HIGH",
+        tierZh: "【高】",
+        tierColor: "#ff9e00",
+        badgeBg: "bg-[#ff9e00]/15 text-[#ff9e00] border-[#ff9e00]/60",
+        code: "MOMENTUM CONTINUATION // 趨勢延伸段",
+        descZh: "第一輪換手過後真假突破分明，現貨走出單邊次級推進或支撐確認。",
+        tactics: "追蹤回踩不破點位，此區間延續性極高且回檔風險較低。"
+      },
+      {
+        id: "W04",
+        start: "10:00",
+        end: "10:30",
+        market: "DAY-EXHAUST",
+        marketZh: "日盤上午",
+        tier: "ELEVATED",
+        tierZh: "【中高】",
+        tierColor: "#00e5ff",
+        badgeBg: "bg-[#00e5ff]/15 text-[#00e5ff] border-[#00e5ff]/60",
+        code: "ASIA CORRELATION // 日盤收尾期",
+        descZh: "陸港股 10:00 開盤連動微擾，機構日內建倉大致完畢，波動邊際遞減。",
+        tactics: "若未突破當日極值，準備收工進入減速觀望期。"
+      },
+      {
+        id: "W05",
+        start: "20:30",
+        end: "21:00",
+        market: "NIGHT-PRE",
+        marketZh: "夜盤盤前",
+        tier: "ELEVATED",
+        tierZh: "【中高】",
+        tierColor: "#00e5ff",
+        badgeBg: "bg-[#00e5ff]/15 text-[#00e5ff] border-[#00e5ff]/60",
+        code: "US MACRO CATALYST // 重磅數據突發",
+        descZh: "美方發布 CPI / 非農 / PCE 等核心數據窗口，秒級爆發 60-120 點離散空間。",
+        tactics: "非數據發布日則視為純磨盤休眠，有發布時嚴防單邊爆震。"
+      },
+      {
+        id: "W06",
+        start: "21:30",
+        end: "22:00",
+        market: "NIGHT-MAIN",
+        marketZh: "夜盤開盤",
+        tier: "CRITICAL",
+        tierZh: "【極高】",
+        tierColor: "#ff1e44",
+        badgeBg: "bg-[#ff1e44]/15 text-[#ff1e44] border-[#ff1e44]/60",
+        code: "NYSE CASH OPEN // 美股現貨狂暴震盪",
+        descZh: "那斯達克、費半現貨開盤，科技巨頭換手量能灌入，夜盤全線共振突破。",
+        tactics: "全夜最有肉波段，最容易連續貫穿兩大百點整數關卡。"
+      },
+      {
+        id: "W07",
+        start: "22:00",
+        end: "22:30",
+        market: "NIGHT-TREND",
+        marketZh: "夜盤前半",
+        tier: "HIGH",
+        tierZh: "【高】",
+        tierColor: "#ff9e00",
+        badgeBg: "bg-[#ff9e00]/15 text-[#ff9e00] border-[#ff9e00]/60",
+        code: "INSTITUTIONAL RUN // 主方向鎖定",
+        descZh: "開盤半小時之洗盤結束，歐美機構資金單邊趨勢成型，流動性最純淨。",
+        tactics: "持倉順風衝浪期，無情盯緊百點同向響鈴。"
+      },
+      {
+        id: "W08",
+        start: "22:30",
+        end: "23:00",
+        market: "NIGHT-EXT",
+        marketZh: "夜盤中場",
+        tier: "ELEVATED",
+        tierZh: "【中高】",
+        tierColor: "#00e5ff",
+        badgeBg: "bg-[#00e5ff]/15 text-[#00e5ff] border-[#00e5ff]/60",
+        code: "TREND EXTENSION // 波段極致延伸",
+        descZh: "趨勢推進至全夜極限價位，速度收斂但假訊號最少，準備進入午夜盤整。",
+        tactics: "鎖定浮動盈餘，若出現反向百點轉向音效則迅速落袋離場。"
+      }
+    ];
+
+    // Web Audio 機構級聲學合成器
+    let audioCtx = null;
+    let audioArmed = true;
+    let lastAlertedId = null;
+
+    function initAudioEngine() {
+      if (!audioCtx) {
+        const AudioClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    document.addEventListener('click', () => { initAudioEngine(); }, { once: true });
+
+    function toggleAcousticMaster() {
+      initAudioEngine();
+      audioArmed = !audioArmed;
+      const btn = document.getElementById('soundArmBtn');
+      const label = document.getElementById('soundBtnLabel');
+      if (audioArmed) {
+        btn.className = "px-3 py-2 border border-[#00e676]/60 bg-[#00e676]/15 text-[#00e676] hover:bg-[#00e676]/25 transition flex items-center gap-2 text-xs font-bold font-hud tracking-wider";
+        label.innerText = "ACOUSTIC MONITOR: ARMED";
+        synthesizeAlert('CRITICAL');
+      } else {
+        btn.className = "px-3 py-2 border border-[#4e6178] bg-[#141b24] text-[#71879f] hover:bg-[#1a2330] transition flex items-center gap-2 text-xs font-bold font-hud tracking-wider";
+        label.innerText = "ACOUSTIC MONITOR: MUTED";
+      }
+    }
+
+    function emitTerminalBip(freq, start, duration, gainLevel, type = 'sine') {
+      if (!audioCtx || !audioArmed) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, start);
+
+      gain.gain.setValueAtTime(gainLevel, start);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(start);
+      osc.stop(start + duration);
+    }
+
+    // 華爾街投行級警報聲學合成（不同於遊戲聲，這是硬派雙頻與三頻掃描響鈴）
+    function synthesizeAlert(tier) {
+      initAudioEngine();
+      if (!audioCtx) return;
+      const t = audioCtx.currentTime;
+
+      if (tier === 'CRITICAL') {
+        // 【極高】三重貫穿蜂鳴 (880Hz -> 1174Hz -> 1760Hz 快速切入)
+        emitTerminalBip(880.00, t, 0.12, 0.45, 'triangle');
+        emitTerminalBip(1174.66, t + 0.13, 0.12, 0.5, 'triangle');
+        emitTerminalBip(1760.00, t + 0.26, 0.28, 0.6, 'sine');
+      } else if (tier === 'HIGH') {
+        // 【高】二連清脆交易定錨 (783Hz -> 1046Hz)
+        emitTerminalBip(783.99, t, 0.14, 0.38, 'sine');
+        emitTerminalBip(1046.50, t + 0.15, 0.25, 0.45, 'sine');
+      } else {
+        // 【中高】單頻干淨穿透提示 (659Hz)
+        emitTerminalBip(659.25, t, 0.08, 0.25, 'sine');
+        emitTerminalBip(880.00, t + 0.07, 0.22, 0.35, 'sine');
+      }
+    }
+
+    // 渲染高密度表格
+    function buildMatrixRows() {
+      const tbody = document.getElementById('matrixTableBody');
+      tbody.innerHTML = '';
+
+      VOL_CHRONO_WINDOWS.forEach((win, idx) => {
+        const tr = document.createElement('tr');
+        tr.id = `row-${win.id}`;
+        tr.className = "hover:bg-[#121926] transition-colors relative group";
+
+        tr.innerHTML = `
+          <td class="py-3 px-3 text-center text-[#5c7088] font-bold">#0${idx + 1}</td>
+          <td class="py-3 px-4 font-extrabold text-white tracking-wider tabular-nums">
+            <span class="text-[#00e5ff]">${win.start}</span> - <span class="text-white">${win.end}</span>
+          </td>
+          <td class="py-3 px-3">
+            <span class="text-[10px] text-[#8199b5] border border-[#1a2332] bg-[#0a0d14] px-1.5 py-0.5 uppercase font-bold">
+              ${win.market}
+            </span>
+          </td>
+          <td class="py-3 px-3">
+            <span class="text-[10px] px-2 py-0.5 rounded-none font-extrabold border ${win.badgeBg}">
+              ${win.tierZh} ${win.tier}
+            </span>
+          </td>
+          <td class="py-3 px-4">
+            <div class="font-bold text-white tracking-tight flex items-center gap-2">
+              <span>${win.code}</span>
+              <span id="badge-live-${win.id}" class="hidden text-[9px] bg-[#ff1e44] text-black font-extrabold px-1.5 py-0.2 tracking-widest status-beacon">LIVE</span>
+            </div>
+            <div class="text-[11px] text-[#738aa3] mt-0.5 font-sans">${win.descZh}</div>
+          </td>
+          <td class="py-3 px-4 hidden md:table-cell text-[#5c7088] text-[11px] font-sans">
+            ${win.tactics}
+          </td>
+          <td class="py-3 px-4 text-right font-bold tabular-nums">
+            <span id="status-tag-${win.id}" class="text-[#5c7088] text-[11px]">PENDING</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function timeStrMinutes(s) {
+      const [h, m] = s.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    function formatFullHMS(totalSec) {
+      if (totalSec < 0) totalSec += 86400;
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    // 核心循環更新 (時間對齊與作戰判斷)
+    function executeQuantLoop() {
+      const now = new Date();
+      
+      // 1. 各時區時鐘
+      const tpeStr = now.toLocaleTimeString('en-GB', { hour12: false });
+      document.getElementById('tpeTime').innerText = tpeStr;
+
+      const nycStr = now.toLocaleTimeString('en-GB', { timeZone: 'America/New_York', hour12: false });
+      document.getElementById('nycTime').innerText = nycStr;
+
+      const utcStr = now.toLocaleTimeString('en-GB', { timeZone: 'UTC', hour12: false });
+      document.getElementById('utcTime').innerText = utcStr;
+
+      const curH = now.getHours();
+      const curM = now.getMinutes();
+      const curS = now.getSeconds();
+
+      const curTotalMin = curH * 60 + curM;
+      const curTotalSec = curTotalMin * 60 + curS;
+
+      // 2. 24H 進度刻度條計算
+      const dayProgressPct = ((curTotalSec / 86400) * 100).toFixed(2);
+      document.getElementById('dayTimelineBar').style.width = `${dayProgressPct}%`;
+
+      // 3. 掃描當前命中的作戰窗口
+      let activeWin = null;
+      let nextWin = null;
+      let minDiffToNext = Infinity;
+
+      for (let win of VOL_CHRONO_WINDOWS) {
+        const startMin = timeStrMinutes(win.start);
+        const endMin = timeStrMinutes(win.end);
+
+        if (curTotalMin >= startMin && curTotalMin < endMin) {
+          activeWin = win;
+          break;
+        }
+      }
+
+      // 尋找下一窗口
+      for (let win of VOL_CHRONO_WINDOWS) {
+        const startSec = timeStrMinutes(win.start) * 60;
+        let delta = startSec - curTotalSec;
+        if (delta <= 0) delta += 86400; // 跨天延續
+
+        if (delta < minDiffToNext) {
+          minDiffToNext = delta;
+          nextWin = win;
+        }
+      }
+
+      // 4. 更新表格狀態列
+      VOL_CHRONO_WINDOWS.forEach(win => {
+        const row = document.getElementById(`row-${win.id}`);
+        const tag = document.getElementById(`status-tag-${win.id}`);
+        const liveBadge = document.getElementById(`badge-live-${win.id}`);
+
+        row.classList.remove('terminal-active-row');
+        liveBadge.classList.add('hidden');
+
+        const sSec = timeStrMinutes(win.start) * 60;
+        const eSec = timeStrMinutes(win.end) * 60;
+
+        if (curTotalSec >= sSec && curTotalSec < eSec) {
+          row.classList.add('terminal-active-row');
+          liveBadge.classList.remove('hidden');
+          tag.innerText = "ENGAGED // ACTIVE";
+          tag.className = "text-[#ff1e44] font-bold text-[11px] status-beacon";
+        } else if (curTotalSec < sSec) {
+          const waitSec = sSec - curTotalSec;
+          tag.innerText = `T - ${formatFullHMS(waitSec)}`;
+          tag.className = "text-[#ff9e00] text-[11px] font-mono";
+        } else {
+          tag.innerText = "EXPIRED";
+          tag.className = "text-[#344458] text-[11px]";
+        }
+      });
+
+      // 5. 更新上方雷達瞄準看板 (HUD RADAR)
+      const radarBox = document.getElementById('hudRadarBox');
+      const hudStatusBadge = document.getElementById('hudStatusBadge');
+      const hudSessionCode = document.getElementById('hudSessionCode');
+      const hudWindowHeadline = document.getElementById('hudWindowHeadline');
+      const hudWindowSub = document.getElementById('hudWindowSub');
+      const countdownDigits = document.getElementById('countdownDigits');
+      const countdownLabel = document.getElementById('countdownLabel');
+      const countdownNote = document.getElementById('countdownNote');
+      const crosshair = document.getElementById('hudCrosshair');
+
+      if (activeWin) {
+        // 進入作戰窗口
+        radarBox.className = "border-2 border-[#ff1e44] bg-[#120f18] p-4 md:p-5 mb-4 relative transition-all duration-300 shadow-[0_0_24px_rgba(255,30,68,0.22)]";
+        hudStatusBadge.innerText = "ACTIVE RADAR LOCK // HIGH CONVICTION WINDOW";
+        hudStatusBadge.className = "text-[10px] tracking-widest uppercase font-extrabold text-[#ff1e44] status-beacon";
+        hudSessionCode.innerText = `${activeWin.market} [${activeWin.start}-${activeWin.end}]`;
+        hudSessionCode.className = "text-[10px] text-black bg-[#ff1e44] border border-[#ff1e44] px-1.5 font-bold";
+
+        hudWindowHeadline.innerHTML = `<span class="text-[#ff1e44]">${activeWin.tierZh}</span> ${activeWin.code}`;
+        hudWindowSub.innerText = `執行策略：${activeWin.descZh} — ${activeWin.tactics}`;
+
+        countdownLabel.innerText = "WINDOW REMAINING (EXPIRATION)";
+        countdownNote.innerText = "ENGAGE BREAKOUT // FILTER NOISE";
+        const remainSec = (timeStrMinutes(activeWin.end) * 60) - curTotalSec;
+        countdownDigits.innerText = formatFullHMS(remainSec);
+        countdownDigits.className = "font-mono text-2xl md:text-3xl font-extrabold text-[#ff1e44] tabular-nums tracking-wider";
+        crosshair.innerText = "⌖";
+        crosshair.className = "text-xl font-bold text-[#ff1e44] status-beacon";
+
+        // 自動鳴響判定（初次切入窗口報警，不重複炸耳）
+        if (lastAlertedId !== activeWin.id) {
+          lastAlertedId = activeWin.id;
+          synthesizeAlert(activeWin.tier);
+        }
+
+      } else {
+        // 處於低波動/垃圾雜訊時間
+        radarBox.className = "border border-[#1a2332] bg-[#0e131d] p-4 md:p-5 mb-4 relative transition-all duration-300";
+        hudStatusBadge.innerText = "STANDBY SURVEILLANCE // NOISE ABSORPTION MODE";
+        hudStatusBadge.className = "text-[10px] tracking-widest uppercase font-bold text-[#5c7088]";
+        hudSessionCode.innerText = "SYSTEM QUIET";
+        hudSessionCode.className = "text-[10px] text-[#8199b5] bg-[#0a0d14] border border-[#1a2332] px-1.5 font-mono";
+
+        hudWindowHeadline.innerHTML = `<span class="text-[#5c7088]">HOLD ASSETS // NEXT:</span> <span class="text-white">${nextWin.start} ${nextWin.code}</span>`;
+        hudWindowSub.innerText = "目前處於微幅磨盤死水區間，不進行主動交易，等待大戶主力造浪。";
+
+        countdownLabel.innerText = "T-MINUS TO NEXT VOL SURGE";
+        countdownNote.innerText = "STANDBY FOR BREAKOUT STRIKE";
+        countdownDigits.innerText = formatFullHMS(minDiffToNext);
+        countdownDigits.className = "font-mono text-2xl md:text-3xl font-extrabold text-[#ff9e00] tabular-nums tracking-wider";
+        crosshair.innerText = "+";
+        crosshair.className = "text-lg font-bold text-[#5c7088] font-mono";
+
+        lastAlertedId = null; // 重設開關
+      }
+    }
+
+    // 啟動終端
+    buildMatrixRows();
+    executeQuantLoop();
+    setInterval(executeQuantLoop, 1000);
+  </script>
+</body>
+</html>
