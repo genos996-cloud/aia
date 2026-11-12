@@ -811,51 +811,67 @@
     }
 
     // -------------------------------------------------------------------------
-    // PAGE 05: 雙線專案推進｜保爾芬德 × 康立安
+    // PAGE 05: 雙線專案推進｜保爾芬德 × 康立安（深度對接公司產品生態與資料流）
     // -------------------------------------------------------------------------
     function page05HTML() {
       return `
+        <!-- Dual-Engine Architecture Map Banner -->
+        <div class="bg-gradient-to-r from-brand-navy via-slate-900 to-brand-blue text-white rounded-2xl p-6 shadow-md border border-slate-700">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="px-3 py-1 text-xs font-mono font-medium bg-sky-500/20 text-sky-300 border border-sky-400/30 rounded">
+              ECOSYSTEM & DATA FLOW ARCHITECTURE
+            </span>
+            <span class="text-sm font-mono text-emerald-400">精實組織 × 雙引擎系統整合中樞</span>
+          </div>
+          <h3 class="text-2xl font-semibold tracking-tight text-white mb-2">
+            打通「B2C 德國輔具商城」與「B2B 臨床智慧復健平台」的跨系統資料流
+          </h3>
+          <p class="text-lg font-normal text-slate-200 leading-relaxed">
+            從<strong class="text-sky-300 font-semibold">保爾芬德（Bauerfeind 商城 × 門市量測）</strong>到<strong class="text-teal-300 font-semibold">康立安（KNEESUP Care 居家復健組 × MetaSens 動作感測 × KNEESUP Med 醫療管理平台）</strong>，我能直接把前台營運、臨床追蹤與後台進銷存帳務串成單一事實來源（Single Source of Truth）。
+          </p>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 interactive-grid">
           
-          <!-- Card 1: 新據點評估與通路配置 -->
+          <!-- Card 1: 保爾芬德 × Bauerfeind 商城與門市 -->
           <div class="interactive-card rounded-2xl p-6 flex flex-col justify-between">
             <div>
-              <span class="px-3 py-1 text-xs font-mono font-medium bg-blue-100 text-brand-blue rounded-md">保爾芬德｜通路與展店</span>
-              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">1. 新據點評估與北中南實勘</h4>
+              <span class="px-3 py-1 text-xs font-mono font-medium bg-blue-100 text-brand-blue rounded-md">保爾芬德｜Bauerfeind 商城與通路</span>
+              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">1. 新據點評估與 O2O 訂單進銷存串接</h4>
               <p class="text-xl font-normal text-slate-700 leading-relaxed mb-4">
-                評估新門市或託管合作點，不能只看網路地圖。我會先算好<strong class="font-semibold text-slate-900">「租金抽成、周邊骨科/復健科密度、預估回本單量」</strong>，再親自出差去台中、高雄現場看人流與動線。
+                評估新門市或醫療合作點時，精算<strong class="font-semibold text-slate-900">「租金抽成、周邊骨科/復健科密度、黃金尺寸備貨週轉」</strong>並親自北中南實勘；同步打通 <strong class="font-semibold text-brand-blue">SHOPLINE 商城與 A1 ERP</strong> 的確定性對帳管線，消除重複人工貼表。
               </p>
             </div>
             <div class="pt-4 border-t border-slate-200 text-base font-semibold text-brand-blue">
-              交付成果：候選點投報比較表 ＋ 開店籌備追蹤表
+              交付成果：候選點投報比較表 ＋ 電商/ERP 自動對帳管線
             </div>
           </div>
 
-          <!-- Card 2: 康立安智慧醫材合作推進 -->
+          <!-- Card 2: 康立安 × KNEESUP & MetaSens 臨床專案 -->
           <div class="interactive-card teal-accent rounded-2xl p-6 flex flex-col justify-between">
             <div>
-              <span class="px-3 py-1 text-xs font-mono font-medium bg-teal-100 text-teal-900 rounded-md">康立安｜智慧醫療專案</span>
-              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">2. 醫院/治療所展示與測試追蹤</h4>
+              <span class="px-3 py-1 text-xs font-mono font-medium bg-teal-100 text-teal-900 rounded-md">康立安｜KNEESUP × MetaSens</span>
+              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">2. 醫學中心臨床合作與 KNEESUP Med 導入</h4>
               <p class="text-xl font-normal text-slate-700 leading-relaxed mb-4">
-                智慧醫材最怕「去醫院 Demo 完就沒下文」。我負責在會前備妥測試設備與簡報，會後第一時間把醫師與治療師的回饋拆成<strong class="font-semibold text-slate-900">「工程修改項」與「商務推進時間表」</strong>死死盯緊。
+                延續與醫學中心骨科部（如前十字韌帶術後遠距復健）的實證基礎，會前備妥 <strong class="font-semibold text-slate-900">MetaSens 感測器與 KNEESUP Med 平台</strong>測試包，會後把醫師與物理治療師回饋拆成<strong class="font-semibold text-slate-900">「工程迭代項」與「院所導入時間表」</strong>死死盯緊。
               </p>
             </div>
             <div class="pt-4 border-t border-slate-200 text-base font-semibold text-brand-teal">
-              交付成果：外部展示測試（POC）進度追蹤漏斗
+              交付成果：院所 POC 導入漏斗 ＋ 臨床數據追蹤看板
             </div>
           </div>
 
-          <!-- Card 3: 營運流程改善與防呆交接 -->
+          <!-- Card 3: 跨公司財務與營運防呆中樞 -->
           <div class="interactive-card rounded-2xl p-6 flex flex-col justify-between">
             <div>
-              <span class="px-3 py-1 text-xs font-mono font-medium bg-slate-200 text-slate-800 rounded-md">雙公司共通｜流程改造</span>
-              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">3. 消除重複卡點與建立交接 SOP</h4>
+              <span class="px-3 py-1 text-xs font-mono font-medium bg-slate-200 text-slate-800 rounded-md">雙公司中樞｜確定性防呆治理</span>
+              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">3. 跨公司專案看板與零誤差資料清洗</h4>
               <p class="text-xl font-normal text-slate-700 leading-relaxed mb-4">
-                找出門市、電商與總部之間「每天重複手動貼表、來回問同一個問題」的卡點，用標準表單與自動化腳本固定下來，並寫好<strong class="font-semibold text-slate-900">誰看都懂的操作手冊</strong>。
+                貫徹<strong class="font-semibold text-slate-900">「財務庫存 100% 確定性腳本核算、絕不讓生成式 AI 盲算帳目」</strong>的風險控管鐵律；同時建立跨公司專案進度總表，讓精實團隊也能發揮數倍營運槓桿。
               </p>
             </div>
             <div class="pt-4 border-t border-slate-200 text-base font-semibold text-slate-800">
-              交付成果：防呆自動化表單 ＋ 一眼看懂的交接文件
+              交付成果：跨公司自動化清洗腳本 ＋ 標準交接手冊
             </div>
           </div>
 
@@ -864,9 +880,9 @@
         <!-- Bottom Summary Banner -->
         <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4 shadow-sm">
           <div class="text-xl font-medium text-slate-800">
-            📌 推進原則：<span class="font-semibold text-brand-blue">初期先鎖定您最重視的一個主要專案打透</span>，做出成果並寫好 SOP 後，再快速複製到下一個專案。
+            📌 推進原則：<span class="font-semibold text-brand-blue">初期先鎖定您最重視的一個核心瓶頸打透</span>（如電商與 ERP 串接或重點院所專案追蹤），做出成果並寫好 SOP 後再快速複製擴展。
           </div>
-          <span class="px-4 py-1.5 bg-slate-900 text-white font-mono text-sm font-medium rounded-lg">穩紮穩打・逐步擴大</span>
+          <span class="px-4 py-1.5 bg-slate-900 text-white font-mono text-sm font-medium rounded-lg">穩紮穩打・精準落地</span>
         </div>
       `;
     }
