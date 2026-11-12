@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>總經理營運特助｜專案推進與 AI 自動化實戰 — 郭奕正</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', "'SF Pro TC'", "'SF Pro Display'", "'PingFang TC'", "'Noto Sans TC'", 'sans-serif'],
+            mono: ["'JetBrains Mono'", 'monospace']
+          },
+          colors: {
+            brand: {
+              navy: '#0B132B',
+              blue: '#004B93',      /* Bauerfeind Medical Cobalt */
+              blueLight: '#EBF3FA',
+              teal: '#00897B',      /* Conzian Smart MedTech Teal */
+              tealLight: '#E6F4F1',
+              surface: '#F8FAFC',
+              border: '#CBD5E1'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro TC', 'SF Pro Display', 'PingFang TC', 'Noto Sans TC', sans-serif;
+      font-weight: 400;
+      font-variant-numeric: tabular-nums;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #F1F5F9;
+      color: #0F172A;
+      font-size: 1.25rem; /* 20px Base (+25% for TV/Projector clarity) */
+      line-height: 1.75;
+      letter-spacing: 0.015em;
+    }
+    h1, h2, h3, h4 {
+      letter-spacing: -0.02em;
+    }
+
+    /* Ambient Cursor Aura on Main Viewport */
+    #mainViewport {
+      position: relative;
+      background: radial-gradient(
+        750px circle at var(--mouse-x) var(--mouse-y),
+        rgba(0, 75, 147, 0.07),
+        rgba(0, 137, 123, 0.03) 40%,
+        transparent 80%
+      );
+    }
+
+    /* Interactive Cards: Mouse Spotlight + 3D Lift + Sibling Focus Dimming */
+    .interactive-grid:hover .interactive-card:not(:hover) {
+      opacity: 0.58;
+      transform: scale(0.99);
+      filter: grayscale(15%);
+    }
+    .interactive-card {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 2px solid #E2E8F0;
+      background: #FFFFFF;
+    }
+    .interactive-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        480px circle at var(--card-mouse-x, -500px) var(--card-mouse-y, -500px),
+        rgba(0, 75, 147, 0.09),
+        transparent 70%
+      );
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .interactive-card:hover {
+      transform: translateY(-6px) scale(1.012);
+      border-color: #004B93;
+      box-shadow: 0 20px 38px -12px rgba(0, 75, 147, 0.18), 0 0 0 1px rgba(0, 75, 147, 0.15);
+      z-index: 10;
+    }
+    .interactive-card:hover::before {
+      opacity: 1;
+    }
+    .interactive-card.teal-accent:hover {
+      border-color: #00897B;
+      box-shadow: 0 20px 38px -12px rgba(0, 137, 123, 0.2), 0 0 0 1px rgba(0, 137, 123, 0.15);
+    }
+
+    /* Sidebar Active State */
+    .nav-btn {
+      transition: all 0.2s ease;
+      border-left: 5px solid transparent;
+    }
+    .nav-btn-active {
+      background: linear-gradient(90deg, rgba(0, 75, 147, 0.35) 0%, rgba(0, 75, 147, 0.05) 100%);
+      border-left-color: #38BDF8;
+      color: #FFFFFF !important;
+      transform: translateX(4px);
+    }
+    .nav-btn-inactive {
+      color: #94A3B8;
+    }
+    .nav-btn-inactive:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #F8FAFC;
+      transform: translateX(3px);
+    }
+
+    /* Smooth Page Switch Animation */
+    .page-enter {
+      animation: pageSlideIn 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes pageSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 4px; }
+  </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col lg:flex-row select-none sm:select-auto">
+
+  <!-- Mobile Header -->
+  <div class="lg:hidden bg-brand-navy text-white px-5 py-3.5 flex items-center justify-between border-b border-slate-800 shrink-0 z-30">
+    <div>
+      <div class="text-xs font-mono text-sky-400 tracking-wider">BAUERFEIND × CONZIAN</div>
+      <div class="text-lg font-semibold">總經理營運特助｜郭奕正</div>
+    </div>
+    <button onclick="toggleSidebar()" class="px-4 py-2 rounded-lg bg-slate-800 text-sm font-medium border border-slate-700">
+      章節選單 ☰
+    </button>
+  </div>
+
+  <!-- Left Sidebar (~22% width, Fixed Navigation) -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-80 xl:w-96 bg-brand-navy text-white flex flex-col justify-between border-r border-slate-800 transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-200 shrink-0">
+    
+    <!-- Top Identity Block -->
+    <div class="p-6 border-b border-slate-800">
+      <div class="flex items-center justify-between mb-3">
+        <span class="px-2.5 py-1 text-xs font-mono font-medium uppercase tracking-widest bg-sky-950 text-sky-300 border border-sky-700/60 rounded">
+          CEO BRIEFING
+        </span>
+        <span class="text-xs font-mono text-emerald-400 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>直接向 CEO 報告
+        </span>
+      </div>
+
+      <div class="text-sm font-normal text-slate-400 mb-1">
+        保爾芬德健康運動 × 康立安智能醫療
+      </div>
+      <h1 class="text-2xl font-semibold text-white tracking-tight leading-snug mb-4">
+        總經理營運特助
+        <span class="block text-base font-normal text-sky-300 mt-1">專案推進與 AI 自動化實戰</span>
+      </h1>
+
+      <!-- Candidate Badge -->
+      <div class="bg-slate-900/95 border border-slate-700/80 rounded-xl p-4 flex items-center justify-between">
+        <div>
+          <div class="text-xs text-slate-400">應徵夥伴</div>
+          <div class="text-xl font-semibold text-white mt-0.5">郭奕正 <span class="text-sm font-normal text-sky-300 ml-1">營運專員</span></div>
+        </div>
+        <span class="px-2.5 py-1 text-xs font-mono font-semibold bg-teal-950 text-teal-300 border border-teal-700 rounded-md">
+          即戰力
+        </span>
+      </div>
+    </div>
+
+    <!-- 7-Page Navigation List -->
+    <nav id="navList" class="flex-1 overflow-y-auto py-4 space-y-1">
+      <!-- Populated by JS -->
+    </nav>
+
+    <!-- Bottom Keyboard & Interaction Hint -->
+    <div class="p-5 bg-slate-950/90 border-t border-slate-800/90 text-xs text-slate-400 space-y-1.5">
+      <div class="flex items-center justify-between">
+        <span>互動模式</span>
+        <span class="text-sky-300 font-mono">滑鼠懸停聚焦 / 鍵盤 ↑↓ 換頁</span>
+      </div>
+      <div class="text-slate-500">
+        不講空話，只談怎麼幫 CEO 省時間、把事辦成。
+      </div>
+    </div>
+  </aside>
+
+  <!-- Right Main Content Area (~78% width) -->
+  <main id="mainViewport" class="flex-1 flex flex-col h-full overflow-hidden">
+    
+    <!-- Top Page Title Banner -->
+    <header class="bg-white/95 backdrop-blur border-b border-slate-200 px-8 py-5 flex flex-wrap items-center justify-between gap-4 shrink-0 shadow-sm z-10">
+      <div class="flex items-center space-x-4">
+        <span id="pageBadge" class="px-3.5 py-1.5 text-sm font-mono font-semibold bg-brand-blue text-white rounded-lg shadow-sm">
+          PAGE 01
+        </span>
+        <div>
+          <h2 id="pageTitle" class="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">
+            錄取驗證｜功能規格與跨領域專案實績
+          </h2>
+          <p id="pageSubtitle" class="text-base font-normal text-slate-600 mt-0.5">
+            不靠口頭承諾，直接用可驗證的專案管理實績與系統架構對齊 CEO 的每一項規格需求
+          </p>
+        </div>
+      </div>
+
+      <!-- Page Stepper Controls -->
+      <div class="flex items-center space-x-3">
+        <button id="prevBtn" onclick="changePage(-1)" class="px-4 py-2 rounded-lg border-2 border-slate-300 hover:border-brand-blue hover:text-brand-blue text-slate-700 font-medium text-base transition disabled:opacity-30">
+          ← 上一頁
+        </button>
+        <span id="pageCounter" class="font-mono text-lg font-semibold text-slate-800 px-2">01 / 07</span>
+        <button id="nextBtn" onclick="changePage(1)" class="px-4 py-2 rounded-lg bg-brand-blue hover:bg-blue-800 text-white font-medium text-base shadow-sm transition disabled:opacity-30">
+          下一頁 →
+        </button>
+      </div>
+    </header>
+
+    <!-- Active Page Content Container -->
+    <div id="contentArea" class="flex-1 overflow-y-auto px-8 py-7">
+      <!-- Dynamic Page Content Injected Here -->
+    </div>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // 7-PAGE COMPLETE DATA STRUCTURE (01 TO 07)
+    // =========================================================================
+    let currentPage = 0;
+
+    const pages = [
+      {
+        code: '01',
+        navTitle: '錄取驗證｜規格對照與專案實績',
+        navSub: '為何錄取我？實績與待遇說明',
+        title: '錄取驗證｜功能規格對照與跨領域專案實績',
+        subtitle: '用過去從零到一推進專案與建構自動化系統的實戰經驗，精準對齊 CEO 每一項用人規格'
+      },
+      {
+        code: '02',
+        navTitle: '角色定錨｜CEO 的執行分身',
+        navSub: '您做選擇題，我把事辦成',
+        title: '角色定錨｜您定方向做選擇題，我負責把事辦成',
+        subtitle: '10 人精實團隊沒有試錯空間，您需要的是到任後就能快速上手的執行副手'
+      },
+      {
+        code: '03',
+        navTitle: '缺口補全｜拒絕 AI 幻覺與盲猜',
+        navSub: '資料不全怎麼補？卡住怎麼推？',
+        title: '缺口補全與查核｜AI 給框架，真實數據靠雙腳跑出來',
+        subtitle: '不把「找不到資料、廠商沒回」丟回給老闆，帶著查證後的事實與 A/B 方案找您拍板'
+      },
+      {
+        code: '04',
+        navTitle: '商品上市變現｜上架賣貨全準備',
+        navSub: '選址、定價毛利、必要與加分項',
+        title: '商品上市變現｜怎麼讓產品順利上架、賣給客人並獲利？',
+        subtitle: '把「上市準備」拆成硬核執行清單：從成本定價、法規字號、通路鋪貨到首波銷售轉換'
+      },
+      {
+        code: '05',
+        navTitle: '雙線專案推進｜保爾芬德 × 康立安',
+        navSub: '據點評估、醫療合作與流程防呆',
+        title: '雙線專案推進｜保爾芬德通路 × 康立安智慧醫材',
+        subtitle: '一邊顧好德國護具的現金流與新據點，一邊把智慧醫材的醫院展示與測試盯到簽約'
+      },
+      {
+        code: '06',
+        navTitle: 'AI 自動化實戰｜Claude / Codex',
+        navSub: '行銷排程、廣告監控與人工查核',
+        title: 'AI 自動化實戰｜把煩人重複的報表與排程交給系統跑',
+        subtitle: '用 Claude 處理文案與翻譯初稿，用 Codex 算準廣告與銷售數字，最後由人工把關合規'
+      },
+      {
+        code: '07',
+        navTitle: '授權邊界與階段推進｜分階段落地',
+        navSub: '清楚分際，依優先順序逐步見效',
+        title: '授權邊界與階段推進｜不越權、不推託，穩步落地見效',
+        subtitle: '清楚區分「我自己搞定、找人協調、請您核准」三條線，依優先順序逐步幫您拔掉最痛的石頭'
+      }
+    ];
+
+    // =========================================================================
+    // NAVIGATION & RENDERING LOGIC
+    // =========================================================================
+    function renderNav() {
+      const nav = document.getElementById('navList');
+      nav.innerHTML = pages.map((p, idx) => {
+        const active = idx === currentPage;
+        return `
+          <button onclick="goToPage(${idx})" class="nav-btn w-full text-left px-6 py-4 flex items-start space-x-3.5 ${active ? 'nav-btn-active' : 'nav-btn-inactive'}">
+            <span class="font-mono text-base font-semibold mt-0.5 ${active ? 'text-sky-400' : 'text-slate-500'}">${p.code}</span>
+            <div class="flex-1 min-w-0">
+              <div class="text-lg font-semibold truncate">${p.navTitle}</div>
+              <div class="text-sm font-normal truncate mt-0.5 ${active ? 'text-sky-200' : 'text-slate-400'}">${p.navSub}</div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('-translate-x-full');
+    }
+
+    function goToPage(idx) {
+      currentPage = idx;
+      const sb = document.getElementById('sidebar');
+      if (!sb.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+        sb.classList.add('-translate-x-full');
+      }
+      renderNav();
+      const p = pages[currentPage];
+      document.getElementById('pageBadge').textContent = `PAGE ${p.code}`;
+      document.getElementById('pageTitle').textContent = p.title;
+      document.getElementById('pageSubtitle').textContent = p.subtitle;
+      document.getElementById('pageCounter').textContent = `0${currentPage + 1} / 0${pages.length}`;
+      document.getElementById('prevBtn').disabled = currentPage === 0;
+      document.getElementById('nextBtn').disabled = currentPage === pages.length - 1;
+
+      const contentArea = document.getElementById('contentArea');
+      contentArea.innerHTML = `<div class="page-enter max-w-6xl mx-auto space-y-6">${getPageHTML(currentPage)}</div>`;
+      contentArea.scrollTop = 0;
+      bindCardSpotlights();
+    }
+
+    function changePage(delta) {
+      const next = currentPage + delta;
+      if (next >= 0 && next < pages.length) goToPage(next);
+    }
+
+    // Keyboard Navigation Support for Smooth Presentation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        changePage(1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        changePage(-1);
+      }
+    });
+
+    // Mouse Spotlight Tracking on Main Viewport & Individual Cards
+    document.addEventListener('mousemove', (e) => {
+      const viewport = document.getElementById('mainViewport');
+      if (viewport) {
+        const rect = viewport.getBoundingClientRect();
+        viewport.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        viewport.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      }
+    });
+
+    function bindCardSpotlights() {
+      const cards = document.querySelectorAll('.interactive-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--card-mouse-x', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--card-mouse-y', `${e.clientY - rect.top}px`);
+        });
+      });
+    }
+
+    // =========================================================================
+    // PAGE CONTENT TEMPLATES (LARGE FONT, DIRECT SPOKEN TONE, HIGH IMPACT)
+    // =========================================================================
+    function getPageHTML(idx) {
+      switch (idx) {
+        case 0: return page01HTML();
+        case 1: return page02HTML();
+        case 2: return page03HTML();
+        case 3: return page04HTML();
+        case 4: return page05HTML();
+        case 5: return page06HTML();
+        case 6: return page07HTML();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // PAGE 01: 錄取驗證｜CEO 需求規格對照表 ＋ 過去專案經理實績證明
+    // -------------------------------------------------------------------------
+    function page01HTML() {
+      const specs = [
+        {
+          id: 'SPEC 01',
+          reqTitle: '正式專案推進與跨部門協調經驗',
+          reqDesc: '能將模糊目標拆解為具體任務、負責人與期限，主動排除卡點並交付成果。',
+          myTitle: '獨立拆解複雜專案 × 全流程閉環交付',
+          myDesc: '具備從零到一獨立拆解大型專案、橫向整合跨單位資源、主動排解卡點並交付完整系統與可驗收成果的實戰經驗。'
+        },
+        {
+          id: 'SPEC 02',
+          reqTitle: 'Codex / Claude 實作與自動化管線',
+          reqDesc: '具備實際運用 AI 建立報表、排程或監控工具經驗，並懂得查核輸出與防護機密。',
+          myTitle: 'AI 重度實戰架構 × 確定性腳本與人工把關',
+          myDesc: '重度實戰玩家，能將重複性報表、資料清洗、內容排程與異常監控轉化為可持續運作的自動化腳本與全棧工具，並內建人工查核與機密權限防護。'
+        },
+        {
+          id: 'SPEC 03',
+          reqTitle: '資料分析、英文商務與營運流程改善',
+          reqDesc: '能用 Excel / Google Sheets 核對數據、閱讀英文產品資料，並建立可交接 SOP。',
+          myTitle: '結構化數據建模 × 原廠文件轉化 SOP',
+          myDesc: '擅長透過結構化數據表（Google Sheets / Excel / 資料庫）核對業務指標、快速解讀英文產品規格並轉化為一線可執行的標準作業流程（SOP）。'
+        },
+        {
+          id: 'SPEC 04',
+          reqTitle: '授權邊界辨識與向上管理回報',
+          reqDesc: '區分自行處理與須核准事項，面對時程或資源衝突能提出有依據的建議。',
+          myTitle: '紅黃綠燈權責分際 × A/B 決策選項呈報',
+          myDesc: '嚴守「綠燈自行解決、黃燈擬案協調、紅燈數據呈報拍板」紀律，面對時程與資源衝突能提出有依據的 A/B 決策選項。'
+        },
+        {
+          id: 'SPEC 05',
+          reqTitle: '零售通路整合、商品上市與出差機動性',
+          reqDesc: '熟悉門市營運、展店或新品上市籌備，能配合北中南出差實勘。',
+          myTitle: 'O2O 通路變現邏輯 × 全力配合北中南實勘',
+          myDesc: '理解實體體驗店與線上電商的毛利與轉換邏輯，具備將商品從合規、選址鋪貨到首波銷售變現的推進能力，可全力配合北中南出差實勘。'
+        }
+      ];
+
+      const trackRecords = [
+        {
+          code: '實績 01',
+          tag: '從零到一專案統籌',
+          title: '全棧數位營運與知識系統從零到一建置',
+          desc: '獨立完成需求拆解、系統架構設計、會員權限分級、金流串接與自動化通知閉環上線，省去高額外包溝通成本。',
+          accent: false
+        },
+        {
+          code: '實績 02',
+          tag: 'AI 自動化管線落地',
+          title: '企業級 AI 自動化與數據監控管線',
+          desc: '整合 Claude / Codex 與確定性腳本，將重複性報表清洗、排程產出與異常預警全自動化，並內建人工終審防呆節點。',
+          accent: true
+        },
+        {
+          code: '實績 03',
+          tag: '商業轉化與會員營運',
+          title: '高單價會員制與訂閱制商業轉化專案',
+          desc: '規劃會員分級體驗、封測名額控管與自動化客服導流 SOP，打通從流量獲取、體驗評估到付費轉換的變現漏斗。',
+          accent: false
+        },
+        {
+          code: '實績 04',
+          tag: '跨單位流程標準化',
+          title: '跨單位資源協調與標準作業流程（SOP）改造',
+          desc: '將模糊商業需求轉化為可追蹤任務與檢核清單，把依賴特定人力的經驗作業轉化為可複製、可交接的系統資產。',
+          accent: true
+        }
+      ];
+
+      return `
+        <!-- 1. Executive Job Motivation Banner -->
+        <div class="bg-gradient-to-r from-brand-navy via-slate-900 to-brand-blue text-white rounded-2xl p-6 sm:p-7 shadow-lg border border-slate-700/80">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+            <span class="px-3 py-1 text-xs font-mono font-medium uppercase tracking-widest bg-sky-500/20 text-sky-300 border border-sky-400/30 rounded">
+              EXECUTIVE MOTIVATION｜為何選擇加入
+            </span>
+            <span class="text-sm font-mono text-emerald-400">雙引擎高密度舞台 × 決策核心零距離</span>
+          </div>
+          <p class="text-xl font-normal text-slate-100 leading-relaxed">
+            我看重<strong class="font-semibold text-sky-300">保爾芬德（德國頂級醫材現金流）</strong>與<strong class="font-semibold text-teal-300">康立安（智慧醫療科技成長曲線）</strong>的雙引擎結構。在 10 人精實組織中，直接對接決策核心、用 AI 自動化管線與全棧系統思維將跨部門專案高速落地，能最大化發揮我<strong class="font-semibold text-white underline decoration-sky-400 underline-offset-4">「商業拆解 × 工程實作」</strong>的複合戰力。
+          </p>
+        </div>
+
+        <!-- 2. Product-Style Spec Verification Matrix -->
+        <div class="bg-white border-2 border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <div class="bg-slate-900 text-white px-6 py-4 grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+            <div class="lg:col-span-5 flex items-center gap-2.5">
+              <span class="px-2.5 py-0.5 text-xs font-mono bg-slate-700 text-slate-200 rounded">CEO REQUIREMENT</span>
+              <span class="text-lg font-semibold tracking-tight">公司開出的核心規格（JD 必備與加分）</span>
+            </div>
+            <div class="lg:col-span-7 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="px-2.5 py-0.5 text-xs font-mono bg-emerald-600 text-white rounded">VERIFIED SPEC</span>
+                <span class="text-lg font-semibold tracking-tight text-emerald-300">郭奕正實戰配置與驗證狀態</span>
+              </div>
+              <span class="hidden sm:inline-block text-xs font-mono text-slate-400">5 / 5 規格全數通過驗證</span>
+            </div>
+          </div>
+
+          <div class="divide-y divide-slate-200 interactive-grid">
+            ${specs.map(s => `
+              <div class="interactive-card border-0 rounded-none p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
+                <div class="lg:col-span-5 pr-0 lg:pr-4 lg:border-r border-slate-200">
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <span class="px-2 py-0.5 text-xs font-mono font-semibold bg-slate-100 text-slate-600 rounded">${s.id}</span>
+                    <h4 class="text-xl font-semibold text-slate-900">${s.reqTitle}</h4>
+                  </div>
+                  <p class="text-base font-normal text-slate-600 leading-relaxed">${s.reqDesc}</p>
+                </div>
+
+                <div class="lg:col-span-7 flex items-start gap-3.5">
+                  <div class="w-8 h-8 rounded-full bg-emerald-100 border-2 border-emerald-500 text-emerald-700 flex items-center justify-center font-bold text-lg shrink-0 mt-0.5">
+                    ✓
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                      <span class="px-2.5 py-0.5 text-xs font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-300 rounded-md">
+                        ✓ 已驗證・即戰力
+                      </span>
+                      <h4 class="text-xl font-semibold text-brand-blue">${s.myTitle}</h4>
+                    </div>
+                    <p class="text-lg font-normal text-slate-700 leading-relaxed">${s.myDesc}</p>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- 3. Track Record: Past Project Management & System Delivery Proofs -->
+        <div class="space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 px-1">
+            <div>
+              <span class="text-xs font-mono font-semibold text-brand-blue uppercase tracking-wider">PROVEN TRACK RECORD</span>
+              <h3 class="text-2xl font-semibold text-slate-900">跨領域專案推進與系統自動化實績列舉（去識別化實戰架構）</h3>
+            </div>
+            <span class="px-3 py-1 text-xs font-mono font-medium bg-slate-200 text-slate-700 rounded-lg">現場可提供完整系統實機展示</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 interactive-grid">
+            ${trackRecords.map(tr => `
+              <div class="interactive-card ${tr.accent ? 'teal-accent' : ''} rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-2.5">
+                    <span class="px-2.5 py-0.5 text-xs font-mono font-semibold ${tr.accent ? 'bg-teal-100 text-teal-900' : 'bg-blue-100 text-brand-blue'} rounded-md">${tr.code}</span>
+                    <span class="text-sm font-mono font-medium text-slate-500">${tr.tag}</span>
+                  </div>
+                  <h4 class="text-xl font-semibold text-slate-900 mb-2">${tr.title}</h4>
+                  <p class="text-lg font-normal text-slate-700 leading-relaxed">${tr.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- 4. Footer Offer & Onboarding Terms -->
+        <div class="bg-slate-900 text-white rounded-2xl p-6 border border-slate-700 shadow-md grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+          <div class="flex items-center gap-3.5 bg-slate-800/80 border border-slate-700/80 rounded-xl px-5 py-4">
+            <span class="px-2.5 py-1 text-xs font-mono font-semibold bg-sky-950 text-sky-300 border border-sky-700 rounded">COMPENSATION</span>
+            <div class="text-lg font-normal text-slate-200">
+              <strong class="font-semibold text-white">期望待遇：</strong>依公司規定 <span class="text-sm text-slate-400">（可依實際承接專案範圍與交付價值面議）</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3.5 bg-slate-800/80 border border-slate-700/80 rounded-xl px-5 py-4">
+            <span class="px-2.5 py-1 text-xs font-mono font-semibold bg-emerald-950 text-emerald-300 border border-emerald-700 rounded">ONBOARDING</span>
+            <div class="text-lg font-normal text-slate-200">
+              <strong class="font-semibold text-white">到職時間：</strong><span class="text-emerald-300 font-semibold">約定後隨時皆可</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // PAGE 02: 角色定錨｜CEO 的決策分身
+    // -------------------------------------------------------------------------
+    function page02HTML() {
+      return `
+        <!-- Core Message Box -->
+        <div class="bg-gradient-to-r from-brand-navy via-slate-900 to-brand-blue text-white rounded-2xl p-7 shadow-lg">
+          <div class="text-sm font-mono text-sky-300 uppercase tracking-wider mb-2">為什麼這個位置不能請「需要人帶的新手」？</div>
+          <h3 class="text-2xl sm:text-3xl font-semibold tracking-tight leading-snug mb-3">
+            您同時管保爾芬德跟康立安兩家公司，最貴的成本就是「您的決策時間」。
+          </h3>
+          <p class="text-xl font-normal text-slate-200 leading-relaxed">
+            如果找一個人進來還要花時間教他怎麼追進度、怎麼用 AI，對您來說反而是消耗。我的定位很簡單：<strong class="font-semibold text-sky-300 underline underline-offset-4">您只管決定方向、排定優先順序、做最後的 A/B 選擇題；中間找資料、盯人、建自動化流程，全部交給我來跑。</strong>
+          </p>
+        </div>
+
+        <!-- Two-Column Comparison: CEO vs Yi-Cheng -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 interactive-grid">
+          
+          <div class="interactive-card rounded-2xl p-7">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-5">
+              <h4 class="text-2xl font-semibold tracking-tight text-slate-900">👑 CEO（您負責的決策面）</h4>
+              <span class="px-3 py-1 text-sm font-mono font-medium bg-slate-100 text-slate-700 rounded-lg">定方向・做拍板</span>
+            </div>
+            <ul class="space-y-4 text-xl font-normal text-slate-700">
+              <li class="flex items-start gap-3">
+                <span class="text-brand-blue font-semibold">1.</span>
+                <span><strong class="font-semibold text-slate-900">決定先後順序：</strong>告訴我現在保爾芬德跟康立安哪件事最急、要優先打哪個目標。</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand-blue font-semibold">2.</span>
+                <span><strong class="font-semibold text-slate-900">握緊關鍵拍板權：</strong>涉及店面簽約、大筆預算、對外合作承諾，由您看過利弊後點頭。</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand-blue font-semibold">3.</span>
+                <span><strong class="font-semibold text-slate-900">只看整理好的選擇題：</strong>不用自己去催進度或拼湊零散報表，把腦力留在商業判斷。</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="interactive-card teal-accent rounded-2xl p-7">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-5">
+              <h4 class="text-2xl font-semibold tracking-tight text-brand-blue">⚡ 郭奕正（我負責的執行面）</h4>
+              <span class="px-3 py-1 text-sm font-mono font-medium bg-brand-blueLight text-brand-blue rounded-lg">出方案・盯到底</span>
+            </div>
+            <ul class="space-y-4 text-xl font-normal text-slate-700">
+              <li class="flex items-start gap-3">
+                <span class="text-brand-teal font-semibold">1.</span>
+                <span><strong class="font-semibold text-slate-900">把模糊想法變成時間表：</strong>接到目標後，馬上拆出「誰負責、何時交付、標準是什麼」並盯到完。</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand-teal font-semibold">2.</span>
+                <span><strong class="font-semibold text-slate-900">卡點我先擋、方案我先擬：</strong>遇到資料缺漏或進度卡住，我先查清楚原因並準備好 A/B 備案再找您。</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-brand-teal font-semibold">3.</span>
+                <span><strong class="font-semibold text-slate-900">用 AI 自動化省下人力：</strong>把重複的廣告數據監控、定期報表與排程寫成固定流程，不靠人工死磕。</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // PAGE 03: 缺口補全與查核｜拒絕 AI 幻覺
+    // -------------------------------------------------------------------------
+    function page03HTML() {
+      return `
+        <!-- Core Stance on AI vs Field Work -->
+        <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-6 flex items-start gap-4">
+          <span class="px-3 py-1 bg-amber-600 text-white font-mono text-sm font-medium rounded-lg shrink-0 mt-1">真實查核鐵律</span>
+          <div class="text-xl font-normal text-amber-950 leading-relaxed">
+            <strong class="font-semibold">我非常清楚 AI 的極限：</strong>AI 給的數據是網路歷史資料，常夾雜過時或錯誤訊息。所以在做據點評估、市場分析或醫療產品查核時，<strong class="font-semibold underline decoration-amber-600 underline-offset-4">AI 只用來幫我快速搭框架、算表格；真正的現場狀況、通路條件與數字真偽，我一定親自調閱內部帳表或跑一線實地查證。</strong>
+          </div>
+        </div>
+
+        <!-- 3-Step Gap Resolution Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 interactive-grid">
+          
+          <div class="interactive-card rounded-2xl p-6">
+            <div class="text-sm font-mono font-semibold text-brand-blue mb-2">STEP 01｜當資料不完整時</div>
+            <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">主動抓缺口、跑一線補齊</h4>
+            <p class="text-xl font-normal text-slate-700 leading-relaxed">
+              不會因為「對方還沒給資料」就停下來等。我會先列出缺了哪幾項關鍵數字，能從內部歷史報表撈的先撈，需要打電話問廠商或親自去現場看的，馬上動手補齊。
+            </p>
+          </div>
+
+          <div class="interactive-card rounded-2xl p-6">
+            <div class="text-sm font-mono font-semibold text-amber-700 mb-2">STEP 02｜當進度卡住時</div>
+            <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">先拆解原因、啟動備案</h4>
+            <p class="text-xl font-normal text-slate-700 leading-relaxed">
+              立刻弄清楚是「規格沒講清」、「外部廠商拖延」還是「內部人力卡住」。我能協調的先橫向排開；真的會影響時程，我先擬好替代方案再去向您報告。
+            </p>
+          </div>
+
+          <div class="interactive-card teal-accent rounded-2xl p-6">
+            <div class="text-sm font-mono font-semibold text-brand-teal mb-2">STEP 03｜需要 CEO 拍板時</div>
+            <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">給「事實＋影響＋A/B方案」</h4>
+            <p class="text-xl font-normal text-slate-700 leading-relaxed">
+              絕不問您「老闆現在怎麼辦？」。我會直接整理好：<strong class="font-semibold text-slate-900">目前事實是什麼、延遲會有什麼影響、A 方案（快但成本高）與 B 方案（穩但省錢）我建議選哪個</strong>，讓您快速拍板。
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Concrete Comparison Box -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 interactive-grid">
+          <div class="interactive-card rounded-2xl p-6 bg-rose-50/40 border-rose-200">
+            <div class="text-base font-semibold text-rose-700 mb-2">❌ 讓老闆頭痛的回報方式</div>
+            <p class="text-xl font-normal text-slate-700">
+              「王總，廠商那邊還沒給完整報價跟尺寸資料，網路上查到的資訊也不確定對不對，所以我這邊還不能動，看您要怎麼處理？」
+            </p>
+          </div>
+
+          <div class="interactive-card teal-accent rounded-2xl p-6 bg-emerald-50/40 border-emerald-300">
+            <div class="text-base font-semibold text-emerald-800 mb-2">✅ 我給您的回報方式</div>
+            <p class="text-xl font-normal text-slate-800">
+              「王總，大部分資料已核對完畢，唯獨廠商報價因對方簽核稍有延遲。<strong class="font-semibold text-slate-900">為保住原定節奏，我建議採方案 A：先用上一批同級成本上限試算毛利、同步推進文宣初稿，待廠商補件後即可迅速更新完畢。</strong>您點頭我就照這樣推。」
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // PAGE 04: 商品上市變現｜選址上架與獲利準備
+    // -------------------------------------------------------------------------
+    function page04HTML() {
+      return `
+        <!-- Clear Definition of "Product Launch" -->
+        <div class="bg-brand-navy text-white rounded-2xl p-7 shadow-md">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="px-3 py-1 text-xs font-mono font-medium bg-sky-500/20 text-sky-300 border border-sky-400/30 rounded">
+              GO-TO-MARKET & MONETIZATION
+            </span>
+            <span class="text-sm font-mono text-emerald-400">核心目標：讓商品順利上架、賣給客人、算清毛利賺到錢</span>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">
+            「上市準備」不是紙上談兵，而是打通「產品合規 → 選址鋪貨 → 定價毛利 → 銷售轉換」的變現全流程。
+          </h3>
+          <p class="text-xl font-normal text-slate-300">
+            不管是引進德國 Bauerfeind 新款護具，還是推出康立安智慧醫療設備，要讓商品真正在市場上賣出營收，我會嚴格控管以下<strong class="font-semibold text-white">「四大必要條件」</strong>與<strong class="font-semibold text-white">「四大加分推進器」</strong>：
+          </p>
+        </div>
+
+        <!-- Must-Haves vs Accelerators -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 interactive-grid">
+          
+          <!-- Mandatory Must-Haves -->
+          <div class="interactive-card rounded-2xl p-7">
+            <div class="flex items-center justify-between border-b-2 border-slate-200 pb-4 mb-5">
+              <div>
+                <span class="text-xs font-mono font-semibold text-rose-600 uppercase">MANDATORY CHECKLIST</span>
+                <h4 class="text-2xl font-semibold tracking-tight text-slate-900">■ 上市必要要件（少一件都不能開賣）</h4>
+              </div>
+              <span class="px-3 py-1 text-sm font-medium bg-rose-100 text-rose-800 rounded-lg">基本盤防線</span>
+            </div>
+
+            <ul class="space-y-4 text-xl font-normal text-slate-800">
+              <li class="flex items-start gap-3">
+                <span class="px-2 py-0.5 bg-slate-900 text-white text-sm font-mono font-medium rounded mt-1">01</span>
+                <div>
+                  <strong class="font-semibold text-slate-900">成本、定價與通路毛利試算：</strong>
+                  把進貨成本、關稅運費、電商平台或實體通路抽成全部算進 Excel，確保扣掉行銷費用後還有足夠淨利。
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="px-2 py-0.5 bg-slate-900 text-white text-sm font-mono font-medium rounded mt-1">02</span>
+                <div>
+                  <strong class="font-semibold text-slate-900">醫材法規字號與宣傳合規檢查：</strong>
+                  確認衛福部許可證、中文標示到位，並嚴格檢查商品頁與廣告文案，絕不踩「誇大醫療效能」的罰款紅線。
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="px-2 py-0.5 bg-slate-900 text-white text-sm font-mono font-medium rounded mt-1">03</span>
+                <div>
+                  <strong class="font-semibold text-slate-900">精準選址與鋪貨上架到位：</strong>
+                  評估該放直營門市體驗、醫療診所託管寄賣、還是主力推線上電商（momo／官網），完成庫存建檔與結帳測試。
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="px-2 py-0.5 bg-slate-900 text-white text-sm font-mono font-medium rounded mt-1">04</span>
+                <div>
+                  <strong class="font-semibold text-slate-900">第一線銷售與量測 SOP 包：</strong>
+                  將原廠英文資料翻成白話的「尺寸量測指南、適用族群與常見問答」，讓門市人員與客服上架首日就能精準賣貨。
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Value-Add Accelerators -->
+          <div class="interactive-card teal-accent rounded-2xl p-7">
+            <div class="flex items-center justify-between border-b-2 border-slate-200 pb-4 mb-5">
+              <div>
+                <span class="text-xs font-mono font-semibold text-brand-teal uppercase">REVENUE ACCELERATORS</span>
+                <h4 class="text-2xl font-semibold tracking-tight text-brand-blue">★ 獲利加分項目（讓商品一上架就熱賣）</h4>
+              </div>
+              <span class="px-3 py-1 text-sm font-medium bg-teal-100 text-teal-900 rounded-lg">放大營業額</span>
+            </div>
+
+            <ul class="space-y-4 text-xl font-normal text-slate-800">
+              <li class="flex items-start gap-3">
+                <span class="px-2 py-0.5 bg-brand-teal text-white text-sm font-mono font-medium rounded mt-1">A</span>
+                <div>
+                  <strong class="font-semibold text-slate-900">醫師、物理治療師與選手實測背書：</strong>
+                  高單價護具與醫材靠的是信任。上市前先安排合作醫療夥伴或教練試穿戴，開賣首日直接附上專業推薦提高成交率。
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="px-2 py-0.5 bg-brand-teal text-white text-sm font-mono font-medium rounded mt-1">B</span>
+                <div>
+                  <strong class="font-semibold text-slate-900">AI 多受眾素材提前備妥（Claude）：</strong>
+                  針對「術後復健」、「長輩日常支撐」、「專項運動防護」不同客群，提前用 AI 產出多版本分眾圖文與廣告素材。
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="px-2 py-0.5 bg-brand-teal text-white text-sm font-mono font-medium rounded mt-1">C</span>
+                <div>
+                  <strong class="font-semibold text-slate-900">舊客精準喚醒與回購推播：</strong>
+                  護具屬於消耗品。從既有購買名單篩出穿戴滿一定週期或買過同部位產品的熟客，自動發送新品體驗或升級優惠。
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="px-2 py-0.5 bg-brand-teal text-white text-sm font-mono font-medium rounded mt-1">D</span>
+                <div>
+                  <strong class="font-semibold text-slate-900">開賣初期「黃金尺寸」庫存與 ROAS 監控：</strong>
+                  即時監控哪支廣告最帶單、哪個主力尺寸（如 M/L 號）快斷貨，第一時間提醒調貨或集中廣告火力。
+                </div>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // PAGE 05: 雙線專案推進｜保爾芬德 × 康立安
+    // -------------------------------------------------------------------------
+    function page05HTML() {
+      return `
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 interactive-grid">
+          
+          <!-- Card 1: 新據點評估與通路配置 -->
+          <div class="interactive-card rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <span class="px-3 py-1 text-xs font-mono font-medium bg-blue-100 text-brand-blue rounded-md">保爾芬德｜通路與展店</span>
+              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">1. 新據點評估與北中南實勘</h4>
+              <p class="text-xl font-normal text-slate-700 leading-relaxed mb-4">
+                評估新門市或託管合作點，不能只看網路地圖。我會先算好<strong class="font-semibold text-slate-900">「租金抽成、周邊骨科/復健科密度、預估回本單量」</strong>，再親自出差去台中、高雄現場看人流與動線。
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 text-base font-semibold text-brand-blue">
+              交付成果：候選點投報比較表 ＋ 開店籌備追蹤表
+            </div>
+          </div>
+
+          <!-- Card 2: 康立安智慧醫材合作推進 -->
+          <div class="interactive-card teal-accent rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <span class="px-3 py-1 text-xs font-mono font-medium bg-teal-100 text-teal-900 rounded-md">康立安｜智慧醫療專案</span>
+              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">2. 醫院/治療所展示與測試追蹤</h4>
+              <p class="text-xl font-normal text-slate-700 leading-relaxed mb-4">
+                智慧醫材最怕「去醫院 Demo 完就沒下文」。我負責在會前備妥測試設備與簡報，會後第一時間把醫師與治療師的回饋拆成<strong class="font-semibold text-slate-900">「工程修改項」與「商務推進時間表」</strong>死死盯緊。
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 text-base font-semibold text-brand-teal">
+              交付成果：外部展示測試（POC）進度追蹤漏斗
+            </div>
+          </div>
+
+          <!-- Card 3: 營運流程改善與防呆交接 -->
+          <div class="interactive-card rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <span class="px-3 py-1 text-xs font-mono font-medium bg-slate-200 text-slate-800 rounded-md">雙公司共通｜流程改造</span>
+              <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mt-3 mb-3">3. 消除重複卡點與建立交接 SOP</h4>
+              <p class="text-xl font-normal text-slate-700 leading-relaxed mb-4">
+                找出門市、電商與總部之間「每天重複手動貼表、來回問同一個問題」的卡點，用標準表單與自動化腳本固定下來，並寫好<strong class="font-semibold text-slate-900">誰看都懂的操作手冊</strong>。
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 text-base font-semibold text-slate-800">
+              交付成果：防呆自動化表單 ＋ 一眼看懂的交接文件
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Summary Banner -->
+        <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4 shadow-sm">
+          <div class="text-xl font-medium text-slate-800">
+            📌 推進原則：<span class="font-semibold text-brand-blue">初期先鎖定您最重視的一個主要專案打透</span>，做出成果並寫好 SOP 後，再快速複製到下一個專案。
+          </div>
+          <span class="px-4 py-1.5 bg-slate-900 text-white font-mono text-sm font-medium rounded-lg">穩紮穩打・逐步擴大</span>
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // PAGE 06: AI 自動化實戰｜Claude / Codex 落地
+    // -------------------------------------------------------------------------
+    function page06HTML() {
+      return `
+        <!-- Core AI Principle -->
+        <div class="bg-white border-2 border-brand-blue/30 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-2xl font-semibold tracking-tight text-slate-900 mb-2">
+            我不把 AI 當聊天玩具，而是拿來建「可重複跑、不會算錯帳」的自動化工作流。
+          </h3>
+          <p class="text-xl font-normal text-slate-700">
+            分工非常明確：<strong class="font-semibold text-brand-blue">用 Codex（寫腳本/公式）處理精準的營業額與廣告計算</strong>（絕不讓語言模型自己心算數字）；<strong class="font-semibold text-brand-teal">用 Claude 處理季度行銷排程拆解、文案初稿與英文資料翻譯</strong>；最後一定加上<strong class="font-semibold text-amber-700">人工查核與機密保護</strong>。
+          </p>
+        </div>
+
+        <!-- Two Main AI Workflows from JD -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 interactive-grid">
+          
+          <!-- Workflow 1 -->
+          <div class="interactive-card rounded-2xl p-7">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 text-sm font-mono font-medium bg-brand-blue text-white rounded-lg">實戰管線 A</span>
+              <span class="text-base font-semibold text-brand-blue">大幅縮短排程與初稿時間</span>
+            </div>
+            <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">季度行銷計畫 → 自動拆解排程與素材流程</h4>
+            <ol class="space-y-3 text-xl font-normal text-slate-700 list-decimal list-inside">
+              <li><strong class="font-semibold text-slate-900">餵入核准計畫：</strong>把您確認過的季度主推商品與檔期輸入系統。</li>
+              <li><strong class="font-semibold text-slate-900">Claude 批量展開：</strong>自動拆成每週排程表，並依「德國專業品牌調性」生成社群、官網與電商文案初稿。</li>
+              <li><strong class="font-semibold text-slate-900">人工查核把關：</strong>過濾醫材廣告禁用字、核對產品型號無誤後，直接交付美編與執行人員上架。</li>
+            </ol>
+          </div>
+
+          <!-- Workflow 2 -->
+          <div class="interactive-card teal-accent rounded-2xl p-7">
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 text-sm font-mono font-medium bg-brand-teal text-white rounded-lg">實戰管線 B</span>
+              <span class="text-base font-semibold text-brand-teal">即時抓出燒錢異常</span>
+            </div>
+            <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">廣告與銷售數據自動彙整 ＋ 異常提醒</h4>
+            <ol class="space-y-3 text-xl font-normal text-slate-700 list-decimal list-inside">
+              <li><strong class="font-semibold text-slate-900">自動拉取資料：</strong>用 Codex 寫好的腳本把官網、電商平台與廣告後台數據自動收進標準 Google Sheets。</li>
+              <li><strong class="font-semibold text-slate-900">紅綠燈異常偵測：</strong>只要某商品廣告成本（CPA）突然飆高或轉換率大跌，系統自動標紅。</li>
+              <li><strong class="font-semibold text-slate-900">週報一頁呈現：</strong>我先查明是素材疲乏還是主力尺寸缺貨，連同調整建議整理成一頁週報給您看。</li>
+            </ol>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // PAGE 07: 授權邊界與階段推進｜分階段落地
+    // -------------------------------------------------------------------------
+    function page07HTML() {
+      return `
+        <!-- 3-Zone Authority Boundary -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 interactive-grid">
+          
+          <div class="interactive-card rounded-2xl p-6 border-t-8 border-t-emerald-600">
+            <div class="text-sm font-mono font-semibold text-emerald-700 mb-1">GREEN ZONE｜綠燈區</div>
+            <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">我自己直接搞定</h4>
+            <p class="text-xl font-normal text-slate-700">
+              日常專案催進度、缺漏資料補齊、定期報表清洗、自動化腳本維護、英文資料初譯與 SOP 撰寫。<strong class="font-semibold text-slate-900">做完直接列在週報備查，不佔用您時間。</strong>
+            </p>
+          </div>
+
+          <div class="interactive-card rounded-2xl p-6 border-t-8 border-t-amber-500">
+            <div class="text-sm font-mono font-semibold text-amber-700 mb-1">YELLOW ZONE｜黃燈區</div>
+            <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">先擬方案再請您支援</h4>
+            <p class="text-xl font-normal text-slate-700">
+              遇到跨部門資源互卡、外部廠商嚴重拖延、或需要專業醫療/法規窗口最終確認。<strong class="font-semibold text-slate-900">我會先弄清卡點並準備好折衷辦法，請您賦予尚方寶劍協調。</strong>
+            </p>
+          </div>
+
+          <div class="interactive-card rounded-2xl p-6 border-t-8 border-t-rose-600">
+            <div class="text-sm font-mono font-semibold text-rose-700 mb-1">RED ZONE｜紅燈區</div>
+            <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">必須由您拍板核准</h4>
+            <p class="text-xl font-normal text-slate-700">
+              涉及新據點簽約、花錢買廣告或採購預算、定價毛利折讓、對外合作正式承諾與專案優先順序變更。<strong class="font-semibold text-slate-900">一定帶齊數據與 A/B 方案請您核准。</strong>
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Phased Execution Rhythm (No Hardcoded Deadlines) -->
+        <div class="bg-brand-navy text-white rounded-2xl p-7 shadow-lg">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <h4 class="text-2xl font-semibold tracking-tight text-white">🚀 階段性推進節奏（務實落地，依實際節奏穩步交付成果）</h4>
+            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 font-mono text-sm font-medium rounded-lg">
+              PHASED EXECUTION
+            </span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xl font-normal">
+            <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-5">
+              <div class="text-sky-400 font-mono font-semibold text-base mb-1">第一階段｜盤點與接手</div>
+              <p class="text-slate-200">快速對齊您手頭最急的 1 個核心專案，梳理出完整任務拆解表、負責人與檢核節點。</p>
+            </div>
+            <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-5">
+              <div class="text-sky-400 font-mono font-semibold text-base mb-1">第二階段｜首條 AI 管線上線</div>
+              <p class="text-slate-200">挑一項目前最花時間的重複工作（如廣告成效週報或行銷排程），用 Claude / Codex 建好可運作的半自動流程。</p>
+            </div>
+            <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-5">
+              <div class="text-sky-400 font-mono font-semibold text-base mb-1">第三階段｜SOP 固著與擴展</div>
+              <p class="text-slate-200">完成階段性交付與操作手冊，逐步幫您省下追進度的時間，視實際進度接手下一條產品或通路專案。</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Initialize on Load
+    window.onload = function() {
+      goToPage(0);
+    };
+  </script>
+</body>
+</html>
