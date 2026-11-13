@@ -40,6 +40,21 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* 內文權威超連結樣式（乾淨可點擊、不破坏版面） */
+        a.ref-link {
+            color: var(--tech-blue);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1.5px solid rgba(0, 120, 212, 0.45);
+            padding-bottom: 1px;
+            transition: all 0.15s ease;
+        }
+        a.ref-link:hover {
+            color: var(--tech-blue-hover);
+            background: var(--tech-blue-soft);
+            border-bottom-color: var(--tech-blue-hover);
+        }
+
         .stage {
             width: 100vw; height: 100vh; padding: 8px 12px 64px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -273,7 +288,7 @@
     <div class="stage">
         <main class="book-container">
             
-            <!-- ==================== SPREAD 0: P.01 市場結構斷層 & P.02 四大剛需受眾（TAM/SAM）畫像 ==================== -->
+            <!-- ==================== SPREAD 0: P.01 市場結構斷層 & P.02 德國原廠臨床實證與循證指引 ==================== -->
             <section class="spread active" data-spread="0">
                 <!-- P.01 左頁：市場切入與商業模式分析總綱 -->
                 <div class="page page-left">
@@ -299,48 +314,95 @@
                         </div>
 
                         <p class="editorial-lead">
-                            本報告從<strong>醫療經濟學（Health Economics）與病患決策漏斗</strong>切入，拆解台灣骨科與復健科臨床路徑的結構性斷層。我們販售的並非傳統護具，而是<strong>「不到手術五分之一預算（NT$ 29,800）、零恢復期、延緩人工關節置換時間表」的高毛利醫療替代選擇權</strong>。
+                            本報告直接採信<a href="https://www.bauerfeind-group.com/en/news/details/article/clinical-study-using-the-genutrain-oa-knee-brace" target="_blank" rel="noopener" class="ref-link">德國 Bauerfeind 原廠臨床實證白皮書</a>與<a href="https://www.bauerfeind-taiwan.com/products/bauerfeind-genutrian-oa" target="_blank" rel="noopener" class="ref-link">台灣官方旗艦規格</a>，從<strong>醫療經濟學與不對稱風險（Asymmetric Risk）</strong>切入，拆解台灣骨科臨床的斷層商機。我們販售的並非傳統護具，而是<strong>「不到手術五分之一預算（NT$ 29,800）、零恢復期、延緩人工關節置換時間表」的高毛利醫療替代選擇權</strong>。
                         </p>
 
                         <div class="muji-rule-list">
                             <div class="muji-rule-item">
-                                <h3><span>一、 市場結構痛點：傳統治療光譜的「兩極化斷層真空帶」</span><span class="badge">THE STRATEGIC GAP</span></h3>
+                                <h3><span>一、 市場結構痛點：台灣骨科臨床的「兩極化斷層真空帶」</span><span class="badge">THE STRATEGIC GAP</span></h3>
                                 <ul class="sub-bullet-list">
                                     <li><strong>初階保守治療（健保紅海｜NT$ 500～3,000）：</strong> 口服消炎藥、基礎電療與傳統彈性護膝；隨軟骨磨損加劇，止痛與支撐邊際效益迅速遞減。</li>
                                     <li><strong>終端侵入性治療（手術懸崖｜NT$ 15萬～35萬+）：</strong> 全人工膝關節置換術（TKA）；涉及自費高耐磨墊片或機械手臂導航，伴隨不可逆骨組織切除與 3～6 個月復健陣痛期。</li>
-                                    <li><strong>商業切入點（KL Grade 2～3 猶豫期）：</strong> 在「吃藥失效」與「被迫開刀」之間，存在龐大高焦慮客群。<strong>Bauerfeind GenuTrain OA（NT$ 29,800）</strong> 精準填補這段真空，提供可逆的非侵入式保膝方案。</li>
+                                    <li><strong>戰略真空帶（KL Grade 2～3 猶豫期）：</strong> 在「吃藥失效」與「被迫開刀」之間存在龐大高焦慮客群。依據<a href="https://www.bauerfeind.de/fileadmin/user_upload/bf-germany_bf-international/_downloads/gonarthrose-arzt-checkliste-EN.pdf" target="_blank" rel="noopener" class="ref-link">德國膝骨關節炎醫學治療指引（Guideline-Based Therapy）</a>，醫療級減壓輔具正是<strong>延緩手術時間（Delay Surgery）</strong>的標準一線非手術處方。</li>
                                 </ul>
                             </div>
 
                             <div class="muji-rule-item emerald-border">
-                                <h3><span>二、 核心定價邏輯：從「賣運動配件」升維至「賣免開刀的醫療選擇權」</span><span class="badge emerald">PRICING POWER</span></h3>
+                                <h3><span>二、 核心定價邏輯：從「賣運動配件」升維至「賣保留原廠關節的選擇權」</span><span class="badge emerald">PRICING POWER</span></h3>
                                 <div>
-                                    若與藥局 2,000 元護膝對比會陷入價格戰；但將定錨點拉升至<strong>「20 萬元人工關節置換總持有成本（TCO）」</strong>，NT$ 29,800 瞬間轉化為極具划算感的醫療投資，支撐高客單成交與單店高坪效。
+                                    若與藥局 2,000 元護膝對比會陷入價格戰；但將定錨點拉升至<strong>「20 萬元人工關節置換總持有成本（TCO）與不可逆尾端風險」</strong>，NT$ 29,800 瞬間轉化為極具划算感的醫療投資，支撐高客單成交與單店高坪效。
                                 </div>
                             </div>
                         </div>
 
                         <div class="formula-box">
-                            臨床治療斷層診斷 <span class="arrow">➔</span> 四大剛需受眾鎖定 <span class="arrow">➔</span> TCO 價格定錨 <span class="arrow">➔</span> 院前旗艦閉環變現
+                            德國原廠臨床實證背書 <span class="arrow">➔</span> 四大剛需受眾鎖定 <span class="arrow">➔</span> TCO 價格定錨 <span class="arrow">➔</span> 院前旗艦閉環變現
                         </div>
                     </div>
                     <footer class="page-footer">
-                        <span>HEALTH ECONOMICS &amp; CONSERVATIVE ORTHOPEDICS</span>
+                        <span>GROUNDED IN BAUERFEIND AG CLINICAL &amp; GUIDELINE EVIDENCE</span>
                         <span class="page-number">P.01</span>
                     </footer>
                 </div>
 
-                <!-- P.02 右頁：核心剛需受眾（TAM / SAM 精準畫像）與支付意願分析 -->
+                <!-- P.02 右頁：德國原廠臨床實證與循證醫學依據（消除浮誇行銷感，建立總經理級專業信任） -->
                 <div class="page page-right">
                     <header class="page-header">
-                        <span class="brand-tag">TARGET AUDIENCE // TAM &amp; SAM SEGMENTATION</span>
+                        <span class="brand-tag">CLINICAL EVIDENCE // EVIDENCE-BASED ORTHOPEDICS</span>
+                        <span>GERMAN MEDICAL GUIDELINES &amp; KIT CLINICAL TRIAL</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">EVIDENCE-BASED FOUNDATION // 非行銷話術，而是德國原廠與學術界實證標準</div>
+                            <h2 class="editorial-h2">二、 原廠循證依據：德國醫界如何用減壓輔具「延緩手術時間表」？</h2>
+                            <p class="editorial-subtitle">將德國原廠官方文獻與歐洲運動醫學臨床數據直接轉化為台灣市場的專業溝通武器：</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>1. 德國卡爾斯魯厄理工學院（KIT）臨床實證：穿戴六週顯著減痛並提升活動量</span><span class="badge">JOURNAL OF CLINICAL MEDICINE</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>權威發表：</strong> 由德國卡爾斯魯厄理工學院（KIT）Dr. Bernd Stetter 與骨科權威 Prof. Dr. med. Stefan Sell 主持，發表於國際醫學期刊的<a href="https://www.bauerfeind-life.com/en/news/clinical-study-using-the-genutrain-oa-knee-orthosis/" target="_blank" rel="noopener" class="ref-link">GenuTrain OA 臨床追蹤研究</a>證實，退化性關節炎患者持續穿戴六週後，<strong>關節疼痛指數顯著下降，且高強度日常身體活動量明顯提升</strong>。</li>
+                                    <li><strong>結構卸載設計：</strong> 透過專利 <a href="https://www.bauerfeind-group.com/en/products/orthoses/knee/details/product/genutrain-oa" target="_blank" rel="noopener" class="ref-link">Power-8 動態八字綁帶與 BOA® Fit 微調系統</a>，精準針對內側或外側磨損關節腔進行三點力學卸載（Unloading），在保持膝關節自然屈伸靈活度的前提下大幅減輕軟骨負荷。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>2. 德國骨科臨床指引與瑞士運動醫學實踐：把「保住原生關節」列為最高優先</span><span class="badge emerald">CONSERVATIVE FIRST</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>德國公醫體系納入給付標準：</strong> 在德國法定醫療保險輔具目錄（Hilfsmittelverzeichnis 編號 23.04.03.3084）與瑞士運動醫學中心（<a href="https://www.bauerfeind-life.com/en/you-can-live-with-osteoarthritis/" target="_blank" rel="noopener" class="ref-link">Zurich SportClinic 骨科臨床案例</a>）中，醫師將 GenuTrain OA 列為<strong>「免於立即手術、維持工作與運動能力」的標準非手術替代方案</strong>。</li>
+                                    <li><strong>SecuTec OA 進階延緩手術實證：</strong> 針對中重度患者，德國原廠在<a href="https://www.bauerfeind-group.com/en/products/orthoses/knee/details/product/secutec-oa" target="_blank" rel="noopener" class="ref-link">SecuTec® OA 醫療技術說明</a>中明確指出，透過精準調整下肢力線，可有效保護原生膝關節並<strong>實質延後人工關節置換手術需求（Delay the need for surgery）</strong>。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item amber-border">
+                                <h3><span>3. 台灣市場資訊落差套利：把德國臨床標準帶進台灣自費市場</span><span class="badge amber">MARKET ARBITRAGE</span></h3>
+                                <div>
+                                    台灣骨科受限於健保給付結構，往往直接跳向開藥或開刀；保爾芬德（<span class="code-safe">衛部醫器輸壹登字第 a00335 號</span>）的核心商業策略，正是將德國原廠這套<strong>「有期刊數據、有醫學指引背書的保膝方案」</strong>完整導入台灣，建立競品無法質疑的專業高度。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>CLICK BLUE LINKS TO VERIFY ORIGINAL GERMAN CLINICAL SOURCES</span>
+                        <span class="page-number">P.02</span>
+                    </footer>
+                </div>
+            </section>
+
+            <!-- ==================== SPREAD 1: P.03 核心剛需受眾（TAM/SAM） & P.04 競爭力定錨模型（TCO 對照） ==================== -->
+            <section class="spread" data-spread="1">
+                <!-- P.03 左頁：核心剛需受眾（TAM / SAM 精準畫像）與支付意願分析 -->
+                <div class="page page-left">
+                    <header class="page-header">
+                        <span class="brand-tag">PART II // TAM &amp; SAM AUDIENCE SEGMENTATION</span>
                         <span>HIGH-PAIN &amp; HIGH-WILLINGNESS-TO-PAY COHORTS</span>
                     </header>
                     <div class="page-body">
                         <div>
                             <div class="kicker">AUDIENCE PROFILING // 核心剛需受眾分層與支付意願分析</div>
-                            <h2 class="editorial-h2">二、 核心剛需受眾（TAM / SAM）：誰最迫切為「保膝方案」買單？</h2>
-                            <p class="editorial-subtitle">從商業變現角度，目標客群並非一般運動愛好者，而是具備「高痛點迫切性」與「高支付能力」的四大剛需分眾：</p>
+                            <h2 class="editorial-h2">三、 核心剛需受眾（TAM / SAM）：誰最迫切為「保膝方案」買單？</h2>
+                            <p class="editorial-subtitle">從高客單自費醫療轉換數據視角，目標客群並非一般休閒運動者，而是具備「高痛點迫切性」與「高支付能力」的四大剛需分眾：</p>
                         </div>
 
                         <table class="tech-table">
@@ -381,31 +443,28 @@
                     </div>
                     <footer class="page-footer">
                         <span>HIGH-CONVERTING PATIENT COHORTS // TAM &amp; SAM</span>
-                        <span class="page-number">P.02</span>
+                        <span class="page-number">P.03</span>
                     </footer>
                 </div>
-            </section>
 
-            <!-- ==================== SPREAD 1: P.03 競爭力定錨模型（TCO 對照） & P.04 階梯式保膝臨床路線圖 ==================== -->
-            <section class="spread" data-spread="1">
-                <!-- P.03 左頁：競爭力定錨模型（總持有成本 TCO 對照） -->
-                <div class="page page-left">
+                <!-- P.04 右頁：競爭力定錨模型（總持有成本 TCO 與不對稱風險對照） -->
+                <div class="page page-right">
                     <header class="page-header">
-                        <span class="brand-tag">PART II // TCO PRICE ANCHORING MODEL</span>
+                        <span class="brand-tag">TCO &amp; ASYMMETRIC RISK BENCHMARK</span>
                         <span>GENUTRAIN OA (NT$ 29,800) VS. TKA SURGERY</span>
                     </header>
                     <div class="page-body">
                         <div>
-                            <div class="kicker">VALUE PROPOSITION // 總持有成本（Total Cost of Ownership）定錨對照</div>
-                            <h2 class="editorial-h2">三、 競爭力定錨模型：為何「不到三萬元」具備碾壓級說服力？</h2>
-                            <p class="editorial-subtitle">在終端銷售與醫師衛教溝通上，直接與「人工膝關節置換手術總持有成本」並列比較，建立絕對定價權：</p>
+                            <div class="kicker">VALUE PROPOSITION // 總持有成本（TCO）與不對稱風險定錨對照</div>
+                            <h2 class="editorial-h2">四、 競爭力定錨模型：為何「不到三萬元」具備碾壓級說服力？</h2>
+                            <p class="editorial-subtitle">對個體患者而言，手術統計平均成功率不具保護力——一旦落入併發症尾端風險便是 100% 不可逆災難：</p>
                         </div>
 
                         <table class="tech-table">
                             <thead>
                                 <tr>
                                     <th style="width: 24%;">戰略比較維度</th>
-                                    <th style="width: 38%;">方案 A：德國精準減壓輔具<br><span class="code-safe" style="margin-top:4px; display:inline-block;">Bauerfeind GenuTrain OA</span></th>
+                                    <th style="width: 38%;">方案 A：德國精準減壓輔具<br><a href="https://www.bauerfeind-taiwan.com/products/bauerfeind-genutrian-oa" target="_blank" rel="noopener" class="ref-link" style="font-size:14px;">Bauerfeind GenuTrain OA</a></th>
                                     <th style="width: 38%;">方案 B：人工膝關節置換手術<br><span class="code-quote" style="margin-top:4px; display:inline-block;">傳統 / 自費微創機械手臂</span></th>
                                 </tr>
                             </thead>
@@ -421,13 +480,13 @@
                                     <td><strong>60 ～ 180 天復健陣痛期</strong><br>無法正常工作，需家人全天候請假照護，隱性成本極高。</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>醫療侵入性風險</strong></td>
-                                    <td class="win-cell"><strong>100% 物理非侵入式</strong><br>零開刀、零傷口、零麻醉風險，保留原生關節與半月板。</td>
-                                    <td><strong>不可逆骨組織切除</strong><br>存在感染、深層靜脈血栓及術後關節活動角度受限風險。</td>
+                                    <td><strong>不對稱風險結構</strong></td>
+                                    <td class="win-cell"><strong>下檔風險鎖死（零身體損傷）</strong><br>零開刀、零麻醉風險，100% 保留原生關節與半月板。</td>
+                                    <td><strong>不可逆尾端風險（單行道）</strong><br>存在感染、深層靜脈血栓、術後沾黏與未來二次置換耗損。</td>
                                 </tr>
                                 <tr>
                                     <td><strong>決策容錯率<br>（路徑可逆性）</strong></td>
-                                    <td class="win-cell"><strong>零沉沒成本風險（100% 可逆）</strong><br>先延緩退化 5～10 年，未來若真惡化仍隨時可銜接手術。</td>
+                                    <td class="win-cell"><strong>零沉沒成本（100% 可逆）</strong><br>先延緩退化 5～10 年，未來若真惡化仍隨時可銜接手術。</td>
                                     <td><strong>零回頭路（不可逆）</strong><br>一旦切除原生關節裝上金屬，即永久喪失原生生物力學。</td>
                                 </tr>
                             </tbody>
@@ -438,29 +497,32 @@
                         </div>
                     </div>
                     <footer class="page-footer">
-                        <span>TCO BENCHMARK // CONSERVATIVE VS. SURGICAL INTERVENTION</span>
-                        <span class="page-number">P.03</span>
+                        <span>ASYMMETRIC RISK MODEL // LOCKING DOWNSIDE &amp; PRESERVING OPTIONS</span>
+                        <span class="page-number">P.04</span>
                     </footer>
                 </div>
+            </section>
 
-                <!-- P.04 右頁：階梯式保膝臨床商業路線圖 -->
-                <div class="page page-right">
+            <!-- ==================== SPREAD 2: P.05 階梯式保膝路線圖 & P.06 院前旗艦閉環與雙向說服引擎 ==================== -->
+            <section class="spread" data-spread="2">
+                <!-- P.05 左頁：階梯式保膝臨床商業路線圖 -->
+                <div class="page page-left">
                     <header class="page-header">
-                        <span class="brand-tag">TIERED CLINICAL ROADMAP</span>
+                        <span class="brand-tag">PART III // TIERED CLINICAL &amp; COMMERCIAL PATHWAY</span>
                         <span>3-STAGE KNEE PRESERVATION PROTOCOL</span>
                     </header>
                     <div class="page-body">
                         <div>
                             <div class="kicker">DECISION ARCHITECTURE // 把「人工膝關節」留作最後一張底牌</div>
-                            <h2 class="editorial-h2">四、 階梯式保膝策略：重塑病患與家屬的治療決策順序</h2>
-                            <p class="editorial-subtitle">透過建立「先物理卸載、再合併治療、最後才考慮手術」的三階框架，將 GenuTrain OA 定位為手術前最後一道安全氣囊：</p>
+                            <h2 class="editorial-h2">五、 階梯式保膝策略：重塑病患與家屬的治療決策順序</h2>
+                            <p class="editorial-subtitle">建立「先物理卸載、再合併治療、最後才考慮手術」的三階框架，將高階輔具定位為手術前最後一道安全氣囊：</p>
                         </div>
 
                         <div class="muji-rule-list">
                             <div class="muji-rule-item emerald-border">
                                 <h3><span>第一階段：物理生物力學卸載首選（預算 3 萬內）</span><span class="badge emerald">STAGE 01 // PRIORITY</span></h3>
                                 <ul class="sub-bullet-list">
-                                    <li><strong>核心機制：</strong> 運用 GenuTrain OA 專利的<strong>「三點力學卸載系統（3-Point Unloading System）」</strong>，透過旋鈕微調張力帶，在每一步跨出時精準將擠壓在內側磨損軟骨與半月板上的重量向外側轉移。</li>
+                                    <li><strong>核心機制：</strong> 運用 <a href="https://www.bauerfeind.us/knee-osteoarthritis-genutrain-oa/" target="_blank" rel="noopener" class="ref-link">GenuTrain OA 動態減壓系統</a>，透過 BOA® Fit 旋鈕微調張力帶，在每一步跨出時精準將擠壓在內側或外側磨損軟骨的重量向外轉移。</li>
                                     <li><strong>商業價值：</strong> 搭配基礎肌力訓練，讓磨損部位獲得實質喘息空間，<strong>無痛延長原廠膝蓋使用年限 5～10 年</strong>。</li>
                                 </ul>
                             </div>
@@ -484,95 +546,49 @@
                     </div>
                     <footer class="page-footer">
                         <span>STAGE-GATE PATIENT JOURNEY // REDUCING CONVERSION FRICTION</span>
-                        <span class="page-number">P.04</span>
+                        <span class="page-number">P.05</span>
                     </footer>
                 </div>
-            </section>
 
-            <!-- ==================== SPREAD 2: P.05 院前衛星旗艦點變現閉環 & P.06 雙向說服與執行總結 ==================== -->
-            <section class="spread" data-spread="2">
-                <!-- P.05 左頁：院前衛星旗艦點 ＋ 醫師處方引流閉環 -->
-                <div class="page page-left">
+                <!-- P.06 右頁：院前衛星旗艦閉環與雙向說服引擎 -->
+                <div class="page page-right">
                     <header class="page-header">
-                        <span class="brand-tag">PART III // OFFLINE-TO-ONLINE CHANNEL LOOP</span>
+                        <span class="brand-tag">CHANNEL LOOP &amp; GO-TO-MARKET PLAYBOOK</span>
                         <span>PHYSICIAN REFERRAL &amp; FLAGSHIP CONVERSION</span>
                     </header>
                     <div class="page-body">
                         <div>
-                            <div class="kicker">CHANNEL MOAT // 院前衛星旗艦點（博愛路 138 號）＋ 醫師處方引流</div>
-                            <h2 class="editorial-h2">五、 商業模式閉環：為何「實體旗艦體驗 ＋ 院所聯盟」不可複製？</h2>
+                            <div class="kicker">MONETIZATION ENGINE // 院前衛星旗艦點（博愛路 138 號）＋ 雙向說服閉環</div>
+                            <h2 class="editorial-h2">六、 商業變現閉環：從「賣護具」升維至「賣醫療選擇權」</h2>
                             <p class="editorial-subtitle">單價近三萬元的醫療級輔具無法僅靠純電商成交，必須透過「醫師信任背書 ＋ 現場減痛體感」構築護城河：</p>
                         </div>
 
                         <div class="muji-rule-list">
                             <div class="muji-rule-item">
-                                <h3><span>1. 承接健保點值縮水下的「醫師自費處方溢流」</span><span class="badge">B2B2C ALLIANCE</span></h3>
+                                <h3><span>1. 承接健保點值縮水下的「醫師自費處方溢流」（B2B2C 聯盟）</span><span class="badge">PHYSICIAN ALLIANCE</span></h3>
                                 <ul class="sub-bullet-list">
-                                    <li><strong>院所痛點：</strong> 在健保總額點值持續縮水下，骨科與復健科醫師面對「不想開刀、吃藥無效」的患者，極需具備臨床實證的高階自費解決方案。</li>
-                                    <li><strong>三贏分潤閉環：</strong> 建立專屬轉介機制後，醫師只需在診間開立<strong>「生物力學減壓建議」</strong>，後續繁瑣的量測、穿戴教學與售後追蹤全數由博愛路旗艦據點承接，創造<strong>「醫師零庫存增收、病患免開刀、公司高毛利變現」</strong>的三贏格局。</li>
+                                    <li><strong>三贏分潤機制：</strong> 骨科與復健科醫師面對「不想開刀、吃藥無效」的患者，只需開立「生物力學減壓建議」；後續繁瑣的量測、穿戴教學與家屬說明全數由<strong>博愛路 138 號旗艦據點</strong>承接，創造<strong>「醫師零庫存增收、病患免開刀、公司高毛利變現」</strong>的三贏閉環。</li>
                                 </ul>
                             </div>
 
                             <div class="muji-rule-item emerald-border">
-                                <h3><span>2. 10 分鐘「無痛行走體感」瓦解 NT$ 29,800 價格阻力</span><span class="badge emerald">EXPERIENTIAL SALES</span></h3>
+                                <h3><span>2. 10 分鐘「無痛行走體感」＋ 下肢力線 LTV 延伸</span><span class="badge emerald">EXPERIENTIAL &amp; LTV</span></h3>
                                 <ul class="sub-bullet-list">
-                                    <li><strong>體感即成交：</strong> 減壓輔具的核心價值在於即時力學卸載。實體據點提供一對一專業顧問量測與模擬上下階梯測試，讓患者在 10 分鐘內親身感受<strong>「卸載內側壓力後的無痛行走感」</strong>——一旦身體感受到不痛，價格阻力即刻瓦解。</li>
+                                    <li><strong>現場體驗即成交：</strong> 一對一顧問量測與階梯測試，讓患者在 10 分鐘內親身感受卸載內側壓力後的無痛行走感，價格阻力即刻瓦解；並可依循<a href="https://www.bauerfeind-taiwan.com/pages/genutrainoa-promotion" target="_blank" rel="noopener" class="ref-link">保爾芬德全足膝力學搭配方案</a>延伸至<strong>足部減壓鞋墊、腰部護具與康立安智能復健追蹤</strong>，極大化顧客終身價值（LTV）。</li>
                                 </ul>
                             </div>
 
                             <div class="muji-rule-item amber-border">
-                                <h3><span>3. 跨產品線與康立安智能復健的 LTV（顧客終身價值）延伸</span><span class="badge amber">ECOSYSTEM LTV</span></h3>
+                                <h3><span>3. 雙軌精準說服命題（對合作醫師 vs. 對終端患者家屬）</span><span class="badge amber">DUAL-TRACK PITCH</span></h3>
                                 <ul class="sub-bullet-list">
-                                    <li>以 GenuTrain OA 作為高信任度切入點（Hero Product），建立完整患者數位檔案後，進一步延伸至<strong>足部力學鞋墊（矯正下肢力線連鎖反應）、腰部護具與康立安居家智能復健系統</strong>，將單次交易轉化為長期家庭健康管理資產。</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <footer class="page-footer">
-                        <span>SATELLITE FLAGSHIP STRATEGY // PO-AI ROAD NO. 138</span>
-                        <span class="page-number">P.05</span>
-                    </footer>
-                </div>
-
-                <!-- P.06 右頁：雙向說服引擎與戰略總結 -->
-                <div class="page page-right">
-                    <header class="page-header">
-                        <span class="brand-tag">GO-TO-MARKET PLAYBOOK // DUAL-TRACK PITCH</span>
-                        <span>PHYSICIAN &amp; PATIENT CONVERSION MESSAGING</span>
-                    </header>
-                    <div class="page-body">
-                        <div>
-                            <div class="kicker">EXECUTIVE SUMMARY // 雙軌溝通話術與總結命題</div>
-                            <h2 class="editorial-h2">六、 結論：從「賣護具」升維至「賣免開刀的醫療選擇權」</h2>
-                            <p class="editorial-subtitle">針對「合作醫師端」與「終端剛需患者端」分別輸出精準價值主張，打造可快速複製的單店高坪效引擎：</p>
-                        </div>
-
-                        <div class="muji-rule-list">
-                            <div class="muji-rule-item">
-                                <h3><span>對合作醫師與治療所端（B2B 醫療通路專業語言）</span><span class="badge">PHYSICIAN PITCH</span></h3>
-                                <div>
-                                    「針對不願接受手術的 KL 2～3 級退化性關節炎患者，我們提供德國原廠臨床實證的 <strong>GenuTrain OA 三點力學卸載系統</strong>，並由博愛路旗艦中心承擔全套一對一量測與衛教售後，為診所創造<strong>零庫存壓力、高患者滿意度的合規自費增收管線</strong>。」
-                                </div>
-                            </div>
-
-                            <div class="muji-rule-item emerald-border">
-                                <h3><span>對終端患者與家屬端（DTC 高轉化核心命題）</span><span class="badge emerald">PATIENT PITCH</span></h3>
-                                <div>
-                                    「在把原生膝蓋送上手術台之前，用<strong>不到手術五分之一的預算（NT$ 29,800）</strong>，以零風險、零恢復期的德國精準力學，為自己多贏得五年至十年的無痛行動自由。」
-                                </div>
-                            </div>
-
-                            <div class="muji-rule-item amber-border">
-                                <h3><span>特助落地執行指標（Actionable KPIs）</span><span class="badge amber">EXECUTION METRICS</span></h3>
-                                <ul class="sub-bullet-list">
-                                    <li><strong>數位漏斗導流：</strong> 建置「保膝自測與 TCO 試算專頁」，精準攔截搜尋「人工膝關節費用、退化性關節炎不開刀」之高意圖流量，導流至博愛路旗艦店預約一對一試穿。</li>
-                                    <li><strong>院所轉介追蹤：</strong> 為每位合作醫師與物理治療師配置專屬數位轉介碼，自動化結算分潤並追蹤患者穿戴滿意度。</li>
+                                    <li><strong>對醫師端：</strong>「導入德國 KIT 臨床實證的 GenuTrain OA 減壓系統，由博愛路旗艦中心承擔全套量測售後，為診所建立零庫存、高滿意度的合規自費增收管線。」</li>
+                                    <li><strong>對患者端：</strong>「在把原生膝蓋送上手術台之前，用<strong>不到手術五分之一的預算（NT$ 29,800）</strong>，以零風險、零恢復期的德國精準力學，為自己多贏得五年至十年的無痛行動自由。」</li>
                                 </ul>
                             </div>
                         </div>
 
                         <div class="formula-box">
-                            精準卡位手術前真空帶 <span class="arrow">➔</span> 確立 NT$ 29,800 醫療定價權 <span class="arrow">➔</span> 實現單店高毛利與醫師通路快速複製
+                            德國原廠循證背書 <span class="arrow">➔</span> 院前旗艦體感成交 <span class="arrow">➔</span> 康立安復健數據綁定 <span class="arrow">➔</span> 單店高坪效複製
                         </div>
                     </div>
                     <footer class="page-footer">
