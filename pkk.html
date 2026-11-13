@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手術前真空帶的定價權與剛需變現 — LOOKBOOKPRO EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Shippori+Mincho:wght@600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --desk-bg: #DFDBD2;
+            --paper-bg: #FAF8F5;
+            --card-bg: #FFFFFF;
+            --subtle-bg: #F2EFE9;
+            --text-primary: #141413;
+            --text-secondary: #44403C;
+            --text-muted: #78716C;
+            --muji-red: #7F0019;
+            --muji-red-soft: rgba(127, 0, 25, 0.07);
+            --emerald: #047857;
+            --emerald-soft: rgba(4, 120, 87, 0.08);
+            --border-color: #E5E0D8;
+            --border-strong: #D0C9BE;
+            --font-serif: 'Playfair Display', 'Shippori Mincho', 'Noto Serif TC', serif;
+            --font-sans: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100vw; height: 100vh; overflow: hidden;
+            background: radial-gradient(circle at center, #EAE6DF 0%, var(--desk-bg) 100%);
+            font-family: var(--font-sans); color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .stage {
+            width: 100vw; height: 100vh; padding: 8px 12px 64px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .book-container {
+            width: 100%; height: 100%; max-width: 1880px; background: var(--paper-bg);
+            border: 1px solid var(--border-strong);
+            box-shadow: 0 20px 50px rgba(20, 20, 19, 0.14), 0 4px 12px rgba(20, 20, 19, 0.06);
+            border-radius: 4px; position: relative; overflow: hidden;
+        }
+
+        .spread { display: none; width: 100%; height: 100%; grid-template-columns: 1fr 1fr; position: relative; }
+        .spread.active { display: grid; animation: fadeIn 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+
+        @keyframes fadeIn {
+            from { opacity: 0.4; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .spread::after {
+            content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 48px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, 
+                rgba(20,20,19,0) 0%, rgba(20,20,19,0.03) 35%, 
+                rgba(20,20,19,0.10) 50%, rgba(20,20,19,0.03) 65%, 
+                rgba(20,20,19,0) 100%);
+            pointer-events: none; z-index: 10;
+        }
+
+        .page {
+            height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+            padding: 28px 44px 22px; background: var(--paper-bg); overflow: hidden;
+        }
+
+        .page-left { border-right: 1px solid var(--border-color); padding-right: 52px; }
+        .page-right { padding-left: 52px; }
+
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 12px; border-bottom: 1px solid var(--border-color);
+            font-family: var(--font-mono); font-size: 13px; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.08em; flex-shrink: 0;
+        }
+        .page-header .brand-tag { color: var(--muji-red); font-weight: 600; }
+
+        .page-body {
+            flex: 1; overflow-y: auto; padding: 22px 6px 22px 0;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+        .page-body::-webkit-scrollbar { width: 5px; }
+        .page-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+        .page-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 12px; border-top: 1px solid var(--border-color);
+            font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); flex-shrink: 0;
+        }
+        .page-number { font-weight: 600; color: var(--text-primary); font-size: 14px; }
+
+        /* 社論視覺元素 */
+        .meta-banner {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--subtle-bg); border: 1px solid var(--border-strong);
+            padding: 12px 18px; border-radius: 3px; font-size: 14px;
+        }
+        .meta-org { font-weight: 700; color: var(--text-primary); font-size: 15px; }
+        .meta-author { color: var(--muji-red); font-weight: 600; margin-top: 2px; }
+        .meta-doc { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-muted); text-align: right; line-height: 1.5; }
+
+        .kicker { font-family: var(--font-mono); font-size: 14.5px; font-weight: 600; color: var(--muji-red); letter-spacing: 0.08em; text-transform: uppercase; }
+        .editorial-h1 { font-family: var(--font-serif); font-size: 36px; font-weight: 700; line-height: 1.28; color: var(--text-primary); }
+        .editorial-h2 { font-family: var(--font-serif); font-size: 30px; font-weight: 700; line-height: 1.3; color: var(--text-primary); }
+        .editorial-subtitle { font-family: var(--font-mono); font-size: 16.5px; color: var(--text-secondary); margin-top: 4px; }
+        .editorial-lead { font-size: 20px; line-height: 1.75; color: var(--text-secondary); }
+        .editorial-lead strong { color: var(--text-primary); font-weight: 700; background: linear-gradient(transparent 65%, rgba(127, 0, 25, 0.14) 65%); }
+
+        .muji-rule-list { display: flex; flex-direction: column; gap: 15px; }
+        .muji-rule-item {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-left: 5px solid var(--muji-red); padding: 17px 22px; border-radius: 2px;
+            font-size: 18.5px; line-height: 1.65; color: var(--text-secondary);
+        }
+        .muji-rule-item.emerald-border { border-left-color: var(--emerald); }
+        .muji-rule-item h3 {
+            font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+        }
+        .muji-rule-item ul { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+
+        .badge { font-family: var(--font-mono); font-size: 12.5px; padding: 2px 8px; background: var(--muji-red-soft); color: var(--muji-red); border-radius: 3px; font-weight: 600; flex-shrink: 0; }
+        .badge.emerald { background: var(--emerald-soft); color: var(--emerald); }
+
+        .formula-box {
+            background: var(--subtle-bg); border: 1px solid var(--border-strong);
+            padding: 18px 22px; border-radius: 4px; font-family: var(--font-mono);
+            font-size: 18px; font-weight: 600; color: var(--text-primary); text-align: center; line-height: 1.6;
+        }
+        .formula-box span { color: var(--muji-red); margin: 0 6px; }
+
+        .quote-callout {
+            background: var(--card-bg); border: 1px solid var(--border-strong);
+            border-top: 4px solid var(--muji-red); padding: 22px 26px; border-radius: 3px;
+            font-family: var(--font-serif); font-size: 21px; font-weight: 700;
+            line-height: 1.65; color: var(--text-primary);
+        }
+
+        .muji-table {
+            width: 100%; border-collapse: collapse; background: var(--card-bg);
+            border: 1px solid var(--border-strong); font-size: 18px; line-height: 1.58;
+        }
+        .muji-table th { background: var(--subtle-bg); color: var(--text-primary); font-weight: 700; text-align: left; padding: 13px 16px; border-bottom: 2px solid var(--border-strong); }
+        .muji-table td { padding: 13px 16px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); vertical-align: top; }
+        .muji-table tr:last-child td { border-bottom: none; }
+        .highlight-col { background: rgba(127, 0, 25, 0.03); color: var(--text-primary) !important; font-weight: 500; }
+
+        /* 純目錄無重複按鈕 */
+        .toc-list { display: flex; flex-direction: column; gap: 13px; }
+        .toc-row {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            padding: 16px 22px; border-radius: 3px; cursor: pointer; transition: all 0.2s ease;
+        }
+        .toc-row:hover { border-color: var(--muji-red); transform: translateX(4px); box-shadow: 0 4px 12px rgba(127, 0, 25, 0.08); }
+        .toc-left { display: flex; align-items: baseline; gap: 16px; }
+        .toc-num { font-family: var(--font-mono); font-size: 20px; font-weight: 700; color: var(--muji-red); }
+        .toc-title { font-size: 19.5px; font-weight: 700; color: var(--text-primary); }
+        .toc-desc { font-size: 15.5px; color: var(--text-muted); margin-top: 3px; }
+        .toc-page { font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--text-secondary); background: var(--subtle-bg); padding: 4px 10px; border-radius: 3px; flex-shrink: 0; }
+
+        /* 底部懸浮控制塢 (唯一按鈕入口) */
+        .bottom-nav {
+            position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%);
+            height: 46px; background: rgba(20, 20, 19, 0.94); backdrop-filter: blur(8px);
+            color: #FAF8F5; border-radius: 999px; padding: 0 18px; display: flex;
+            align-items: center; gap: 14px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            z-index: 100; font-size: 14px; white-space: nowrap;
+        }
+        .nav-btn {
+            background: transparent; border: none; color: #FAF8F5; font-family: var(--font-sans);
+            font-size: 14px; font-weight: 500; cursor: pointer; padding: 6px 12px;
+            border-radius: 999px; transition: all 0.15s; display: flex; align-items: center; gap: 6px;
+        }
+        .nav-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.15); }
+        .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .nav-btn.pdf-primary { background: var(--muji-red); color: #FFFFFF; font-weight: 600; padding: 6px 14px; }
+        .nav-btn.pdf-primary:hover:not(:disabled) { background: #9e0020; }
+        .dots-bar { display: flex; align-items: center; gap: 8px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.2s; }
+        .dot.active { width: 24px; border-radius: 4px; background: #FAF8F5; }
+        .kbd-hint { font-family: var(--font-mono); font-size: 12px; color: #A8A29E; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 12px; }
+
+        #pdfOverlay {
+            display: none; position: fixed; inset: 0; background: rgba(20, 20, 19, 0.85);
+            backdrop-filter: blur(6px); z-index: 9999; flex-direction: column;
+            justify-content: center; align-items: center; color: #FAF8F5; gap: 16px;
+        }
+        .spinner { width: 44px; height: 44px; border: 4px solid rgba(255,255,255,0.2); border-top-color: var(--muji-red); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="pdfOverlay">
+        <div class="spinner"></div>
+        <div id="pdfProgressText" style="font-size: 20px; font-weight: 700; letter-spacing: 0.04em;">正在等比封裝單頁 PDF...</div>
+        <div style="font-family: var(--font-mono); font-size: 14px; color: #D6D3D1;">鎖定原始比例輸出，請稍候約 5~8 秒</div>
+    </div>
+
+    <div class="stage">
+        <main class="book-container">
+            <!-- SPREAD 0: P.01 封面 & P.02 導讀目錄 -->
+            <section class="spread active" data-spread="0">
+                <div class="page page-left">
+                    <header class="page-header">
+                        <span class="brand-tag">EXECUTIVE INTELLIGENCE // MARKET MONETIZATION</span>
+                        <span>HEALTH ECONOMICS &amp; PRICING POWER</span>
+                    </header>
+                    <div class="page-body">
+                        <div class="meta-banner">
+                            <div>
+                                <div class="meta-org">保爾芬德健康運動 (00147140) × 康立安智能醫療</div>
+                                <div class="meta-author">總經理特別助理 郭奕正</div>
+                            </div>
+                            <div class="meta-doc">
+                                DOCUMENT // BF-PRE-SURGERY-GAP-2026<br>
+                                LOCATION // 台北市中正區博愛路 138 號 1 樓
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="kicker">STRATEGIC MONETIZATION BRIEFING // 手術前真空帶商業分析</div>
+                            <h1 class="editorial-h1">高階減壓輔具在「手術前真空帶」的定價權與剛需變現模型</h1>
+                        </div>
+
+                        <p class="editorial-lead">
+                            本報告從<strong>醫療經濟學（Health Economics）與病患決策漏斗</strong>切入，拆解台灣膝關節退化（OA）與半月板損傷市場的結構性斷層。我們販售的並非傳統護具，而是<strong>「不到手術五分之一預算、零恢復期、延緩人工關節置換時間表」的高毛利醫療替代選擇權</strong>。
+                        </p>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>核心命題：精準卡位「吃藥失效」與「被迫開刀」之間的空白帶</span><span class="badge">STRATEGIC GAP</span></h3>
+                                <div>
+                                    當初階止痛與注射邊際效益遞減，而自費人工膝關節置換（TKA）動輒 <strong>NT$ 15 萬～35 萬元</strong>且伴隨不可逆手術風險時，終端定價 <strong>NT$ 29,800 的德國精準減壓輔具</strong>成為高消費力剛需客群的唯一理性出口。
+                                </div>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>商業閉環：以「院前衛星旗艦點」承接健保體制外的醫師處方溢流</span><span class="badge emerald">CHANNEL MOAT</span></h3>
+                                <div>
+                                    依託<strong>博愛路 138 號 1 樓</strong>實體量測體驗與醫師策略聯盟，將醫院門診中「不想開刀的焦慮病患」轉化為「現場試穿減痛 ➔ 高客單成交 ➔ 康立安居家復健數據追蹤」的長期顧客終身價值（LTV）資產。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="formula-box">
+                            臨床治療斷層診斷 <span>➔</span> 四大剛需受眾畫像 <span>➔</span> 總持有成本（TCO）定錨 <span>➔</span> 院前旗艦閉環變現
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>EXECUTIVE STRATEGY MEMO // CONSERVATIVE ORTHOPEDICS</span>
+                        <span class="page-number">P.01</span>
+                    </footer>
+                </div>
+
+                <div class="page page-right">
+                    <header class="page-header">
+                        <span>EXECUTIVE INDEX // REPORT ARCHITECTURE</span>
+                        <span>4 SPREADS / 8 EDITORIAL PAGES</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">NAVIGATION // 點擊任一章節直接跳轉對應跨頁</div>
+                            <h2 class="editorial-h2">戰略報告總目錄與決策邏輯架構</h2>
+                            <p class="editorial-lead" style="margin-top: 6px;">全書依循「市場結構痛點 ➔ 受眾分層 ➔ 價格定錨 ➔ 通路與說服閉環」四個模組展開：</p>
+                        </div>
+
+                        <div class="toc-list">
+                            <div class="toc-row" onclick="goToSpread(0)">
+                                <div class="toc-left">
+                                    <span class="toc-num">01</span>
+                                    <div>
+                                        <div class="toc-title">總綱與戰略切入點：手術前真空帶的商業定價權</div>
+                                        <div class="toc-desc">醫療經濟學視角下的「保膝替代選擇權」核心定位與商業閉環總覽</div>
+                                    </div>
+                                </div>
+                                <span class="toc-page">P.01 – P.02</span>
+                            </div>
+
+                            <div class="toc-row" onclick="goToSpread(1)">
+                                <div class="toc-left">
+                                    <span class="toc-num">02</span>
+                                    <div>
+                                        <div class="toc-title">市場結構斷層與四大剛需受眾（TAM / SAM）畫像</div>
+                                        <div class="toc-desc">解析健保保守治療與自費手術兩極化斷層，鎖定四類高支付意願客群</div>
+                                    </div>
+                                </div>
+                                <span class="toc-page">P.03 – P.04</span>
+                            </div>
+
+                            <div class="toc-row" onclick="goToSpread(2)">
+                                <div class="toc-left">
+                                    <span class="toc-num">03</span>
+                                    <div>
+                                        <div class="toc-title">競爭力定錨模型與三階保膝臨床商業路線圖</div>
+                                        <div class="toc-desc">GenuTrain OA（NT$ 29,800）與人工膝關節置換之總持有成本（TCO）對照</div>
+                                    </div>
+                                </div>
+                                <span class="toc-page">P.05 – P.06</span>
+                            </div>
+
+                            <div class="toc-row" onclick="goToSpread(3)">
+                                <div class="toc-left">
+                                    <span class="toc-num">04</span>
+                                    <div>
+                                        <div class="toc-title">院前衛星旗艦點變現閉環與醫師端／消費者端說服引擎</div>
+                                        <div class="toc-desc">健保點值縮水下的醫師策略聯盟分潤、現場體感轉化與 LTV 延伸</div>
+                                    </div>
+                                </div>
+                                <span class="toc-page">P.07 – P.08</span>
+                            </div>
+                        </div>
+
+                        <div class="quote-callout">
+                            「我們不需要跟 2,000 元的藥局護膝打價格戰；只要把定錨點拉升至 20 萬元的手術總持有成本，NT$ 29,800 就會從昂貴護具轉化為極具划算感的醫療投資。」
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>CLICK ANY ROW TO JUMP TO SPREAD</span>
+                        <span class="page-number">P.02</span>
+                    </footer>
+                </div>
+            </section>
+
+            <!-- SPREAD 1: P.03 市場結構痛點 & P.04 四大剛需受眾畫像 -->
+            <section class="spread" data-spread="1">
+                <div class="page page-left">
+                    <header class="page-header">
+                        <span class="brand-tag">PART I // CLINICAL PATHWAY DISCONTINUITY</span>
+                        <span>THE PRE-SURGERY VACUUM ZONE</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">MARKET STRUCTURE // 傳統骨科與復健治療路徑的「兩極化斷層」</div>
+                            <h2 class="editorial-h2">一、 市場結構痛點：被忽略的「手術前真空帶」</h2>
+                            <p class="editorial-lead" style="margin-top: 6px;">在現行台灣骨科與復健科臨床路徑中，膝關節退化（OA）與半月板損傷患者的治療光譜呈現極端兩極化：</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>1. 初階保守治療區（健保給付紅海）</span><span class="badge">NT$ 500 ～ 3,000</span></h3>
+                                <div>
+                                    涵蓋口服消炎止痛藥、基礎電療／熱敷與傳統彈性護膝。此階段進入門檻低，但隨著軟骨磨損與半月板退化加劇，止痛與物理支撐的<strong>邊際效益迅速遞減</strong>，長期服藥更引發腸胃與腎臟負擔。
+                                </div>
+                            </div>
+
+                            <div class="muji-rule-item">
+                                <h3><span>2. 終端侵入性治療區（高自費手術懸崖）</span><span class="badge">NT$ 150,000 ～ 350,000+</span></h3>
+                                <div>
+                                    全人工膝關節置換術（TKA）或半膝置換。一旦涉及自費高耐磨墊片、微創導航或機械手臂輔助，患者實際自付額動輒 <strong>15 萬至 35 萬元起跳</strong>，且伴隨不可逆的原生骨組織切除與 3～6 個月復健陣痛。
+                                </div>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>3. 戰略真空帶：KL Grade 2～3 中重度手術猶豫期</span><span class="badge emerald">CORE OPPORTUNITY</span></h3>
+                                <div>
+                                    在「吃藥打針失效」與「被迫走上手術台」之間，存在龐大且高度焦慮的中重度退化族群。<strong>Bauerfeind GenuTrain OA（NT$ 29,800）</strong> 透過專利的「三點生物力學卸載系統」，精準填補這段空白，提供<strong>可逆、零風險的保守替代解方</strong>。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>CLINICAL ECONOMICS // CONSERVATIVE VS. INVASIVE</span>
+                        <span class="page-number">P.03</span>
+                    </footer>
+                </div>
+
+                <div class="page page-right">
+                    <header class="page-header">
+                        <span>TARGET AUDIENCE SEGMENTATION</span>
+                        <span>HIGH-PAIN &amp; HIGH-WILLINGNESS-TO-PAY COHORTS</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">TAM / SAM PROFILING // 核心剛需受眾畫像與支付意願分析</div>
+                            <h2 class="editorial-h2">二、 誰最迫切需要「不到三萬元的保膝方案」？</h2>
+                            <p class="editorial-lead" style="margin-top: 6px;">目標客群並非一般休閒運動者，而是具備<strong>「高痛點迫切性」</strong>與<strong>「高支付能力」</strong>的四大剛需分眾：</p>
+                        </div>
+
+                        <table class="muji-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 26%;">剛需受眾分層</th>
+                                    <th style="width: 37%;">臨床與生活痛點特徵</th>
+                                    <th style="width: 37%;">決策心理與商業轉化價值</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1. 手術抗拒型患者</strong><br><span style="font-size: 14px; color: var(--muji-red);">55～70 歲 OA 退化族群</span></td>
+                                    <td>醫師已提起人工關節評估，但極度恐懼全麻手術、鋸骨頭與術後漫長復健劇痛。</td>
+                                    <td class="highlight-col"><strong>「花 3 萬買 5 年不開刀」：</strong>相較 20 萬手術費，具備極高心理性價比，試穿有效即現場成交。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. 職場中壯年支柱</strong><br><span style="font-size: 14px; color: var(--muji-red);">45～58 歲半月板／韌帶損</span></td>
+                                    <td>處於職涯高峰或家庭經濟支柱，無法承受住院與請假三個月復健的停工損失。</td>
+                                    <td class="highlight-col"><strong>「時間成本極大化」：</strong>穿戴當下即可正常上班通勤，價格敏感度低，極易連帶加購替換品。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. 手術高風險長輩</strong><br><span style="font-size: 14px; color: var(--muji-red);">72 歲以上合併慢性病</span></td>
+                                    <td>伴隨心血管或糖尿病風險，家屬不敢讓長輩冒險動刀，卻怕長輩臥床導致肌少症。</td>
+                                    <td class="highlight-col"><strong>「高消費力子女買單」：</strong>決策者重視德國原裝醫材背書與一對一專業量測，客單價天花板最高。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4. 生活品質追求者</strong><br><span style="font-size: 14px; color: var(--muji-red);">高爾夫、登山、海外旅遊</span></td>
+                                    <td>尚未達開刀標準，但膝蓋刺痛已嚴重剝奪出國旅遊、打球與社交自由。</td>
+                                    <td class="highlight-col"><strong>「高口碑轉介紹引擎」：</strong>社群活躍度高，穿戴有效後在球友與山友圈具備極強裂變擴散力。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <footer class="page-footer">
+                        <span>PRECISION AUDIENCE TARGETING // HIGH-CONVERTING SEGMENTS</span>
+                        <span class="page-number">P.04</span>
+                    </footer>
+                </div>
+            </section>
+
+            <!-- SPREAD 2: P.05 競爭力定錨模型 & P.06 三階保膝路線圖 -->
+            <section class="spread" data-spread="2">
+                <div class="page page-left">
+                    <header class="page-header">
+                        <span class="brand-tag">PART II // PRICE ANCHORING &amp; TCO BENCHMARK</span>
+                        <span>GENUTRAIN OA VS. KNEE REPLACEMENT SURGERY</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">VALUE PROPOSITION // 總持有成本（TCO）定錨對照模型</div>
+                            <h2 class="editorial-h2">三、 為何「不到三萬元」具備碾壓級說服力？</h2>
+                            <p class="editorial-lead" style="margin-top: 6px;">跳脫低價護具紅海，直接與<strong>「人工膝關節置換手術總持有成本」</strong>並排對照，建立絕對定價權：</p>
+                        </div>
+
+                        <table class="muji-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 24%;">戰略比較維度</th>
+                                    <th style="width: 38%;">方案 A：德國精準減壓輔具<br><span style="font-size: 14px; color: var(--muji-red);">Bauerfeind GenuTrain OA</span></th>
+                                    <th style="width: 38%;">方案 B：人工膝關節置換手術<br><span style="font-size: 14px; color: var(--text-muted);">傳統／自費微創機械手臂</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>直接財務支出</strong></td>
+                                    <td class="highlight-col"><strong>NT$ 29,800（一次性投入）</strong><br>無後續住院、手術耗材與看護雜支</td>
+                                    <td><strong>NT$ 150,000 ～ 350,000+</strong><br>自費耐磨墊片、導航費＋住院＋看護費</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>隱性機會成本</strong></td>
+                                    <td class="highlight-col"><strong>0 天停工期</strong><br>量測穿戴當下立即減壓行走、工作與旅遊</td>
+                                    <td><strong>60 ～ 180 天復健陣痛期</strong><br>無法正常上班，需家人全天候照護陪病</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>身體侵入性風險</strong></td>
+                                    <td class="highlight-col"><strong>100% 物理非侵入式</strong><br>零傷口、零麻醉風險，保留原生關節結構</td>
+                                    <td><strong>不可逆骨組織切除</strong><br>存在感染、深層靜脈血栓與術後角度受限</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>決策容錯率<br>（路徑可逆性）</strong></td>
+                                    <td class="highlight-col"><strong>零沉沒成本風險（100% 可逆）</strong><br>先延緩退化 5～10 年，未來若惡化仍可開刀</td>
+                                    <td><strong>零回頭路（不可逆）</strong><br>一旦換上金屬關節，即永久喪失原生力學</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <footer class="page-footer">
+                        <span>TCO ANCHORING // 1/5 SURGERY COST WITH ZERO DOWNTIME</span>
+                        <span class="page-number">P.05</span>
+                    </footer>
+                </div>
+
+                <div class="page page-right">
+                    <header class="page-header">
+                        <span>TIERED KNEE PRESERVATION PROTOCOL</span>
+                        <span>3-STAGE CLINICAL &amp; COMMERCIAL PATHWAY</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">CLINICAL ROADMAP // 把人工膝蓋留作最後一張底牌</div>
+                            <h2 class="editorial-h2">四、 階梯式保膝策略：重塑患者治療順序</h2>
+                            <p class="editorial-lead" style="margin-top: 6px;">透過建立「先物理卸載、再合併治療、最後才考慮手術」的階梯框架，消除消費者猶豫心理：</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>第一階段：物理力學卸載首選（預算 3 萬內）</span><span class="badge emerald">STAGE 01 // PRIORITY</span></h3>
+                                <ul>
+                                    <li><strong>核心機制：</strong>運用 GenuTrain OA 專利「三點力學卸載系統」，在每一步跨出時將擠壓在內側磨損軟骨與半月板上的重量精準向外側轉移。</li>
+                                    <li><strong>商業價值：</strong>搭配基礎肌力訓練，讓磨損部位獲得喘息空間，<strong>無痛延長原廠膝蓋使用年限 5～10 年</strong>。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item">
+                                <h3><span>第二階段：進階非侵入式合併療法</span><span class="badge">STAGE 02 // SYNERGY</span></h3>
+                                <ul>
+                                    <li><strong>核心機制：</strong>若單靠輔具仍需加強修復，可合併復健科物理治療或局部注射（玻尿酸／PRP）。</li>
+                                    <li><strong>商業價值：</strong>減壓輔具在日常行走中扮演「持續避震器」，大幅減少關節二次磨損，<strong>顯著延長高單價針劑的維持週期</strong>。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item">
+                                <h3><span>第三階段：最終手術防線（不得已之終極底牌）</span><span class="badge">STAGE 03 // LAST RESORT</span></h3>
+                                <ul>
+                                    <li><strong>核心機制：</strong>唯有當軟骨徹底磨光、連穿戴頂級減壓輔具都無法維持基本行走時，才啟動人工關節置換。</li>
+                                    <li><strong>商業價值：</strong>患者不僅已多享受數年無痛自由時光，更將輔具定位為<strong>「手術前的最後一道安全氣囊」</strong>，大幅降低購買阻力。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>STAGE-GATE DECISION MODEL // REDUCING BUYER FRICTION</span>
+                        <span class="page-number">P.06</span>
+                    </footer>
+                </div>
+            </section>
+
+            <!-- SPREAD 3: P.07 院前衛星旗艦閉環 & P.08 雙向說服與執行總結 -->
+            <section class="spread" data-spread="3">
+                <div class="page page-left">
+                    <header class="page-header">
+                        <span class="brand-tag">PART III // OFFLINE-TO-ONLINE CHANNEL LOOP</span>
+                        <span>B2B2C PHYSICIAN REFERRAL &amp; FLAGSHIP CONVERSION</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">MONETIZATION ENGINE // 院前衛星旗艦點＋醫師處方引流</div>
+                            <h2 class="editorial-h2">五、 為何「博愛路旗艦點」是不可複製的護城河？</h2>
+                            <p class="editorial-lead" style="margin-top: 6px;">單價近三萬元的醫療輔具無法僅靠純電商成交，必須透過<strong>「院所信任背書 ＋ 實體減痛體驗」</strong>完成閉環：</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>1. 承接健保點值縮水下的「醫師自費處方溢流」</span><span class="badge">B2B2C ALLIANCE</span></h3>
+                                <div>
+                                    骨科與復健科醫師面對「不想開刀、吃藥無效」的患者，極需具備臨床實證的高階自費解方。建立精準轉介與分潤機制後，醫師只需開立<strong>「生物力學減壓建議」</strong>，後續量測、穿戴教學與售後追蹤全數由旗艦據點承接，創造<strong>「醫師增收、病患免開刀、公司高毛利」</strong>三贏格局。
+                                </div>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>2. 10 分鐘「無痛行走體感」瓦解價格阻力</span><span class="badge emerald">EXPERIENTIAL SALES</span></h3>
+                                <div>
+                                    減壓輔具的核心價值在於即時力學卸載。透過一對一專業顧問量測與現場上下階梯測試，讓患者在 10 分鐘內親身感受<strong>「卸載內側壓力後的無痛行走感」</strong>——一旦身體感受到不痛，NT$ 29,800 的價格阻力即刻瓦解。
+                                </div>
+                            </div>
+
+                            <div class="muji-rule-item">
+                                <h3><span>3. 串接康立安智能復健，極大化顧客終身價值（LTV）</span><span class="badge">ECOSYSTEM LTV</span></h3>
+                                <div>
+                                    以 GenuTrain OA 作為高信任度切入點（Hero Product），建立完整患者數位檔案後，進一步延伸至<strong>足部力學鞋墊、腰部支撐護具與康立安居家智能復健感測系統</strong>，將單次交易轉化為長期家庭健康管理資產。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>SATELLITE FLAGSHIP STRATEGY // PO-AI ROAD NO. 138</span>
+                        <span class="page-number">P.07</span>
+                    </footer>
+                </div>
+
+                <div class="page page-right">
+                    <header class="page-header">
+                        <span>EXECUTIVE PERSUASION &amp; IMPLEMENTATION</span>
+                        <span>DUAL-TRACK MESSAGING FRAMEWORK</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">GO-TO-MARKET PLAYBOOK // 雙軌溝通話術與落地轉化</div>
+                            <h2 class="editorial-h2">六、 戰略總結：從賣護具升維至賣「醫療選擇權」</h2>
+                            <p class="editorial-lead" style="margin-top: 6px;">透過數位內容漏斗與實體據點聯動，分別針對<strong>「合作醫師端」</strong>與<strong>「終端剛需患者」</strong>輸出精準價值主張：</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>對合作醫師端（B2B 醫療通路語言）</span><span class="badge">PHYSICIAN PITCH</span></h3>
+                                <div>
+                                    「針對不願手術的 KL 2～3 級退化性關節炎患者，我們提供德國原廠臨床實證的 GenuTrain OA 三點力學卸載系統，並由博愛路旗艦中心承擔全套一對一量測與衛教售後，為診所創造<strong>零庫存壓力、高患者滿意度的合規自費增收管線</strong>。」
+                                </div>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>對終端患者與家屬端（DTC 高轉化溝通）</span><span class="badge emerald">PATIENT PITCH</span></h3>
+                                <div>
+                                    「在把原生膝蓋送上手術台之前，用<strong>不到手術五分之一的預算（NT$ 29,800）</strong>，以零風險、零恢復期的德國精準力學，為自己多贏得五年至十年的無痛行動自由。」
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quote-callout">
+                            核心結論：當我們將產品從「運動配件」重新定義為「手術前最後一道非侵入式防線」，高客單價不再是銷售阻力，而是專業醫療信任與高毛利坪效的真正起點。
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>END OF EXECUTIVE REPORT // READY FOR DEPLOYMENT</span>
+                        <span class="page-number">P.08</span>
+                    </footer>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bottom-nav">
+            <button class="nav-btn" id="prevBtn" onclick="changeSpread(-1)">← 上一跨頁 <span id="prevHint"></span></button>
+            <button class="nav-btn" onclick="goToSpread(0)">📖 目錄</button>
+            <div class="dots-bar" id="dotsBar"></div>
+            <button class="nav-btn" id="nextBtn" onclick="changeSpread(1)">下一跨頁 <span id="nextHint"></span> →</button>
+            <button class="nav-btn pdf-primary" onclick="downloadStrictProportionalPDF()">📥 下載連續單頁 PDF</button>
+            <span class="kbd-hint">← → 翻頁</span>
+        </footer>
+    </div>
+
+    <script>
+        const spreads = document.querySelectorAll('.spread');
+        const totalSpreads = spreads.length;
+        let currentSpread = 0;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevHint = document.getElementById('prevHint');
+        const nextHint = document.getElementById('nextHint');
+        const dotsBar = document.getElementById('dotsBar');
+
+        function initDots() {
+            dotsBar.innerHTML = '';
+            for (let i = 0; i < totalSpreads; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === currentSpread ? ' active' : '');
+                dot.title = `跳轉至第 ${i * 2 + 1}-${i * 2 + 2} 頁`;
+                dot.onclick = () => goToSpread(i);
+                dotsBar.appendChild(dot);
+            }
+        }
+
+        function updateUI() {
+            spreads.forEach((s, idx) => s.classList.toggle('active', idx === currentSpread));
+            dotsBar.querySelectorAll('.dot').forEach((d, idx) => d.classList.toggle('active', idx === currentSpread));
+            prevBtn.disabled = currentSpread === 0;
+            nextBtn.disabled = currentSpread === totalSpreads - 1;
+            prevHint.textContent = currentSpread > 0 ? `(P.${String((currentSpread - 1) * 2 + 1).padStart(2, '0')})` : '';
+            nextHint.textContent = currentSpread < totalSpreads - 1 ? `(P.${String((currentSpread + 1) * 2 + 1).padStart(2, '0')})` : '';
+        }
+
+        function goToSpread(index) {
+            if (index >= 0 && index < totalSpreads) {
+                currentSpread = index;
+                updateUI();
+            }
+        }
+
+        function changeSpread(delta) { goToSpread(currentSpread + delta); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); changeSpread(1); }
+            else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); changeSpread(-1); }
+            else if (e.key === 'Home') { e.preventDefault(); goToSpread(0); }
+        });
+
+        async function downloadStrictProportionalPDF() {
+            const overlay = document.getElementById('pdfOverlay');
+            const progressText = document.getElementById('pdfProgressText');
+            const savedSpread = currentSpread;
+            try {
+                overlay.style.display = 'flex';
+                const { jsPDF } = window.jspdf;
+                const allPages = [];
+                spreads.forEach((spreadEl, sIdx) => {
+                    const leftPage = spreadEl.querySelector('.page-left');
+                    const rightPage = spreadEl.querySelector('.page-right');
+                    if (leftPage) allPages.push({ spreadIndex: sIdx, el: leftPage });
+                    if (rightPage) allPages.push({ spreadIndex: sIdx, el: rightPage });
+                });
+
+                let pdf = null;
+                for (let i = 0; i < allPages.length; i++) {
+                    const item = allPages[i];
+                    progressText.textContent = `正在等比封裝單頁：P.${String(i + 1).padStart(2, '0')} / P.${String(allPages.length).padStart(2, '0')} ...`;
+                    goToSpread(item.spreadIndex);
+                    await new Promise(r => setTimeout(r, 80));
+
+                    const rect = item.el.getBoundingClientRect();
+                    const canvas = await html2canvas(item.el, {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#FAF8F5',
+                        logging: false,
+                        width: rect.width,
+                        height: rect.height
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg', 0.96);
+                    const mmWidth = canvas.width * 0.264583;
+                    const mmHeight = canvas.height * 0.264583;
+                    const isLandscape = mmWidth > mmHeight;
+
+                    if (i === 0) {
+                        pdf = new jsPDF({
+                            orientation: isLandscape ? 'landscape' : 'portrait',
+                            unit: 'mm',
+                            format: [mmWidth, mmHeight]
+                        });
+                        pdf.addImage(imgData, 'JPEG', 0, 0, mmWidth, mmHeight);
+                    } else {
+                        pdf.addPage([mmWidth, mmHeight], isLandscape ? 'landscape' : 'portrait');
+                        pdf.addImage(imgData, 'JPEG', 0, 0, mmWidth, mmHeight);
+                    }
+                }
+                progressText.textContent = '封裝完成！正在觸發下載...';
+                pdf.save('Bauerfeind_PreSurgery_Strategy_Report.pdf');
+            } catch (err) {
+                console.error(err);
+                alert('匯出時發生異常，請確認瀏覽器環境。');
+            } finally {
+                goToSpread(savedSpread);
+                overlay.style.display = 'none';
+            }
+        }
+
+        initDots();
+        updateUI();
+    </script>
+</body>
+</html>
