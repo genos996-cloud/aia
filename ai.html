@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高客單醫材「三模式人機協作客服與需求訂單閉環」戰略白皮書 — 保爾芬德 × 康立安 | 總經理特別助理 郭奕正</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --desk-bg: #CBD5E1;
+            --paper-bg: #FFFFFF;
+            --card-bg: #F8FAFC;
+            --subtle-bg: #F1F5F9;
+            --text-primary: #0F172A;
+            --text-secondary: #334155;
+            --text-muted: #64748B;
+            --tech-blue: #0078D4;
+            --tech-blue-hover: #005A9E;
+            --tech-blue-soft: rgba(0, 120, 212, 0.08);
+            --emerald: #047857;
+            --emerald-soft: rgba(4, 120, 87, 0.08);
+            --amber: #B45309;
+            --amber-soft: rgba(180, 83, 9, 0.1);
+            --crimson: #BE123C;
+            --crimson-soft: rgba(190, 18, 60, 0.08);
+            --border-color: #E2E8F0;
+            --border-strong: #CBD5E1;
+            --font-sans: 'Segoe UI', 'Inter', 'PingFang TC', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100vw; height: 100vh; overflow: hidden;
+            background: radial-gradient(circle at center, #E2E8F0 0%, var(--desk-bg) 100%);
+            font-family: var(--font-sans); color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a.ref-link {
+            color: var(--tech-blue);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1.5px solid rgba(0, 120, 212, 0.45);
+            padding-bottom: 1px;
+            transition: all 0.15s ease;
+        }
+        a.ref-link:hover {
+            color: var(--tech-blue-hover);
+            background: var(--tech-blue-soft);
+            border-bottom-color: var(--tech-blue-hover);
+        }
+
+        .stage {
+            width: 100vw; height: 100vh; padding: 8px 12px 64px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .book-container {
+            width: 100%; height: 100%; max-width: 1920px; background: var(--paper-bg);
+            border: 1px solid var(--border-strong);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16), 0 4px 16px rgba(15, 23, 42, 0.08);
+            border-radius: 4px; position: relative; overflow: hidden;
+        }
+
+        .spread { display: none; width: 100%; height: 100%; grid-template-columns: 1fr 1fr; position: relative; }
+        .spread.active { display: grid; animation: fadeIn 0.22s cubic-bezier(0.22, 1, 0.36, 1); }
+
+        @keyframes fadeIn {
+            from { opacity: 0.5; transform: translateY(2px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .spread::after {
+            content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 44px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, 
+                rgba(15,23,42,0) 0%, rgba(15,23,42,0.03) 35%, 
+                rgba(15,23,42,0.09) 50%, rgba(15,23,42,0.03) 65%, 
+                rgba(15,23,42,0) 100%);
+            pointer-events: none; z-index: 10;
+        }
+
+        .page {
+            height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+            padding: 24px 44px 18px; background: var(--paper-bg); overflow: hidden;
+        }
+
+        .page-left { border-right: 1px solid var(--border-color); padding-right: 50px; }
+        .page-right { padding-left: 50px; }
+
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 10px; border-bottom: 2px solid var(--border-color);
+            font-family: var(--font-mono); font-size: 13.5px; color: var(--text-muted);
+            letter-spacing: 0.04em; flex-shrink: 0;
+        }
+        .page-header .brand-tag { color: var(--tech-blue); font-weight: 700; }
+
+        .page-body {
+            flex: 1; overflow-y: auto; padding: 16px 8px 16px 0;
+            display: flex; flex-direction: column; gap: 14px;
+        }
+        .page-body::-webkit-scrollbar { width: 6px; }
+        .page-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+        .page-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 10px; border-top: 1px solid var(--border-color);
+            font-family: var(--font-mono); font-size: 13.5px; color: var(--text-muted); flex-shrink: 0;
+        }
+        .page-number { font-weight: 700; color: var(--text-primary); font-size: 15.5px; }
+
+        .identity-banner {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            padding-bottom: 12px; border-bottom: 3px solid var(--tech-blue);
+        }
+        .identity-company { font-size: 20px; font-weight: 700; color: var(--tech-blue); letter-spacing: 0.02em; }
+        .identity-candidate { font-size: 25px; font-weight: 700; color: var(--text-primary); letter-spacing: 0.01em; margin-top: 2px; }
+        .identity-meta { font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); text-align: right; line-height: 1.45; }
+
+        .kicker { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--tech-blue); letter-spacing: 0.08em; text-transform: uppercase; }
+        .editorial-h1 { font-size: 33px; font-weight: 700; line-height: 1.25; color: var(--text-primary); letter-spacing: -0.01em; margin-top: 4px; }
+        .editorial-h2 { font-size: 26.5px; font-weight: 700; line-height: 1.28; color: var(--text-primary); letter-spacing: -0.01em; margin-top: 2px; }
+        .editorial-subtitle { font-size: 17.5px; font-weight: 500; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; }
+        .editorial-lead { font-size: 18.5px; line-height: 1.62; color: var(--text-secondary); }
+
+        .muji-rule-list { display: flex; flex-direction: column; gap: 12px; }
+        .muji-rule-item {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-left: 6px solid var(--tech-blue); padding: 14px 18px; border-radius: 4px;
+            font-size: 17px; line-height: 1.58; color: var(--text-secondary);
+        }
+        .muji-rule-item.emerald-border { border-left-color: var(--emerald); }
+        .muji-rule-item.amber-border { border-left-color: var(--amber); }
+        .muji-rule-item.crimson-border { border-left-color: var(--crimson); }
+        .muji-rule-item h3 {
+            font-size: 19px; font-weight: 700; color: var(--text-primary);
+            margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        }
+
+        .sub-bullet-list { margin-top: 6px; padding-left: 4px; display: flex; flex-direction: column; gap: 6px; list-style: none; }
+        .sub-bullet-list li { position: relative; padding-left: 18px; font-size: 17px; line-height: 1.56; color: var(--text-secondary); }
+        .sub-bullet-list li::before { content: "▪"; position: absolute; left: 0; color: var(--tech-blue); font-weight: 700; }
+
+        .code-quote { font-family: var(--font-mono); font-size: 14.5px; font-weight: 600; background: var(--crimson-soft); color: var(--crimson); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(190, 18, 60, 0.2); word-break: break-word; }
+        .code-safe { font-family: var(--font-mono); font-size: 14.5px; font-weight: 600; background: var(--emerald-soft); color: var(--emerald); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(4, 120, 87, 0.2); }
+        .loc-tag { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--text-primary); background: var(--subtle-bg); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-strong); }
+
+        .badge { font-family: var(--font-mono); font-size: 12.5px; padding: 3px 9px; background: var(--tech-blue-soft); color: var(--tech-blue); border-radius: 4px; font-weight: 700; flex-shrink: 0; }
+        .badge.emerald { background: var(--emerald-soft); color: var(--emerald); }
+        .badge.amber { background: var(--amber-soft); color: var(--amber); }
+        .badge.crimson { background: var(--crimson-soft); color: var(--crimson); }
+
+        .formula-box { background: var(--subtle-bg); border: 2px solid var(--border-strong); padding: 12px 18px; border-radius: 6px; font-family: var(--font-mono); font-size: 17.5px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.45; letter-spacing: 0.01em; }
+        .formula-box span.arrow { color: var(--tech-blue); margin: 0 8px; }
+
+        .tech-table { width: 100%; border-collapse: collapse; background: var(--paper-bg); border: 1px solid var(--border-strong); font-size: 16.5px; line-height: 1.52; border-radius: 4px; overflow: hidden; }
+        .tech-table th { background: var(--subtle-bg); color: var(--text-primary); font-weight: 700; text-align: left; padding: 11px 14px; border-bottom: 2px solid var(--tech-blue); font-size: 16.5px; }
+        .tech-table td { padding: 11px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); vertical-align: top; }
+        .tech-table tr:last-child td { border-bottom: none; }
+        .tech-table td.win-cell { background: var(--tech-blue-soft); color: var(--text-primary); font-weight: 500; }
+
+        .bottom-nav {
+            position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
+            height: 48px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(10px);
+            color: #F8FAFC; border-radius: 999px; padding: 0 16px 0 18px; display: flex;
+            align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.35);
+            z-index: 100; font-size: 14.5px; white-space: nowrap; border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .nav-btn {
+            background: transparent; border: none; color: #F8FAFC; font-family: var(--font-sans);
+            font-size: 14.5px; font-weight: 600; cursor: pointer; padding: 6px 12px;
+            border-radius: 999px; transition: all 0.15s; display: flex; align-items: center; gap: 6px;
+        }
+        .nav-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.15); }
+        .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .nav-btn.pdf-primary { background: var(--tech-blue); color: #FFFFFF; font-weight: 700; padding: 6px 14px; }
+        .nav-btn.pdf-primary:hover:not(:disabled) { background: var(--tech-blue-hover); }
+        .dots-bar { display: flex; align-items: center; gap: 8px; }
+        .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.2s; }
+        .dot.active { width: 24px; border-radius: 4px; background: #38BDF8; }
+        .kbd-hint { font-family: var(--font-mono); font-size: 13px; color: #94A3B8; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 12px; }
+
+        .telemetry-box {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(0, 0, 0, 0.35); padding: 4px 12px; border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08); font-family: var(--font-mono);
+            font-size: 13px; color: #E2E8F0; margin-left: 4px;
+        }
+        .status-pulse { width: 7px; height: 7px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+        .telemetry-divider { color: rgba(255, 255, 255, 0.2); }
+        .session-timer { color: #38BDF8; font-weight: 600; }
+
+        #pdfOverlay {
+            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(6px); z-index: 9999; flex-direction: column;
+            justify-content: center; align-items: center; color: #FFFFFF; gap: 16px;
+        }
+        .spinner { width: 44px; height: 44px; border: 4px solid rgba(255,255,255,0.2); border-top-color: var(--tech-blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="pdfOverlay">
+        <div class="spinner"></div>
+        <div id="pdfProgressText" style="font-size: 22px; font-weight: 700; letter-spacing: 0.04em;">正在等比封裝單頁 PDF...</div>
+        <div style="font-family: var(--font-mono); font-size: 15px; color: #CBD5E1;">鎖定原始比例輸出，請稍候約 5~8 秒</div>
+    </div>
+
+    <div class="stage">
+        <main class="book-container">
+            
+            <!-- ==================== SPREAD 0: P.01 純真人客服的營運盲點與消費心理學實證 & P.02 Deno 三模式人機互補架構 ==================== -->
+            <section class="spread active" data-spread="0">
+                <!-- P.01 左頁：營運盲點診斷與消費心理學實證 -->
+                <div class="page page-left">
+                    <header class="page-header">
+                        <span class="brand-tag">CONVERSION ARCHITECTURE // CONSUMER PSYCHOLOGY &amp; AI OPS</span>
+                        <span>ZERO-FRICTION CUSTOMER ENGAGEMENT</span>
+                    </header>
+                    <div class="page-body">
+                        <div class="identity-banner">
+                            <div>
+                                <div class="identity-company">保爾芬德健康運動 (00147140) × 康立安智能醫療</div>
+                                <div class="identity-candidate">總經理特別助理 郭奕正</div>
+                            </div>
+                            <div class="identity-meta">
+                                DOCUMENT // BF-AI-CONVERSION-2026<br>
+                                ARCHITECTURE // DENO DETERMINISTIC ROUTING
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="kicker">CONVERSION DIAGNOSTIC // 「純真人客服」的服務時間差與客戶流失心理</div>
+                            <h1 class="editorial-h1">三模式人機互補架構：消除決策焦慮、將諮詢轉化為精準需求訂單</h1>
+                        </div>
+
+                        <p class="editorial-lead">
+                            高客單醫療輔具（NT$ 29,800）極度仰賴顧問互動，但單純標榜「這裏有真人客服」在商業轉化上並不成立——<strong>真人無法 24 小時在線</strong>。一旦錯過消費者產生購買意圖的黃金 5 分鐘，等待時間差便會直接摧毀成交率。
+                        </p>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item crimson-border">
+                                <h3><span>一、 消費心理學鐵律：為何「等待回覆」等於「把客戶推向競品」？</span><span class="badge crimson">PSYCHOLOGY EVIDENCE</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>認知閉合需求與等待焦慮（Need for Cognitive Closure）：</strong> 依據心理學權威 <a href="https://psycnet.apa.org/record/1996-02634-001" target="_blank" rel="noopener" class="ref-link">Kruglanski &amp; Webster (1996)《Psychological Review》認知閉合理論</a>，當消費者處於身體疼痛或手術猶豫的高焦慮狀態時，對「即時確定答案」的需求極高；若無法在第一時間獲得回應，焦慮感會迫使其立刻跳出網頁轉向競品搜尋，<strong>一旦離開選購漏斗便幾乎無法挽回</strong>。</li>
+                                    <li><strong>線上購物車放棄與即時互動效應（Immediacy Effect）：</strong> 根據服務行銷經典 <a href="https://journals.sagepub.com/doi/10.1177/002224299606000203" target="_blank" rel="noopener" class="ref-link">Hui &amp; Tse (1996)《Journal of Marketing》等待時間心理學研究</a>與 <a href="https://hbr.org/2011/03/the-short-life-of-online-sales-leads" target="_blank" rel="noopener" class="ref-link">Harvard Business Review 線上潛客黃金五分鐘法則</a>，諮詢回覆延遲超過 5 分鐘，高意圖潛在客戶的轉化率將呈指數級斷崖下跌。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>二、 核心設計哲學：AI 不是取代真人，而是為真人「鎖住意圖 ＋ 預先備料」</span><span class="badge emerald">HUMAN-IN-THE-LOOP</span></h3>
+                                <div>
+                                    智能系統的使命，是在任何時段<strong>零延遲滿足基礎客觀疑問</strong>，並將複雜個案引導至<strong>「結構化需求訂單留言板」</strong>——讓消費者留在選購流程內，同時讓真人顧問在開口前就掌握完整病況與需求。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="formula-box">
+                            零等待即時回應（消除焦慮） <span class="arrow">＋</span> 需求訂單留言板（結構化收集） <span class="arrow">=</span> 鎖死選購漏斗零流失
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>GROUNDED IN CONSUMER PSYCHOLOGY &amp; SERVICE OPERATIONS</span>
+                        <span class="page-number">P.01</span>
+                    </footer>
+                </div>
+
+                <!-- P.02 右頁：Deno 超邏輯三模式架構功能拆解 -->
+                <div class="page page-right">
+                    <header class="page-header">
+                        <span class="brand-tag">SYSTEM ARCHITECTURE // DENO 3-MODE ENGINE</span>
+                        <span>PRODUCTION-PROVEN FOR 5 MONTHS</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">DETERMINISTIC ROUTING // 商轉五個月實證之三模式智能交互系統</div>
+                            <h2 class="editorial-h2">二、 系統功能歸類：三大模式精準分流 100% 客戶互動場景</h2>
+                            <p class="editorial-subtitle">摒棄傳統「關鍵字死板罐頭」與「無約束 AI 瞎編」，透過 Deno 確定性路由將互動拆解為三層漏斗：</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>模式一：程式化常駐卡片與六宮格視覺導流（Zero-Typing UI）</span><span class="badge">MODE 01 // 50% TRAFFIC</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>功能定位：</strong> 解決官網缺乏常駐導流入口、LINE 底部選單空白的斷點。以視覺化圖文選單（Rich Menu）與互動卡片，將高頻動線一鍵化。</li>
+                                    <li><strong>保爾芬德落地場景：</strong> 內建<strong>「膝關節退化自測卡 / 腿圍量測圖解卡 / GenuTrain OA 價格與 TCO 比較卡 / 博愛路與台中門市試戴預約卡」</strong>，消費者無需打字即可秒速獲得確定性指引。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>模式二：確定性資料庫 FAQ 引擎（Zero-Hallucination Grounding）</span><span class="badge emerald">MODE 02 // 35% TRAFFIC</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>功能定位：</strong> 結合語意理解與結構化資料庫邊界鎖定（Single Source of Truth），聽懂消費者雜亂口語並精準比對官方規格、型號差異、洗滌保養與健保／保險理賠規範。</li>
+                                    <li><strong>醫療合規防呆邊界：</strong> 一旦偵測到涉及「術後傷口感染、特殊心血管併發症」等資料庫外之個別化醫療問題，系統<strong>強制煞車、絕不隨意推測</strong>，立即觸發安全轉介，守住醫材法規紅線。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item amber-border">
+                                <h3><span>模式三：即時真人預約暨「需求訂單留言板」（Structured Demand Intake）</span><span class="badge amber">MODE 03 // 15% HIGH-TICKET</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>從「碎裂聊天」升級為「需求訂單諮詢」：</strong> 捨棄低效的對話框一問一答，直接發送自動帶入 LINE ID 的結構化需求表單，預先收集<strong>「痛點部位、退化程度／是否評估開刀、期望試戴門市與方便致電時段」</strong>。</li>
+                                    <li><strong><span class="code-quote">+911</span> 靜默接管協議：</strong> 真人顧問進場服務高單價客戶時，輸入指令即讓機器人靜默 1 小時只做紀錄不插嘴，實現完美人機協作。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>DENO EDGE ROUTING + DATABASE GROUNDING + +911 SILENCE PROTOCOL</span>
+                        <span class="page-number">P.02</span>
+                    </footer>
+                </div>
+            </section>
+
+            <!-- ==================== SPREAD 1: P.03 人事成本與營運效率對照表 & P.04 客戶全生命週期互動閉環與特助落地藍圖 ==================== -->
+            <section class="spread" data-spread="1">
+                <!-- P.03 左頁：傳統文字對話框 vs. 結構化需求留言板（人事成本與效率定量對照） -->
+                <div class="page page-left">
+                    <header class="page-header">
+                        <span class="brand-tag">UNIT ECONOMICS // LABOR COST &amp; CONVERSION EFFICIENCY</span>
+                        <span>CHAT LOGS VS. STRUCTURED DEMAND INTAKE</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">OPERATIONAL ROI // 人事成本結構與顧問成交效率對照</div>
+                            <h2 class="editorial-h2">三、 營運經濟帳：為何「結構化需求留言板」完勝傳統對話框？</h2>
+                            <p class="editorial-subtitle">一對一純文字聊天是隱形人事成本黑洞；將前期資訊收集自動化，能讓單一門市顧問產能翻倍：</p>
+                        </div>
+
+                        <table class="tech-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 24%;">營運評估維度</th>
+                                    <th style="width: 38%;">傳統純真人一對一對話框<br><span class="code-quote" style="margin-top:4px; display:inline-block;">現況：純人力即時聊天</span></th>
+                                    <th style="width: 38%;">Deno 三模式 ＋ 需求訂單留言板<br><span class="code-safe" style="margin-top:4px; display:inline-block;">升級：自動化預篩 ＋ 結構化建檔</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>服務覆蓋時段與<br>首響等待時間</strong></td>
+                                    <td>僅限台北（11:00–20:00）與台中（10:00–19:30）營業時段；夜間與週日詢問延遲高達 <strong>12～15 小時</strong>。</td>
+                                    <td class="win-cell"><strong>7 × 24 小時 0.8 秒極速首響</strong>；夜間高意圖流量即時獲得規格解答並完成試戴需求登記，零流失。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>單一客戶前期<br>溝通時間成本</strong></td>
+                                    <td>碎片化一問一答（問尺寸、問哪一腳、問預算、問地址），平均耗時 <strong>15～25 分鐘</strong> 才能拼湊出完整需求。</td>
+                                    <td class="win-cell"><strong>前期資訊收集 0 人力耗時</strong>；系統自動彙整為標準「需求訂單摘要」，顧問僅需 <strong>3 分鐘</strong> 即可精準切入推介。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>門市人力資源<br>配置與擴張性</strong></td>
+                                    <td>業績成長必須線性增加客服與門市人員，人力陷入重複回答「腿圍怎麼量、多少錢」的低價值勞動。</td>
+                                    <td class="win-cell"><strong>釋放 70% 重複性諮詢工時</strong>；門市專業顧問專注於高毛利一對一量測體驗與臨門一腳成交。</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>客戶數據沉澱與<br>再行銷資產化</strong></td>
+                                    <td>病況與需求散落在冗長對話紀錄中，無法結構化檢索，客戶未成交即成死水。</td>
+                                    <td class="win-cell"><strong>自動寫入結構化客戶資料庫</strong>；精準標記退化等級、左右膝別與預期手術時間，驅動後續精準追蹤。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="formula-box">
+                            省去 70% 重複問答工時 <span class="arrow">＋</span> 顧問 3 分鐘精準成交 <span class="arrow">＋</span> 夜間流量全數留存 <span class="arrow">=</span> 單店人效極大化
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>LABOR COST OPTIMIZATION // HIGH-VALUE ADVISORY FOCUS</span>
+                        <span class="page-number">P.03</span>
+                    </footer>
+                </div>
+
+                <!-- P.04 右頁：客戶全生命週期互動閉環與特助第一個月落地執行藍圖 -->
+                <div class="page page-right">
+                    <header class="page-header">
+                        <span class="brand-tag">IMPLEMENTATION ROADMAP // 30-DAY EXECUTION PLAN</span>
+                        <span>FROM TRAFFIC CAPTURE TO FLAGSHIP CONVERSION</span>
+                    </header>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">ACTIONABLE DEPLOYMENT // 成熟系統無痛平移，入職首月即可商轉上線</div>
+                            <h2 class="editorial-h2">四、 落地藍圖：如何將商轉五個月的驗證架構複製至保爾芬德？</h2>
+                            <p class="editorial-subtitle">無需從零摸索試錯，直接複用已在實戰中穩定自動收單的系統骨幹，分三階段快速部署：</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>Week 1–2：建立全通路常駐入口與六宮格視覺導流</span><span class="badge emerald">PHASE 01 // CAPTURE</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>官網常駐懸浮按鈕：</strong> 於保爾芬德與康立安官網植入高辨識度即時諮詢按鈕，直接串接 LINE 帶參入口，攔截正在猶豫價格與尺寸的訪客。</li>
+                                    <li><strong>LINE 底部六宮格選單上線：</strong> 補齊目前「請點擊下方預約」卻無選單的體驗斷點，讓訪客一秒直達退化自測、產品比較與門市預約。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item">
+                                <h3><span>Week 3：導入醫療合規知識庫與「需求訂單留言板」</span><span class="badge">PHASE 02 // QUALIFY</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>德國原廠知識庫向量化：</strong> 匯入 GenuTrain OA、SecuTec OA 規格、BOA® 調整教學與常見 QA，並設定嚴格醫療安全邊界防呆規則。</li>
+                                    <li><strong>結構化需求訂單上線：</strong> 訪客填寫完畢後，系統自動推送「高優先級客戶需求卡」至博愛路／台中門市顧問端，並支援 <span class="code-quote">+911</span> 靜默接管。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item amber-border">
+                                <h3><span>Week 4+：打通「診所轉介碼 ＋ 康立安復健追蹤」自動閉環</span><span class="badge amber">PHASE 03 // SCALE LTV</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>B2B 醫師轉介數位化：</strong> 合作醫師開立專屬 QR Code 後，患者掃碼即自動綁定轉介來源，完成購買後系統自動結算診所分潤並啟動穿戴滿意度回訪。</li>
+                                    <li><strong>全生命週期 LTV 延伸：</strong> 依據系統留存的客戶結構化檔案，在穿戴滿 30 天與 90 天自動推播關懷與足部鞋墊／康立安智能復健搭配建議，創造高毛利複購。</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="formula-box">
+                            現成成熟系統零試錯導入 <span class="arrow">➔</span> 30 天內打通全天候自動接單閉環 <span class="arrow">➔</span> 成為公司數位轉型核心引擎
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span>END OF MODULE // READY FOR EXECUTIVE REVIEW</span>
+                        <span class="page-number">P.04</span>
+                    </footer>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- 底部控制塢（整合台北即時時鐘與會話計時器） -->
+        <footer class="bottom-nav">
+            <button class="nav-btn" id="prevBtn" onclick="changeSpread(-1)">← 上一跨頁 <span id="prevHint"></span></button>
+            <button class="nav-btn" onclick="goToSpread(0)">📖 首頁總綱</button>
+            <div class="dots-bar" id="dotsBar"></div>
+            <button class="nav-btn" id="nextBtn" onclick="changeSpread(1)">下一跨頁 <span id="nextHint"></span> →</button>
+            <button class="nav-btn pdf-primary" onclick="downloadStrictProportionalPDF()">📥 下載連續單頁 PDF</button>
+            
+            <div class="telemetry-box" title="面試即時戰情時鐘與會話時長">
+                <span class="status-pulse"></span>
+                <span id="taipeiClock">2026-11-16 16:00:00 CST</span>
+                <span class="telemetry-divider">|</span>
+                <span>SESSION: <span id="sessionTimer" class="session-timer">00:00</span></span>
+            </div>
+
+            <span class="kbd-hint">← → 鍵盤翻頁</span>
+        </footer>
+    </div>
+
+    <script>
+        const spreads = document.querySelectorAll('.spread');
+        const totalSpreads = spreads.length;
+        let currentSpread = 0;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevHint = document.getElementById('prevHint');
+        const nextHint = document.getElementById('nextHint');
+        const dotsBar = document.getElementById('dotsBar');
+
+        function initDots() {
+            dotsBar.innerHTML = '';
+            for (let i = 0; i < totalSpreads; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === currentSpread ? ' active' : '');
+                dot.title = `跳轉至第 ${i * 2 + 1}-${i * 2 + 2} 頁`;
+                dot.onclick = () => goToSpread(i);
+                dotsBar.appendChild(dot);
+            }
+        }
+
+        function updateUI() {
+            spreads.forEach((s, idx) => s.classList.toggle('active', idx === currentSpread));
+            dotsBar.querySelectorAll('.dot').forEach((d, idx) => d.classList.toggle('active', idx === currentSpread));
+            prevBtn.disabled = currentSpread === 0;
+            nextBtn.disabled = currentSpread === totalSpreads - 1;
+            prevHint.textContent = currentSpread > 0 ? `(P.${String((currentSpread - 1) * 2 + 1).padStart(2, '0')})` : '';
+            nextHint.textContent = currentSpread < totalSpreads - 1 ? `(P.${String((currentSpread + 1) * 2 + 1).padStart(2, '0')})` : '';
+        }
+
+        function goToSpread(index) {
+            if (index >= 0 && index < totalSpreads) {
+                currentSpread = index;
+                updateUI();
+            }
+        }
+
+        function changeSpread(delta) { goToSpread(currentSpread + delta); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); changeSpread(1); }
+            else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); changeSpread(-1); }
+            else if (e.key === 'Home') { e.preventDefault(); goToSpread(0); }
+        });
+
+        const sessionStartTime = Date.now();
+        function updateTelemetry() {
+            const now = new Date();
+            const taipeiTimeStr = new Intl.DateTimeFormat('zh-TW', {
+                timeZone: 'Asia/Taipei',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now).replace(/\//g, '-');
+
+            const clockEl = document.getElementById('taipeiClock');
+            if (clockEl) {
+                clockEl.textContent = `${taipeiTimeStr} CST`;
+            }
+
+            const elapsedSec = Math.floor((Date.now() - sessionStartTime) / 1000);
+            const mins = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+            const secs = String(elapsedSec % 60).padStart(2, '0');
+            const timerEl = document.getElementById('sessionTimer');
+            if (timerEl) {
+                timerEl.textContent = `${mins}:${secs}`;
+            }
+        }
+        setInterval(updateTelemetry, 1000);
+        updateTelemetry();
+
+        async function downloadStrictProportionalPDF() {
+            const overlay = document.getElementById('pdfOverlay');
+            const progressText = document.getElementById('pdfProgressText');
+            const savedSpread = currentSpread;
+            try {
+                overlay.style.display = 'flex';
+                const { jsPDF } = window.jspdf;
+                const allPages = [];
+                spreads.forEach((spreadEl, sIdx) => {
+                    const leftPage = spreadEl.querySelector('.page-left');
+                    const rightPage = spreadEl.querySelector('.page-right');
+                    if (leftPage) allPages.push({ spreadIndex: sIdx, el: leftPage });
+                    if (rightPage) allPages.push({ spreadIndex: sIdx, el: rightPage });
+                });
+
+                let pdf = null;
+                for (let i = 0; i < allPages.length; i++) {
+                    const item = allPages[i];
+                    progressText.textContent = `正在等比封裝單頁：P.${String(i + 1).padStart(2, '0')} / P.${String(allPages.length).padStart(2, '0')} ...`;
+                    goToSpread(item.spreadIndex);
+                    await new Promise(r => setTimeout(r, 90));
+
+                    const rect = item.el.getBoundingClientRect();
+                    const canvas = await html2canvas(item.el, {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#FFFFFF',
+                        logging: false,
+                        width: rect.width,
+                        height: rect.height
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg', 0.96);
+                    const mmWidth = canvas.width * 0.264583;
+                    const mmHeight = canvas.height * 0.264583;
+                    const isLandscape = mmWidth > mmHeight;
+
+                    if (i === 0) {
+                        pdf = new jsPDF({
+                            orientation: isLandscape ? 'landscape' : 'portrait',
+                            unit: 'mm',
+                            format: [mmWidth, mmHeight]
+                        });
+                        pdf.addImage(imgData, 'JPEG', 0, 0, mmWidth, mmHeight);
+                    } else {
+                        pdf.addPage([mmWidth, mmHeight], isLandscape ? 'landscape' : 'portrait');
+                        pdf.addImage(imgData, 'JPEG', 0, 0, mmWidth, mmHeight);
+                    }
+                }
+                progressText.textContent = '封裝完成！正在觸發下載...';
+                pdf.save('保爾芬德x康立安_三模式人機協作客服與需求訂單閉環_郭奕正.pdf');
+            } catch (err) {
+                console.error(err);
+                alert('匯出時發生異常，請確認瀏覽器環境。');
+            } finally {
+                goToSpread(savedSpread);
+                overlay.style.display = 'none';
+            }
+        }
+
+        initDots();
+        updateUI();
+    </script>
+</body>
+</html>
