@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>醫療與健康產業合規文案 × 零個資高轉化裂變系統戰略白皮書 — LOOKBOOKPRO EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --desk-bg: #CBD5E1;
+            --paper-bg: #FFFFFF;
+            --card-bg: #F8FAFC;
+            --subtle-bg: #F1F5F9;
+            --text-primary: #0F172A;
+            --text-secondary: #334155;
+            --text-muted: #64748B;
+            --tech-blue: #0078D4;
+            --tech-blue-hover: #005A9E;
+            --tech-blue-soft: rgba(0, 120, 212, 0.08);
+            --emerald: #047857;
+            --emerald-soft: rgba(4, 120, 87, 0.08);
+            --amber: #B45309;
+            --amber-soft: rgba(180, 83, 9, 0.1);
+            --crimson: #BE123C;
+            --crimson-soft: rgba(190, 18, 60, 0.08);
+            --border-color: #E2E8F0;
+            --border-strong: #CBD5E1;
+            --font-sans: 'Segoe UI', 'Inter', 'PingFang TC', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100vw; height: 100vh; overflow: hidden;
+            background: radial-gradient(circle at center, #E2E8F0 0%, var(--desk-bg) 100%);
+            font-family: var(--font-sans); color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .stage {
+            width: 100vw; height: 100vh; padding: 8px 12px 64px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .book-container {
+            width: 100%; height: 100%; max-width: 1920px; background: var(--paper-bg);
+            border: 1px solid var(--border-strong);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16), 0 4px 16px rgba(15, 23, 42, 0.08);
+            border-radius: 4px; position: relative; overflow: hidden;
+        }
+
+        .spread { display: none; width: 100%; height: 100%; grid-template-columns: 1fr 1fr; position: relative; }
+        .spread.active { display: grid; animation: fadeIn 0.22s cubic-bezier(0.22, 1, 0.36, 1); }
+
+        @keyframes fadeIn {
+            from { opacity: 0.5; transform: translateY(2px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .spread::after {
+            content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 44px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, 
+                rgba(15,23,42,0) 0%, rgba(15,23,42,0.03) 35%, 
+                rgba(15,23,42,0.09) 50%, rgba(15,23,42,0.03) 65%, 
+                rgba(15,23,42,0) 100%);
+            pointer-events: none; z-index: 10;
+        }
+
+        .page {
+            height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+            padding: 20px 40px 14px; background: var(--paper-bg); overflow: hidden;
+        }
+
+        .page-left { border-right: 1px solid var(--border-color); padding-right: 46px; }
+        .page-right { padding-left: 46px; }
+
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 8px; border-bottom: 2px solid var(--border-color);
+            font-family: var(--font-mono); font-size: 13.5px; color: var(--text-muted);
+            letter-spacing: 0.04em; flex-shrink: 0;
+        }
+        .page-header .brand-tag { color: var(--tech-blue); font-weight: 700; }
+
+        .page-body {
+            flex: 1; overflow-y: auto; padding: 12px 8px 12px 0;
+            display: flex; flex-direction: column; gap: 11px;
+        }
+        .page-body::-webkit-scrollbar { width: 6px; }
+        .page-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+        .page-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 8px; border-top: 1px solid var(--border-color);
+            font-family: var(--font-mono); font-size: 13.5px; color: var(--text-muted); flex-shrink: 0;
+        }
+        .page-number { font-weight: 700; color: var(--text-primary); font-size: 15.5px; }
+
+        .identity-banner {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            padding-bottom: 10px; border-bottom: 3px solid var(--tech-blue);
+        }
+        .identity-company { font-size: 18.5px; font-weight: 700; color: var(--tech-blue); letter-spacing: 0.02em; }
+        .identity-candidate { font-size: 23px; font-weight: 700; color: var(--text-primary); letter-spacing: 0.01em; margin-top: 2px; }
+        .identity-meta { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-muted); text-align: right; line-height: 1.45; }
+
+        .kicker { font-family: var(--font-mono); font-size: 13.5px; font-weight: 700; color: var(--tech-blue); letter-spacing: 0.08em; text-transform: uppercase; }
+        .editorial-h1 { font-size: 29.5px; font-weight: 700; line-height: 1.25; color: var(--text-primary); letter-spacing: -0.01em; margin-top: 2px; }
+        .editorial-h2 { font-size: 24.5px; font-weight: 700; line-height: 1.28; color: var(--text-primary); letter-spacing: -0.01em; margin-top: 2px; }
+        .editorial-subtitle { font-size: 16.5px; font-weight: 500; color: var(--text-secondary); margin-top: 2px; line-height: 1.45; }
+        .editorial-lead { font-size: 17px; line-height: 1.54; color: var(--text-secondary); }
+
+        .muji-rule-list { display: flex; flex-direction: column; gap: 9px; }
+        .muji-rule-item {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-left: 6px solid var(--tech-blue); padding: 11px 15px; border-radius: 4px;
+            font-size: 16px; line-height: 1.5; color: var(--text-secondary);
+        }
+        .muji-rule-item.emerald-border { border-left-color: var(--emerald); }
+        .muji-rule-item.amber-border { border-left-color: var(--amber); }
+        .muji-rule-item.crimson-border { border-left-color: var(--crimson); }
+        .muji-rule-item h3 {
+            font-size: 17.5px; font-weight: 700; color: var(--text-primary);
+            margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        }
+
+        .sub-bullet-list { margin-top: 4px; padding-left: 4px; display: flex; flex-direction: column; gap: 4px; list-style: none; }
+        .sub-bullet-list li { position: relative; padding-left: 18px; font-size: 15.5px; line-height: 1.48; color: var(--text-secondary); }
+        .sub-bullet-list li::before { content: "▪"; position: absolute; left: 0; color: var(--tech-blue); font-weight: 700; }
+
+        .code-quote { font-family: var(--font-mono); font-size: 13.5px; font-weight: 600; background: var(--crimson-soft); color: var(--crimson); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(190, 18, 60, 0.2); word-break: break-word; }
+        .code-safe { font-family: var(--font-mono); font-size: 13.5px; font-weight: 600; background: var(--emerald-soft); color: var(--emerald); padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(4, 120, 87, 0.2); }
+        .loc-tag { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--text-primary); background: var(--subtle-bg); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-strong); }
+
+        .badge { font-family: var(--font-mono); font-size: 12px; padding: 2px 8px; background: var(--tech-blue-soft); color: var(--tech-blue); border-radius: 4px; font-weight: 700; flex-shrink: 0; }
+        .badge.emerald { background: var(--emerald-soft); color: var(--emerald); }
+        .badge.amber { background: var(--amber-soft); color: var(--amber); }
+        .badge.crimson { background: var(--crimson-soft); color: var(--crimson); }
+
+        .formula-box { background: var(--subtle-bg); border: 2px solid var(--border-strong); padding: 9px 14px; border-radius: 6px; font-family: var(--font-mono); font-size: 15.5px; font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.45; letter-spacing: 0.01em; }
+        .formula-box span.arrow { color: var(--tech-blue); margin: 0 6px; }
+
+        .tech-table { width: 100%; border-collapse: collapse; background: var(--paper-bg); border: 1px solid var(--border-strong); font-size: 15px; line-height: 1.44; border-radius: 4px; overflow: hidden; }
+        .tech-table th { background: var(--subtle-bg); color: var(--text-primary); font-weight: 700; text-align: left; padding: 8px 11px; border-bottom: 2px solid var(--tech-blue); font-size: 15px; }
+        .tech-table td { padding: 8px 11px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); vertical-align: top; }
+        .tech-table tr:last-child td { border-bottom: none; }
+        .tech-table td.win-cell { background: var(--tech-blue-soft); color: var(--text-primary); font-weight: 500; }
+
+        .apple-copy-card {
+            background: #0F172A;
+            color: #F8FAFC;
+            border-radius: 8px;
+            padding: 15px 19px;
+            border-left: 6px solid #38BDF8;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+        }
+        .apple-copy-card .apple-tag {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: #38BDF8;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+        .apple-copy-card .apple-headline {
+            font-size: 20.5px;
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            margin-bottom: 5px;
+        }
+        .apple-copy-card .apple-sub {
+            font-size: 15px;
+            color: #CBD5E1;
+            line-height: 1.48;
+        }
+
+        /* 行銷設計理念核心宣言卡 */
+        .manifesto-box {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: #F8FAFC;
+            border-radius: 8px;
+            padding: 14px 18px;
+            border-left: 6px solid #10B981;
+        }
+        .manifesto-title {
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #34D399;
+            letter-spacing: 0.06em;
+            margin-bottom: 4px;
+        }
+        .manifesto-quote {
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.48;
+            color: #FFFFFF;
+        }
+
+        /* 裂變循環與唯一性優惠券組件 */
+        .flywheel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .flywheel-step {
+            background: var(--card-bg);
+            border: 1px solid var(--border-strong);
+            border-top: 4px solid var(--tech-blue);
+            border-radius: 6px;
+            padding: 9px 12px;
+        }
+        .flywheel-step.s2 { border-top-color: var(--emerald); }
+        .flywheel-step.s3 { border-top-color: var(--amber); }
+        .flywheel-step.s4 { border-top-color: #7C3AED; }
+        .step-num {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--tech-blue);
+            margin-bottom: 2px;
+        }
+        .flywheel-step.s2 .step-num { color: var(--emerald); }
+        .flywheel-step.s3 .step-num { color: var(--amber); }
+        .flywheel-step.s4 .step-num { color: #7C3AED; }
+        .step-title {
+            font-size: 16.5px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .step-desc {
+            font-size: 14.5px;
+            line-height: 1.42;
+            color: var(--text-secondary);
+        }
+
+        /* 可真實下載的高清優惠券卡片 */
+        .voucher-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .voucher-mockup {
+            background: linear-gradient(135deg, #090D16 0%, #0F172A 55%, #1E293B 100%);
+            border: 2px solid #38BDF8;
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22);
+        }
+        .voucher-company-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .company-seal {
+            background: #38BDF8;
+            color: #0F172A;
+            font-weight: 800;
+            font-size: 11.5px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.04em;
+        }
+        .company-name-text {
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #F8FAFC;
+            letter-spacing: 0.04em;
+        }
+        .voucher-left .v-title {
+            font-size: 21px;
+            font-weight: 700;
+            margin: 2px 0 4px;
+            color: #FFFFFF;
+            letter-spacing: -0.01em;
+        }
+        .voucher-left .v-rules {
+            font-size: 13.5px;
+            color: #CBD5E1;
+            line-height: 1.45;
+        }
+        .voucher-right {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1.5px dashed #38BDF8;
+            border-radius: 10px;
+            padding: 10px 14px;
+            text-align: center;
+            flex-shrink: 0;
+            min-width: 170px;
+        }
+        .voucher-right .v-code-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #93C5FD;
+            letter-spacing: 0.06em;
+        }
+        .voucher-right .v-code {
+            font-family: var(--font-mono);
+            font-size: 18.5px;
+            font-weight: 700;
+            color: #38BDF8;
+            letter-spacing: 0.05em;
+            margin: 3px 0;
+        }
+        .voucher-right .v-status {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            color: #34D399;
+            font-weight: 700;
+        }
+        .voucher-action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--subtle-bg);
+            border: 1px solid var(--border-strong);
+            border-radius: 8px;
+            padding: 7px 12px;
+            gap: 10px;
+        }
+        .voucher-action-hint {
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            color: var(--text-secondary);
+        }
+        .voucher-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-voucher {
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-family: var(--font-sans);
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-voucher.gen {
+            background: #E2E8F0;
+            color: #0F172A;
+        }
+        .btn-voucher.gen:hover {
+            background: #CBD5E1;
+        }
+        .btn-voucher.dl {
+            background: var(--emerald);
+            color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(4, 120, 87, 0.25);
+        }
+        .btn-voucher.dl:hover {
+            background: #065F46;
+            transform: translateY(-1px);
+        }
+
+        /* 互動式手機問卷＋即時發券模擬器 */
+        .demo-survey-box {
+            background: var(--card-bg);
+            border: 2px solid var(--tech-blue);
+            border-radius: 8px;
+            padding: 11px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .demo-survey-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        .demo-survey-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--tech-blue);
+        }
+        .survey-q-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 14.5px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .survey-opts {
+            display: flex;
+            gap: 6px;
+        }
+        .opt-pill {
+            padding: 3px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--border-strong);
+            background: #FFFFFF;
+            font-size: 13px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 600;
+            transition: all 0.12s;
+        }
+        .opt-pill.selected {
+            background: var(--tech-blue);
+            color: #FFFFFF;
+            border-color: var(--tech-blue);
+        }
+        .btn-submit-survey {
+            background: var(--tech-blue);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 14px;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.15s;
+        }
+        .btn-submit-survey:hover {
+            background: var(--tech-blue-hover);
+        }
+
+        .bottom-nav {
+            position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
+            height: 48px; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(10px);
+            color: #F8FAFC; border-radius: 999px; padding: 0 16px 0 18px; display: flex;
+            align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.35);
+            z-index: 100; font-size: 14.5px; white-space: nowrap; border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .nav-btn {
+            background: transparent; border: none; color: #F8FAFC; font-family: var(--font-sans);
+            font-size: 14.5px; font-weight: 600; cursor: pointer; padding: 6px 12px;
+            border-radius: 999px; transition: all 0.15s; display: flex; align-items: center; gap: 6px;
+        }
+        .nav-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.15); }
+        .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .nav-btn.pdf-primary { background: var(--tech-blue); color: #FFFFFF; font-weight: 700; padding: 6px 14px; }
+        .nav-btn.pdf-primary:hover:not(:disabled) { background: var(--tech-blue-hover); }
+        .dots-bar { display: flex; align-items: center; gap: 8px; }
+        .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.2s; }
+        .dot.active { width: 24px; border-radius: 4px; background: #38BDF8; }
+        .kbd-hint { font-family: var(--font-mono); font-size: 13px; color: #94A3B8; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 12px; }
+
+        .telemetry-box {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(0, 0, 0, 0.35); padding: 4px 12px; border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08); font-family: var(--font-mono);
+            font-size: 13px; color: #E2E8F0; margin-left: 4px;
+        }
+        .status-pulse { width: 7px; height: 7px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+        .telemetry-divider { color: rgba(255, 255, 255, 0.2); }
+        .session-timer { color: #38BDF8; font-weight: 600; }
+
+        #pdfOverlay {
+            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(6px); z-index: 9999; flex-direction: column;
+            justify-content: center; align-items: center; color: #FFFFFF; gap: 16px;
+        }
+        .spinner { width: 44px; height: 44px; border: 4px solid rgba(255,255,255,0.2); border-top-color: var(--tech-blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="pdfOverlay">
+        <div class="spinner"></div>
+        <div id="pdfProgressText" style="font-size: 22px; font-weight: 700; letter-spacing: 0.04em;">正在等比封裝單頁 PDF...</div>
+        <div style="font-family: var(--font-mono); font-size: 15px; color: #CBD5E1;">鎖定原始比例輸出，請稍候約 6~10 秒</div>
+    </div>
+
+    <div class="stage">
+        <main class="book-container">
+            <!-- SPREAD 0: P.01 & P.02 -->
+            <section class="spread active" data-spread="0">
+                <div class="page page-left">
+                    <div class="page-header">
+                        <span class="brand-tag">LOOKBOOKPRO // MARKETING PHILOSOPHY & GROWTH ARCHITECTURE</span>
+                        <span>DOC-ID: MED-CRM-PHILOSOPHY-V4</span>
+                    </div>
+                    <div class="page-body">
+                        <div class="identity-banner">
+                            <div>
+                                <div class="identity-company">STRATEGIC ADVISORY BRIEFING // 獻給王總經理</div>
+                                <div class="identity-candidate">行銷設計哲學 × 零個資高轉化裂變系統（全自動化閉環）</div>
+                            </div>
+                            <div class="identity-meta">
+                                CLASS: EXECUTIVE BRIEFING<br>
+                                PHILOSOPHY: ZERO-FRICTION & ZERO-PII<br>
+                                ARCHITECTURE: UUID SINGLE-USE LEDGER
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="kicker">01 // CORE MARKETING DESIGN PHILOSOPHY</div>
+                            <h1 class="editorial-h1">我的行銷設計第一性原理：放棄「強迫留個資」，換取「零阻力口碑裂變」與「零風險資料治理」</h1>
+                            <p class="editorial-subtitle">融合台灣醫材廣告法規防火牆、蘋果級極簡開箱文案、以及「免留個資問卷 → 唯一碼高清圖一鍵下載」永動機架構</p>
+                        </div>
+
+                        <div class="manifesto-box">
+                            <div class="manifesto-title">CORE DESIGN PHILOSOPHY // 給王總的行銷底層設計理念</div>
+                            <div class="manifesto-quote">
+                                「消費者每多填一格資料、多按一個註冊鈕，拒絕領券與拒絕轉介紹的機率就成倍暴增。兩害相權取其輕——我們不靠問卷強索個資做二次行銷，而是用『零摩擦體驗』讓每一位成交客戶，免費成為我們最強的超級業務員！」
+                            </div>
+                        </div>
+
+                        <div class="formula-box">
+                            蘋果級極簡合規文案 <span class="arrow">+</span> 免個資 60 秒問卷 <span class="arrow">+</span> DB 唯一碼高清圖（用完鎖死） <span class="arrow">=</span> 零風險口碑永動機
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item crimson-border">
+                                <h3><span>篇章一（P.02 - P.04）：台灣醫材廣告全法條紅線＆安全詞庫防火牆</span><span class="badge crimson">100% 零罰單</span></h3>
+                                完整盤點《醫材法》、《藥事法》、《食安法》、《公平法》、《消保法》與《個資法》；並以「物理體感詞庫」徹底杜絕罰單與客訴。
+                            </div>
+                            <div class="muji-rule-item">
+                                <h3><span>篇章二（P.05 - P.06）：公私域合規隔離架構＆蘋果級極簡文案引擎</span><span class="badge">降本增效</span></h3>
+                                公開頁面用極簡開箱文讓外行客戶 3 秒對號入座，私域 LINE CRM 精準貼標接手；發佈前執行「三道合規檢核 SOP」。
+                            </div>
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>篇章三（P.07 - P.10）：零個資問卷裂變飛輪（含一鍵下載高清圖 Demo）＆ 理念答客問</span><span class="badge emerald">完整實戰閉環</span></h3>
+                                深入剖析為何醫材產業「不收多餘個資」反而是最佳風控策略（P.08），並提供現場可按一鍵下載高清優惠圖卡實測（P.07）。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>CONFIDENTIAL // PREPARED FOR GENERAL MANAGER WANG</span>
+                        <span class="page-number">P.01 / P.10</span>
+                    </div>
+                </div>
+
+                <div class="page page-right">
+                    <div class="page-header">
+                        <span class="brand-tag">PART I // STATUTORY COMPLIANCE MATRIX (1/2)</span>
+                        <span>MEDICAL DEVICE & HEALTH LAW</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">02 // CORE STATUTES FOR MEDICAL DEVICES</div>
+                            <h2 class="editorial-h2">第一道鐵律：《醫療器材管理法》與《藥事法》核心規範</h2>
+                            <p class="editorial-subtitle">只要產品具備「醫療器材許可證字號」（如衛部醫器製/輸字號），官網與 LINE 群貼文一律受本法最高強度監管。</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item crimson-border">
+                                <h3><span>《醫療器材管理法》第 40 條：廣告主體資格限制</span><span class="badge crimson">違法罰 20萬～500萬</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>法條細節</strong>：非醫療器材商（領有販賣業或製造業許可執照者），不得為醫療器材廣告。</li>
+                                    <li><strong>實戰防線</strong>：公司官網、LINE 官方帳號及推廣群組，必須明確揭露合法登記之<strong>醫療器材商名稱與許可執照字號</strong>，嚴禁以未登記之個人名義私自發佈導購廣告。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item crimson-border">
+                                <h3><span>《醫療器材管理法》第 41 條：事前審查與字號標註義務</span><span class="badge crimson">第 65 條重罰 20萬～500萬</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>法條細節</strong>：醫療器材商刊播廣告前，應將所有文字、圖畫或言詞，申請中央或直轄市衛生主管機關<strong>核准</strong>，並向傳播業者送驗核准文件。核准有效期間為 1 年。</li>
+                                    <li><strong>實戰防線</strong>：凡屬廣告性質之圖文，必須逐字依核准本刊登，<strong>不得擅自增刪修改任何一字</strong>，且版面須清楚標示「衛部醫器廣字第 XXXXXXXX 號」及「使用前請詳閱說明書」。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item amber-border">
+                                <h3><span>《醫療器材管理法》第 42 條：絕對禁止之代言與見證手法</span><span class="badge amber">零容忍紅線</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>嚴禁假借醫事人員或機構名義</strong>：不得借用醫師、物理治療師、護理師或醫院／醫學會之名義、肖像、推薦信進行背書。</li>
+                                    <li><strong>嚴禁公開「病友康復見證 / Before-After 對比」</strong>：不得以使用者心得、前後對比照片暗示或明示療效（因此轉介紹必須用「折價圖卡」而非「病友療效見證文」）。</li>
+                                    <li><strong>嚴禁「無效退費」或「誇大保證」</strong>：不得出現「保證改善、根治、100% 有效、無效全額退費」等字眼。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item">
+                                <h3><span>《藥事法》第 69 條：非藥物與一般輔具之療效禁令</span><span class="badge">違法罰 60萬～2,500萬</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>法條細節</strong>：非本法所稱之藥物（包含一般生活護具、按摩器、輔具、保健品），<strong>不得為醫療效能之標示或宣傳</strong>，連「舒緩疼痛、消炎、復健治療」皆屬禁語。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>STATUTORY REFERENCE: MEDICAL DEVICES ACT ART. 40-42, 65</span>
+                        <span class="page-number">P.02 / P.10</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SPREAD 1: P.03 & P.04 -->
+            <section class="spread" data-spread="1">
+                <div class="page page-left">
+                    <div class="page-header">
+                        <span class="brand-tag">PART I // STATUTORY COMPLIANCE MATRIX (2/2)</span>
+                        <span>FAIR TRADE, CONSUMER & PRIVACY LAW</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">03 // COMMERCIAL, CONSUMER & SPECIAL PII LAWS</div>
+                            <h2 class="editorial-h2">第二道鐵律：消保、公平交易、食安與「特種個資紅線」</h2>
+                            <p class="editorial-subtitle">全面防堵價格標示爭議、退貨客訴，並揭開為何「醫療健康產業隨便收個資」反而是巨大的法律負債。</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item crimson-border">
+                                <h3><span>《個人資料保護法》第 6 條：醫療健康屬於「特種個資」禁區</span><span class="badge crimson">最高標準監管</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>法條細節</strong>：有關病歷、醫療、基因、健康檢查之個人資料，屬於受最高等級保護之「特種個資」，原則上<strong>不得蒐集、處理或利用</strong>。</li>
+                                    <li><strong>實戰防線</strong>：若問卷同時記錄「客戶姓名電話」與「腰椎開刀／疼痛部位」，公司立刻背負特種個資保管與資安重擔；<strong>改用「免個資問卷＋匿名唯一序號」</strong>，從源頭徹底切斷特種個資外洩與違法風險。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item">
+                                <h3><span>《食品安全衛生管理法》第 28 條（營養補充品適用）</span><span class="badge">最高罰 500 萬</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>法條細節</strong>：食品廣告不得有不實、誇張或易生誤解之情形，亦不得宣稱醫療效能。僅能使用衛福部公告之<strong>「通常可使用之詞句」</strong>（如：營養補給、調整體質、增強體力）。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item amber-border">
+                                <h3><span>《公平交易法》第 21 條：唯一性優惠代碼與價格標示真實性</span><span class="badge amber">最高罰 2,500 萬</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>實戰防線</strong>：推行「特價後憑唯一優惠代碼可再折一次」時，圖卡上明確標註<strong>「限單次核銷・用完即鎖死」</strong>，結帳系統同步顯示活動特價與專屬代碼折抵金額，規則透明零爭議。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>《消費者保護法》第 19 與 22 條：廣告契約化與鑑賞期告知</span><span class="badge emerald">零客訴防線</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>廣告即契約（第 22 條）</strong>：企業對消費者所負之義務不得低於廣告內容。堅持「蘋果級極簡物理描述」不誇大，就永遠不會產生期待落差客訴。</li>
+                                    <li><strong>個人衛生用品例外（第 19 條）</strong>：貼身穿戴之護具、接觸肌膚耗材，若要適用「拆封後不適用七日無條件退貨」，<strong>必須在結帳頁面以顯著字體明確告知</strong>。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>STATUTORY REFERENCE: PDPA ART. 6, FAIR TRADE ACT & CPA</span>
+                        <span class="page-number">P.03 / P.10</span>
+                    </div>
+                </div>
+
+                <div class="page page-right">
+                    <div class="page-header">
+                        <span class="brand-tag">PART II // LEXICON FIREWALL</span>
+                        <span>RED-LINE VS. SAFE VOCABULARY</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">04 // COPYWRITING LEXICON SANITIZATION</div>
+                            <h2 class="editorial-h2">廣告文案「禁語紅線」與「合規物理轉譯」對照表</h2>
+                            <p class="editorial-subtitle">把違法風險最高的「療效承諾詞」，精準替換為零法律爭議的「物理體感與生活情境詞」。</p>
+                        </div>
+
+                        <table class="tech-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 22%;">文案維度</th>
+                                    <th style="width: 38%;">絕對禁語（觸法／客訴高風險）</th>
+                                    <th style="width: 40%;">合規安全轉譯（蘋果級物理描述）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>痛點與症狀</strong></td>
+                                    <td><span class="code-quote">治療腰痛、消除關節炎、根治足底筋膜炎、改善椎間盤突出</span></td>
+                                    <td class="win-cell"><span class="code-safe">專為久坐辦公族群設計、提供腰部穩定支撐、減輕日常行走負擔</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>使用效果承諾</strong></td>
+                                    <td><span class="code-quote">3天見效、100%改善、永久定型、保證不復發、有效緩解疼痛</span></td>
+                                    <td class="win-cell"><span class="code-safe">貼合身形曲線、分散局部壓力、讓日常活動更輕鬆自在</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>材質與工藝</strong></td>
+                                    <td><span class="code-quote">醫療級神效纖維、遠紅外線活化細胞、促進血液循環治病</span></td>
+                                    <td class="win-cell"><span class="code-safe">3D 立體編織透氣網布、輕量化 120g 設計、全天候穿戴不悶熱</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>權威與見證</strong></td>
+                                    <td><span class="code-quote">台大/榮總醫師強烈推薦、王先生使用兩週後完全康復</span></td>
+                                    <td class="win-cell"><span class="code-safe">符合人體工學力學結構設計、累計服務超過 X 萬個居家照護家庭</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>售後與優惠</strong></td>
+                                    <td><span class="code-quote">無效全額退費、介紹病人抽佣金、終身免費醫療保固</span></td>
+                                    <td class="win-cell"><span class="code-safe">填寫 60 秒體驗回饋即發專屬唯一折價圖卡，歡迎轉贈親友使用</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="muji-rule-item emerald-border">
+                            <h3><span>黃金合規口訣：只談「物理結構 × 穿戴體感 × 使用情境」</span><span class="badge emerald">100% SAFE</span></h3>
+                            只要文案專注描述<strong>「產品本身的物理設計（輕、薄、透氣、穩定支撐、好操作）」</strong>與<strong>「使用者的生活場景（久坐、居家照護）」</strong>，就能同時做到讓消費者秒懂，且在任何衛生局稽查下皆立於不敗之地。
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>COMPLIANCE LEXICON // ZERO-CONTROVERSY STANDARD</span>
+                        <span class="page-number">P.04 / P.10</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SPREAD 2: P.05 & P.06 -->
+            <section class="spread" data-spread="2">
+                <div class="page page-left">
+                    <div class="page-header">
+                        <span class="brand-tag">PART III // PUBLIC-PRIVATE CHANNEL ARCHITECTURE</span>
+                        <span>WEBSITE & LINE OA GOVERNANCE</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">05 // CHANNEL BOUNDARY & RISK ISOLATION</div>
+                            <h2 class="editorial-h2">官網與 LINE 群「公私域合規隔離」雙軌運作模型</h2>
+                            <p class="editorial-subtitle">公開頁面負責「極簡情境吸引與對號入座」，私域系統負責「一對一諮詢與唯一性優惠券裂變」。</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>軌道 A：公開網頁與 LINE 群發貼文（公域引流層）</span><span class="badge">受廣告法嚴格審查</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>80/20 聚焦策略</strong>：只針對占 80% 營收的明星主力商品撰寫<strong>「蘋果級極簡情境開箱文」</strong>；冷門特殊規格商品直接提供真人顧問諮詢入口，不浪費資源。</li>
+                                    <li><strong>合規鐵律</strong>：嚴格套用安全詞庫；醫材廣告一律取得<strong>廣字號</strong>並於版面底部固定嵌入法規聲明區塊（醫材商名稱、執照字號、許可證字號、警語）。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>軌道 B：LINE 一對一自動化互動與顧問諮詢（私域轉化層）</span><span class="badge emerald">個別諮詢與發券引擎</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>售前分流</strong>：客戶點擊「30 秒找出你的專屬方案」，系統透過 3 個選擇題自動貼標並推送白話比較卡；複雜問題無縫轉接真人專家顧問，諮詢時間縮短 60%。</li>
+                                    <li><strong>售後發券</strong>：成交後第 7 天自動觸發<strong>「60 秒免帳密手機問卷」</strong>，提交後串接資料庫即時產生唯一優惠碼，並顯示含公司名稱之高清圖卡供一鍵下載。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item amber-border">
+                                <h3><span>發佈前「三道合規檢核 SOP」（零罰單保證機制）</span><span class="badge amber">MANDATORY GATE</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>Gate 1（AI 禁語掃描）</strong>：自動標紅所有涉及療效、最高級、誇大保證之字眼。</li>
+                                    <li><strong>Gate 2（仿單一致性核對）</strong>：逐句比對衛福部核准仿單，確保無超範圍宣稱。</li>
+                                    <li><strong>Gate 3（法規／顧問雙簽存檔）</strong>：確認廣字號效期、警語及退換貨告知條款無誤後方能上線。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>CHANNEL ARCHITECTURE // ZERO-ORPHAN CUSTOMER JOURNEY</span>
+                        <span class="page-number">P.05 / P.10</span>
+                    </div>
+                </div>
+
+                <div class="page page-right">
+                    <div class="page-header">
+                        <span class="brand-tag">PART IV // APPLE-STYLE COPYWRITING ENGINE</span>
+                        <span>MINIMALIST & HIGH-CONVERSION FORMULA</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">06 // THE APPLE MINIMALIST COPYWRITING ENGINE</div>
+                            <h2 class="editorial-h2">如何寫出「像蘋果一樣極簡、誰看都秒懂」的開箱文案？</h2>
+                            <p class="editorial-subtitle">捨棄冰冷的醫療參數，用「一句話點破痛點 ＋ 一個物理亮點 ＋ 一個安心承諾」完成極致溝通。</p>
+                        </div>
+
+                        <div class="formula-box">
+                            極簡主標（7-12字點破情境） <span class="arrow">→</span> 副標（15字內講清物理優勢） <span class="arrow">→</span> 售後陪伴承諾
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>原則一：用「體感畫面」取代「工業規格」</span><span class="badge">秒懂關鍵</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>傳統工程師寫法</strong>：採用高密度記憶泡棉與雙向可調式鋁合金支撐條，符合人體工學曲度設計。</li>
+                                    <li><strong>蘋果級極簡寫法</strong>：<strong>「久坐八小時，腰背依然挺得住。」</strong>（把技術規格轉化成使用者閉上眼睛就能想像的舒服畫面）。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>原則二：每篇開箱文只聚焦「一個主力適用族群」</span><span class="badge emerald">對號入座</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li>不寫「適合所有人」，而是精準鎖定 80/20 主力客群（例如：<strong>給每天需要照顧長輩的你</strong>、<strong>給長時間久坐的上班族</strong>），讓消費者滑手機 3 秒內產生<strong>「這就是在講我」</strong>的共鳴。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item amber-border">
+                                <h3><span>原則三：把「售後有團隊陪伴」寫進文案最後一句</span><span class="badge amber">終結產品孤兒</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li>每一篇極簡開箱文結尾，都放上一句建立絕對安全感的承諾：<strong>「買回家不是結束，專屬顧問團隊在 LINE 上陪你每一步。」</strong>——完全合法，卻能直接擊穿競品只管賣貨不管售後的軟肋。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>COPYWRITING METHODOLOGY // MINIMALISM & CLARITY</span>
+                        <span class="page-number">P.06 / P.10</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SPREAD 3: P.07 & P.08 (互動式問卷發券＋行銷設計理念深度拆解) -->
+            <section class="spread" data-spread="3">
+                <div class="page page-left">
+                    <div class="page-header">
+                        <span class="brand-tag">PART V // INTERACTIVE UNIQUE VOUCHER ENGINE (1/2)</span>
+                        <span>LIVE CLICKABLE DEMO // ONE-CLICK HD PNG</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">07 // LIVE INTERACTIVE SURVEY & HD VOUCHER GENERATOR</div>
+                            <h2 class="editorial-h2">現場實測：手機 60 秒免個資問卷 → 唯一碼生成 → 一鍵下載高清圖</h2>
+                            <p class="editorial-subtitle">王總可直接點擊下方選項並送出，系統將模擬後端資料庫生成<strong>全球唯一序號</strong>，並可點擊綠色按鈕<strong>真實下載整張高清優惠券圖檔</strong>。</p>
+                        </div>
+
+                        <!-- 互動式手機問卷模擬 -->
+                        <div class="demo-survey-box">
+                            <div class="demo-survey-header">
+                                <span class="demo-survey-title">📱 手機免帳密回饋單（不留任何個資・點選即領券）</span>
+                                <span class="badge">ZERO-PII MODE</span>
+                            </div>
+                            <div class="survey-q-row">
+                                <span>1. 產品穿戴操作是否順手？</span>
+                                <div class="survey-opts">
+                                    <span class="opt-pill selected" onclick="selectOpt(this)">超順手貼合</span>
+                                    <span class="opt-pill" onclick="selectOpt(this)">需要顧問微調</span>
+                                </div>
+                            </div>
+                            <div class="survey-q-row">
+                                <span>2. 線上顧問教學是否有幫助？</span>
+                                <div class="survey-opts">
+                                    <span class="opt-pill selected" onclick="selectOpt(this)">非常清楚安心</span>
+                                    <span class="opt-pill" onclick="selectOpt(this)">還不錯</span>
+                                </div>
+                            </div>
+                            <button class="btn-submit-survey" onclick="issueUniqueVoucher()">✨ 提交回饋並從資料庫生成專屬唯一優惠券</button>
+                        </div>
+
+                        <!-- 真實可截圖與一鍵下載的高清優惠券卡片 -->
+                        <div class="voucher-wrapper">
+                            <div class="voucher-mockup" id="hdVoucherCard">
+                                <div class="voucher-left">
+                                    <div class="voucher-company-header">
+                                        <span class="company-seal">OFFICIAL VOUCHER</span>
+                                        <span class="company-name-text" id="voucherCompanyName">【智友健康科技｜專業醫材照護團隊】</span>
+                                    </div>
+                                    <div class="v-title">貴賓專屬回饋・全館結帳現折 $300</div>
+                                    <div class="v-rules">
+                                        ✓ <strong>一碼一用・核銷即鎖死</strong>（資料庫唯一防偽序號）<br>
+                                        ✓ <strong>無使用期限・可轉傳親友</strong>（特價商品仍可再折一次）
+                                    </div>
+                                </div>
+                                <div class="voucher-right">
+                                    <div class="v-code-label">UNIQUE DB TOKEN</div>
+                                    <div class="v-code" id="uniquePromoCode">ZY-2611-8A9F</div>
+                                    <div class="v-status" id="voucherDbStatus">● ACTIVE｜未使用（限用一次）</div>
+                                </div>
+                            </div>
+
+                            <div class="voucher-action-bar">
+                                <span class="voucher-action-hint" id="voucherLogHint">DB 唯一紀錄已寫入｜點擊右側按鈕可直接下載高清 PNG 圖卡</span>
+                                <div class="voucher-btn-group">
+                                    <button class="btn-voucher gen" onclick="issueUniqueVoucher()">🔄 模擬新客戶領碼</button>
+                                    <button class="btn-voucher dl" onclick="downloadVoucherHDImage()">📥 一鍵下載高清優惠圖</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>INTERACTIVE DEMO // CLICK TO GENERATE & DOWNLOAD HD PNG</span>
+                        <span class="page-number">P.07 / P.10</span>
+                    </div>
+                </div>
+
+                <div class="page page-right">
+                    <div class="page-header">
+                        <span class="brand-tag">PART V // MARKETING DESIGN PHILOSOPHY & DATA GOVERNANCE (2/2)</span>
+                        <span>WHY ZERO-PII WINS FOR MEDICAL BUSINESS</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">08 // STRATEGIC RATIONALE: WHY WE DO NOT COLLECT PII IN SURVEYS</div>
+                            <h2 class="editorial-h2">我的行銷設計理念：為何「不向問卷客戶要個資」才是最高段位？</h2>
+                            <p class="editorial-subtitle">從「消費者行為漏斗」與「醫材產業有毒資產治理」雙重視角，向王總報告背後的精算邏輯。</p>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item">
+                                <h3><span>理念一：戰略取捨——目的是「免費超級業務員」，不是「二次行銷」</span><span class="badge">FRICTIONLESS</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>消費者真實心理</strong>：剛買完東西時，只要多讓他填一格電話、多打一個名字、多按一個註冊確認鈕，他拒絕領券的機率就會暴增 70% 以上，連帶把整條「轉傳優惠圖幫我們推介」的裂變線一起切斷。</li>
+                                    <li><strong>兩害相權取其輕</strong>：我們放棄在問卷端索取個資的摩擦動作，換取最高比例的客戶把「帶有公司名稱的高清優惠圖」存進手機並轉發給親友。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item crimson-border">
+                                <h3><span>理念二：醫材產業風險控管——個資是「高成本有毒資產」</span><span class="badge crimson">TOXIC ASSET</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>保管與法規成本極高</strong>：醫療健康相關資料屬於《個資法》第 6 條高敏感特種個資，光是資料庫加密、權限稽核與資安防漏就是沉重負擔。<strong>不收多餘個資，公司反而零資安風險、零法規負擔</strong>。</li>
+                                    <li><strong>匿名 UUID 認碼不認人</strong>：資料庫只記錄「序號啟用與用完鎖死狀態（<code>ACTIVE → USED_LOCKED</code>）」，完全不碰個資就能精準控管折扣預算。</li>
+                                </ul>
+                            </div>
+
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>理念三：精準時機點收網——真正付錢下單時，黃金名單自然入庫</span><span class="badge emerald">SMART CAPTURE</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>我們不是不要名單，而是「換在信任度最高的那一刻拿」</strong>：當原客戶回購、或親友持這張優惠圖來結帳核銷、寄送商品與登錄保固時，他們為了收貨自然會留下真實姓名、電話與地址——資料庫沉澱下來的，<strong>100% 全是真正掏錢成交的黃金付費客戶</strong>。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>MARKETING PHILOSOPHY // ZERO-PII & ATOMIC VOUCHER LOCK</span>
+                        <span class="page-number">P.08 / P.10</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SPREAD 4: P.09 & P.10 (Apple-style Copywriting Showcase) -->
+            <section class="spread" data-spread="4">
+                <div class="page page-left">
+                    <div class="page-header">
+                        <span class="brand-tag">PART VI // LIVE COPYWRITING SHOWCASE (1/2)</span>
+                        <span>APPLE-STYLE COMPLIANT SAMPLES</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">09 // FLAGSHIP PRODUCT COPYWRITING DEMOS</div>
+                            <h2 class="editorial-h2">王總主力暢銷品：蘋果級極簡合規文案示範（一）</h2>
+                            <p class="editorial-subtitle">以下示範全數剔除違法療效詞與誇大形容詞，任何消費者 3 秒秒懂，且完全經得起法規與客訴檢驗。</p>
+                        </div>
+
+                        <div class="apple-copy-card">
+                            <div class="apple-tag">DEMO 01 // 居家日常支撐護具系列（官網主視覺 & LINE 圖文選單）</div>
+                            <div class="apple-headline">「穩穩托住你的腰。輕到像沒穿一樣。」</div>
+                            <div class="apple-sub">
+                                專為久坐辦公與日常家務設計。3D 透氣網布全天乾爽，單手三秒輕鬆貼合。<br>
+                                買回家不會變孤兒——專屬顧問在 LINE 上一對一教到你會用。
+                            </div>
+                        </div>
+
+                        <div class="muji-rule-item emerald-border">
+                            <h3><span>合規與商業解析（為何這段文案零風險且高轉化？）</span><span class="badge emerald">ZERO-RISK AUDIT</span></h3>
+                            <ul class="sub-bullet-list">
+                                <li><strong>零療效違法</strong>：完全沒出現「治療腰痛、改善脊椎、緩解痠痛」等禁語，僅陳述「托住、輕量、透氣、單手三秒貼合」等<strong>客觀物理特性</strong>。</li>
+                                <li><strong>精準對號入座</strong>：「久坐辦公與日常家務」直接鎖定最大宗購買族群，消費者無需詢問客服就能判斷自己是否適用。</li>
+                                <li><strong>法規標準註記</strong>：文末統一標註 <span class="loc-tag">衛部醫器製壹字第 XXXXXX 號｜衛部醫器廣字第 XXXXXX 號｜使用前請詳閱說明書</span>。</li>
+                            </ul>
+                        </div>
+
+                        <div class="apple-copy-card" style="border-left-color: #10B981;">
+                            <div class="apple-tag" style="color: #34D399;">DEMO 02 // 銀髮族與術後居家照護輔具（LINE 社群情境開箱貼文）</div>
+                            <div class="apple-headline">「照顧家人，不該讓你自己先累垮。」</div>
+                            <div class="apple-sub">
+                                專為居家照護家庭打造的省力設計。人體工學握把，起身、移動更穩當。<br>
+                                不確定家裡長輩適不適合？點下方按鈕，30 秒為您免費評估尺寸。
+                            </div>
+                        </div>
+
+                        <div class="muji-rule-item">
+                            <h3><span>合規與商業解析（訴之以情 × 導流進私域）</span><span class="badge">CRM FUNNEL</span></h3>
+                            <ul class="sub-bullet-list">
+                                <li><strong>擊中決策者痛點</strong>：買照護輔具的往往是子女，一句「照顧家人，不該讓你自己先累垮」直接打中購買者的真實心聲，零誇大卻極具感染力。</li>
+                                <li><strong>低阻力引流</strong>：用「30 秒免費評估尺寸」取代「快來買」，把潛在客戶順暢導進 LINE CRM 標籤系統。</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>COPYWRITING SHOWCASE // WEBSITE & LINE BROADCAST</span>
+                        <span class="page-number">P.09 / P.10</span>
+                    </div>
+                </div>
+
+                <div class="page page-right">
+                    <div class="page-header">
+                        <span class="brand-tag">PART VI // LIVE COPYWRITING SHOWCASE (2/2)</span>
+                        <span>POST-PURCHASE SURVEY & VIRAL REFERRAL COPY</span>
+                    </div>
+                    <div class="page-body">
+                        <div>
+                            <div class="kicker">10 // POST-PURCHASE CARE & UNIQUE VOUCHER TRIGGER COPY</div>
+                            <h2 class="editorial-h2">王總主力暢銷品：售後陪伴與唯一優惠券發放文案（二）</h2>
+                            <p class="editorial-subtitle">成交後第 1 天與第 7 天的 LINE 自動觸發文案——用極致溫度終結產品孤兒，並引導一鍵下載專屬高清優惠圖卡。</p>
+                        </div>
+
+                        <div class="apple-copy-card" style="border-left-color: #F59E0B;">
+                            <div class="apple-tag" style="color: #FBBF24;">DEMO 03 // 成交後第 1 天・LINE 自動觸發開箱引導（終結售後孤兒）</div>
+                            <div class="apple-headline">「東西收到了嗎？這 30 秒影片，幫你把舒適度調到最好。」</div>
+                            <div class="apple-sub">
+                                第一次穿戴如果覺得哪裡卡卡的，千萬別硬撐。<br>
+                                直接拍張照片傳給我們，專屬顧問團隊線上幫你微調到最貼合的角度。
+                            </div>
+                        </div>
+
+                        <div class="apple-copy-card" style="border-left-color: #A78BFA;">
+                            <div class="apple-tag" style="color: #C4B5FD;">DEMO 04 // 成交後第 7 天・60 秒免個資問卷＆一鍵下載唯一優惠圖通知</div>
+                            <div class="apple-headline">「這週用得還順手嗎？花 1 分鐘回饋，領取專屬 $300 貴賓圖卡。」</div>
+                            <div class="apple-sub">
+                                免留姓名電話、免註冊帳密，點選完成立即生成您的<strong>唯一專屬優惠圖</strong>。<br>
+                                <strong>一鍵下載保存・特價還能再折一次</strong>——自己回購或轉傳親友都能用（單次核銷有效）！
+                            </div>
+                        </div>
+
+                        <div class="muji-rule-list">
+                            <div class="muji-rule-item emerald-border">
+                                <h3><span>給王總的最終落地總結：合規、零個資負擔、自我增殖的商業閉環</span><span class="badge emerald">EXECUTIVE SUMMARY</span></h3>
+                                <ul class="sub-bullet-list">
+                                    <li><strong>100% 法律防火牆</strong>：全系列文案不碰療效紅線、問卷端零特種個資風險，徹底杜絕罰單、資安隱患與客訴糾紛。</li>
+                                    <li><strong>一碼一用・預算零失控</strong>：後端資料庫自動生成唯一序號，核銷瞬間永久鎖死，既讓客戶方便一鍵存圖轉傳，又確保每一分折扣都精準換回新訂單。</li>
+                                    <li><strong>免費超級業務員永動機</strong>：放棄問卷端強索個資的短視做法，換取源源不絕的口碑轉介紹，讓每一位被照顧好的客戶，都成為公司最信任的免費業務員。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-footer">
+                        <span>READY FOR DEPLOYMENT // LOOKBOOKPRO EXECUTIVE EDITION</span>
+                        <span class="page-number">P.10 / P.10</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bottom-nav">
+            <button class="nav-btn" id="prevBtn" onclick="changeSpread(-1)">← 上一跨頁 <span id="prevHint"></span></button>
+            <button class="nav-btn" onclick="goToSpread(0)">📖 首頁總綱</button>
+            <div class="dots-bar" id="dotsBar"></div>
+            <button class="nav-btn" id="nextBtn" onclick="changeSpread(1)">下一跨頁 <span id="nextHint"></span> →</button>
+            <button class="nav-btn pdf-primary" onclick="downloadStrictProportionalPDF()">📥 下載連續單頁 PDF</button>
+            <div class="telemetry-box" title="即時戰情時鐘與會話時長">
+                <span class="status-pulse"></span>
+                <span id="taipeiClock">2026-11-16 09:00:00 CST</span>
+                <span class="telemetry-divider">|</span>
+                <span>SESSION: <span id="sessionTimer" class="session-timer">00:00</span></span>
+            </div>
+            <span class="kbd-hint">← → 鍵盤翻頁</span>
+        </footer>
+    </div>
+
+    <script>
+        const spreads = document.querySelectorAll('.spread');
+        const totalSpreads = spreads.length;
+        let currentSpread = 0;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevHint = document.getElementById('prevHint');
+        const nextHint = document.getElementById('nextHint');
+        const dotsBar = document.getElementById('dotsBar');
+
+        function initDots() {
+            dotsBar.innerHTML = '';
+            for (let i = 0; i < totalSpreads; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === currentSpread ? ' active' : '');
+                dot.title = `跳轉至第 ${i * 2 + 1}-${i * 2 + 2} 頁`;
+                dot.onclick = () => goToSpread(i);
+                dotsBar.appendChild(dot);
+            }
+        }
+
+        function updateUI() {
+            spreads.forEach((s, idx) => s.classList.toggle('active', idx === currentSpread));
+            dotsBar.querySelectorAll('.dot').forEach((d, idx) => d.classList.toggle('active', idx === currentSpread));
+            prevBtn.disabled = currentSpread === 0;
+            nextBtn.disabled = currentSpread === totalSpreads - 1;
+            prevHint.textContent = currentSpread > 0 ? `(P.${String((currentSpread - 1) * 2 + 1).padStart(2, '0')})` : '';
+            nextHint.textContent = currentSpread < totalSpreads - 1 ? `(P.${String((currentSpread + 1) * 2 + 1).padStart(2, '0')})` : '';
+        }
+
+        function goToSpread(index) {
+            if (index >= 0 && index < totalSpreads) {
+                currentSpread = index;
+                updateUI();
+            }
+        }
+
+        function changeSpread(delta) { goToSpread(currentSpread + delta); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); changeSpread(1); }
+            else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); changeSpread(-1); }
+            else if (e.key === 'Home') { e.preventDefault(); goToSpread(0); }
+        });
+
+        /* 互動式問卷選項切換 */
+        function selectOpt(el) {
+            const parent = el.parentElement;
+            parent.querySelectorAll('.opt-pill').forEach(p => p.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        /* 模擬後端資料庫生成全球唯一性優惠代碼並永久記錄（Zero-PII UUID） */
+        const issuedTokens = new Set(['ZY-2611-8A9F']);
+        function generateUniqueCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = '';
+            do {
+                let randPart = '';
+                for (let i = 0; i < 4; i++) {
+                    randPart += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                const tsPart = String(Date.now()).slice(-4);
+                code = `ZY-${tsPart}-${randPart}`;
+            } while (issuedTokens.has(code));
+            issuedTokens.add(code);
+            return code;
+        }
+
+        function issueUniqueVoucher() {
+            const newCode = generateUniqueCode();
+            const codeEl = document.getElementById('uniquePromoCode');
+            const statusEl = document.getElementById('voucherDbStatus');
+            const hintEl = document.getElementById('voucherLogHint');
+
+            if (codeEl) codeEl.textContent = newCode;
+            if (statusEl) statusEl.textContent = '● ACTIVE｜未使用（限用一次）';
+            if (hintEl) hintEl.textContent = `已寫入 DB 匿名唯一紀錄 [${newCode}]｜點擊右側一鍵下載高清圖卡`;
+        }
+
+        /* 真實一鍵下載高清優惠券 PNG 圖卡（含公司名稱、唯一序號、用完即鎖死聲明） */
+        async function downloadVoucherHDImage() {
+            const cardEl = document.getElementById('hdVoucherCard');
+            const codeText = document.getElementById('uniquePromoCode')?.textContent || 'VOUCHER';
+            const hintEl = document.getElementById('voucherLogHint');
+            if (!cardEl) return;
+
+            try {
+                if (hintEl) hintEl.textContent = '正在渲染 3 倍超高清優惠券 PNG 圖檔...';
+                const canvas = await html2canvas(cardEl, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: '#0F172A',
+                    logging: false
+                });
+                const link = document.createElement('a');
+                link.download = `VIP_Voucher_${codeText}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                if (hintEl) hintEl.textContent = `✅ 已下載高清圖卡：VIP_Voucher_${codeText}.png（用完即鎖死）`;
+            } catch (err) {
+                console.error(err);
+                alert('圖卡渲染失敗，請確認瀏覽器支援 Canvas 下載。');
+            }
+        }
+
+        const sessionStartTime = Date.now();
+        function updateTelemetry() {
+            const now = new Date();
+            const taipeiTimeStr = new Intl.DateTimeFormat('zh-TW', {
+                timeZone: 'Asia/Taipei',
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false
+            }).format(now).replace(/\//g, '-');
+
+            const clockEl = document.getElementById('taipeiClock');
+            if (clockEl) clockEl.textContent = `${taipeiTimeStr} CST`;
+
+            const elapsedSec = Math.floor((Date.now() - sessionStartTime) / 1000);
+            const mins = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+            const secs = String(elapsedSec % 60).padStart(2, '0');
+            const timerEl = document.getElementById('sessionTimer');
+            if (timerEl) timerEl.textContent = `${mins}:${secs}`;
+        }
+        setInterval(updateTelemetry, 1000);
+        updateTelemetry();
+
+        async function downloadStrictProportionalPDF() {
+            const overlay = document.getElementById('pdfOverlay');
+            const progressText = document.getElementById('pdfProgressText');
+            const savedSpread = currentSpread;
+            try {
+                overlay.style.display = 'flex';
+                const { jsPDF } = window.jspdf;
+                const allPages = [];
+                spreads.forEach((spreadEl, sIdx) => {
+                    const leftPage = spreadEl.querySelector('.page-left');
+                    const rightPage = spreadEl.querySelector('.page-right');
+                    if (leftPage) allPages.push({ spreadIndex: sIdx, el: leftPage });
+                    if (rightPage) allPages.push({ spreadIndex: sIdx, el: rightPage });
+                });
+
+                let pdf = null;
+                for (let i = 0; i < allPages.length; i++) {
+                    const item = allPages[i];
+                    progressText.textContent = `正在等比封裝單頁：P.${String(i + 1).padStart(2, '0')} / P.${String(allPages.length).padStart(2, '0')} ...`;
+                    goToSpread(item.spreadIndex);
+                    await new Promise(r => setTimeout(r, 90));
+
+                    const rect = item.el.getBoundingClientRect();
+                    const canvas = await html2canvas(item.el, {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#FFFFFF',
+                        logging: false,
+                        width: rect.width,
+                        height: rect.height
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg', 0.96);
+                    const mmWidth = canvas.width * 0.264583;
+                    const mmHeight = canvas.height * 0.264583;
+                    const isLandscape = mmWidth > mmHeight;
+
+                    if (i === 0) {
+                        pdf = new jsPDF({
+                            orientation: isLandscape ? 'landscape' : 'portrait',
+                            unit: 'mm',
+                            format: [mmWidth, mmHeight]
+                        });
+                        pdf.addImage(imgData, 'JPEG', 0, 0, mmWidth, mmHeight);
+                    } else {
+                        pdf.addPage([mmWidth, mmHeight], isLandscape ? 'landscape' : 'portrait');
+                        pdf.addImage(imgData, 'JPEG', 0, 0, mmWidth, mmHeight);
+                    }
+                }
+                progressText.textContent = '封裝完成！正在觸發下載...';
+                pdf.save('Medical_Compliance_Marketing_Philosophy_Playbook_v4.pdf');
+            } catch (err) {
+                console.error(err);
+                alert('匯出時發生異常，請確認瀏覽器環境。');
+            } finally {
+                goToSpread(savedSpread);
+                overlay.style.display = 'none';
+            }
+        }
+
+        initDots();
+        updateUI();
+    </script>
+</body>
+</html>
