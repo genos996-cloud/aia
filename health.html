@@ -123,6 +123,26 @@
       transform: translateX(3px);
     }
 
+    /* External Whitepaper Button Active State */
+    .wp-btn {
+      transition: all 0.2s ease;
+      border-left: 5px solid transparent;
+    }
+    .wp-btn-active {
+      background: linear-gradient(90deg, rgba(0, 137, 123, 0.42) 0%, rgba(0, 137, 123, 0.08) 100%);
+      border-left-color: #34D399;
+      color: #FFFFFF !important;
+      transform: translateX(4px);
+    }
+    .wp-btn-inactive {
+      color: #CBD5E1;
+    }
+    .wp-btn-inactive:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: #FFFFFF;
+      transform: translateX(3px);
+    }
+
     /* Smooth Page Switch Animation */
     .page-enter {
       animation: pageSlideIn 0.26s cubic-bezier(0.16, 1, 0.3, 1);
@@ -155,9 +175,9 @@
   <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-80 xl:w-96 bg-brand-navy text-white flex flex-col justify-between border-r border-slate-800 transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-200 shrink-0">
     
     <!-- Top Identity Block -->
-    <div class="p-6 border-b border-slate-800">
-      <div class="flex items-center justify-between mb-3">
-        <span class="px-2.5 py-1 text-xs font-mono font-medium uppercase tracking-widest bg-sky-950 text-sky-300 border border-sky-700/60 rounded">
+    <div class="p-5 border-b border-slate-800">
+      <div class="flex items-center justify-between mb-2.5">
+        <span class="px-2.5 py-0.5 text-xs font-mono font-medium uppercase tracking-widest bg-sky-950 text-sky-300 border border-sky-700/60 rounded">
           CEO BRIEFING
         </span>
         <span class="text-xs font-mono text-emerald-400 flex items-center gap-1.5">
@@ -165,19 +185,19 @@
         </span>
       </div>
 
-      <div class="text-sm font-normal text-slate-400 mb-1">
+      <div class="text-sm font-normal text-slate-400 mb-0.5">
         保爾芬德健康運動 × 康立安智能醫療
       </div>
-      <h1 class="text-2xl font-semibold text-white tracking-tight leading-snug mb-4">
+      <h1 class="text-2xl font-semibold text-white tracking-tight leading-snug mb-3">
         總經理營運特助
-        <span class="block text-base font-normal text-sky-300 mt-1">專案推進與 AI 自動化實戰</span>
+        <span class="block text-sm font-normal text-sky-300 mt-0.5">專案推進與 AI 自動化實戰</span>
       </h1>
 
       <!-- Candidate Badge -->
-      <div class="bg-slate-900/95 border border-slate-700/80 rounded-xl p-4 flex items-center justify-between">
+      <div class="bg-slate-900/95 border border-slate-700/80 rounded-xl px-4 py-3 flex items-center justify-between">
         <div>
           <div class="text-xs text-slate-400">應徵夥伴</div>
-          <div class="text-xl font-semibold text-white mt-0.5">郭奕正 <span class="text-sm font-normal text-sky-300 ml-1">營運專員</span></div>
+          <div class="text-lg font-semibold text-white">郭奕正 <span class="text-xs font-normal text-sky-300 ml-1">營運專員</span></div>
         </div>
         <span class="px-2.5 py-1 text-xs font-mono font-semibold bg-teal-950 text-teal-300 border border-teal-700 rounded-md">
           即戰力
@@ -185,16 +205,36 @@
       </div>
     </div>
 
-    <!-- 7-Page Navigation List -->
-    <nav id="navList" class="flex-1 overflow-y-auto py-4 space-y-1">
-      <!-- Populated by JS -->
-    </nav>
+    <!-- Scrollable Navigation Area: Internal 7 Pages + 3 Direct In-Place Whitepaper Buttons -->
+    <div class="flex-1 overflow-y-auto py-3 space-y-4">
+      <!-- Section 1: 7-Page Core Presentation -->
+      <div>
+        <div class="px-6 pb-1.5 text-xs font-mono font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+          <span>核心簡報章節（01 - 07）</span>
+          <span class="text-sky-400">SPA 主軸</span>
+        </div>
+        <nav id="navList" class="space-y-0.5">
+          <!-- Populated by JS -->
+        </nav>
+      </div>
+
+      <!-- Section 2: 3 Direct Whitepaper Buttons (Render In-Place Inside Right Viewport) -->
+      <div class="border-t border-slate-800/90 pt-3">
+        <div class="px-6 pb-1.5 text-xs font-mono font-semibold text-emerald-400 uppercase tracking-wider flex items-center justify-between">
+          <span>專題白皮書（原地展開）</span>
+          <span class="text-slate-400">不跳離本頁</span>
+        </div>
+        <nav id="whitepaperList" class="space-y-1">
+          <!-- Populated by JS -->
+        </nav>
+      </div>
+    </div>
 
     <!-- Bottom Keyboard & Interaction Hint -->
-    <div class="p-5 bg-slate-950/90 border-t border-slate-800/90 text-xs text-slate-400 space-y-1.5">
+    <div class="px-5 py-3.5 bg-slate-950/90 border-t border-slate-800/90 text-xs text-slate-400 space-y-1">
       <div class="flex items-center justify-between">
-        <span>互動模式</span>
-        <span class="text-sky-300 font-mono">滑鼠懸停聚焦 / 鍵盤 ↑↓ 換頁</span>
+        <span>單頁全覽模式</span>
+        <span class="text-sky-300 font-mono">左側點選即刻切換顯示</span>
       </div>
       <div class="text-slate-500">
         不講空話，只談怎麼幫 CEO 省時間、把事辦成。
@@ -206,7 +246,7 @@
   <main id="mainViewport" class="flex-1 flex flex-col h-full overflow-hidden">
     
     <!-- Top Page Title Banner -->
-    <header class="bg-white/95 backdrop-blur border-b border-slate-200 px-8 py-5 flex flex-wrap items-center justify-between gap-4 shrink-0 shadow-sm z-10">
+    <header class="bg-white/95 backdrop-blur border-b border-slate-200 px-8 py-4 flex flex-wrap items-center justify-between gap-4 shrink-0 shadow-sm z-10">
       <div class="flex items-center space-x-4">
         <span id="pageBadge" class="px-3.5 py-1.5 text-sm font-mono font-semibold bg-brand-blue text-white rounded-lg shadow-sm">
           PAGE 01
@@ -221,8 +261,8 @@
         </div>
       </div>
 
-      <!-- Page Stepper Controls -->
-      <div class="flex items-center space-x-3">
+      <!-- Right Controls: Switch between Stepper (Internal Page) or Return (Embedded Whitepaper) -->
+      <div id="headerControls" class="flex items-center space-x-3">
         <button id="prevBtn" onclick="changePage(-1)" class="px-4 py-2 rounded-lg border-2 border-slate-300 hover:border-brand-blue hover:text-brand-blue text-slate-700 font-medium text-base transition disabled:opacity-30">
           ← 上一頁
         </button>
@@ -233,18 +273,29 @@
       </div>
     </header>
 
-    <!-- Active Page Content Container -->
+    <!-- Active Page Content Container (Used for Internal Pages) -->
     <div id="contentArea" class="flex-1 overflow-y-auto px-8 py-7">
       <!-- Dynamic Page Content Injected Here -->
+    </div>
+
+    <!-- Embedded Full-Viewport Iframe Container (Used for In-Place Whitepaper Display) -->
+    <div id="embedArea" class="hidden flex-1 w-full h-full bg-slate-200 relative overflow-hidden">
+      <div id="embedLoader" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100/90 z-10 pointer-events-none transition-opacity duration-200">
+        <div class="w-10 h-10 border-4 border-brand-blue border-t-transparent rounded-full animate-spin mb-3"></div>
+        <div class="text-base font-mono font-semibold text-slate-700">正在載入專題決策白皮書...</div>
+      </div>
+      <iframe id="whitepaperFrame" src="about:blank" class="w-full h-full border-0 block" onload="hideEmbedLoader()"></iframe>
     </div>
 
   </main>
 
   <script>
     // =========================================================================
-    // 7-PAGE COMPLETE DATA STRUCTURE (01 TO 07)
+    // 7-PAGE INTERNAL STRUCTURE + 3 IN-PLACE WHITEPAPER DEFINITIONS
     // =========================================================================
+    let currentMode = 'page'; // 'page' or 'whitepaper'
     let currentPage = 0;
+    let currentWhitepaper = -1;
 
     const pages = [
       {
@@ -298,19 +349,63 @@
       }
     ];
 
+    // 三個總經理一眼看懂定位的專題按鈕（直接原地載入右側顯示區域，避免自我嵌套）
+    const whitepapers = [
+      {
+        code: 'WP-01',
+        title: '台灣四大護具競品與證號矩陣',
+        sub: '保爾芬德 vs 美德耐 / medi / ZAMST / LP',
+        fullTitle: '專題白皮書 01｜台灣高階醫療與運動護具市場競爭情報總綱',
+        fullSub: '100% 採信食藥署 TFDA 證號與官方定價，拆解同品牌雙譯名認知戰與雙引擎破局策略',
+        url: 'https://aia-chiusociety.vercel.app/pk.html'
+      },
+      {
+        code: 'WP-02',
+        title: 'GenuTrain OA 手術前定價變現模型',
+        sub: 'NT$ 29,800 延緩人工關節置換選擇權',
+        fullTitle: '專題白皮書 02｜高階減壓輔具在「手術前真空帶」的定價權與剛需變現模型',
+        fullSub: '引用德國原廠臨床實證與 KIT 期刊數據，將產品升維定錨為「保住原生關節的醫療投資」',
+        url: 'https://aia-chiusociety.vercel.app/pkk.html'
+      },
+      {
+        code: 'WP-03',
+        title: '醫材廣告合規與零個資裂變飛輪',
+        sub: '法規防火牆 × 一鍵下載唯一優惠圖卡',
+        fullTitle: '專題白皮書 03｜醫療健康產業合規極簡文案 × 零個資高轉化裂變系統',
+        fullSub: '盤點《醫材法》與《個資法》第 6 條紅線，內建現場可點擊生成唯一碼並一鍵下載高清圖卡',
+        url: 'https://aia-chiusociety.vercel.app/ad.html'
+      }
+    ];
+
     // =========================================================================
-    // NAVIGATION & RENDERING LOGIC
+    // NAVIGATION & IN-PLACE VIEWPORT SWITCHING LOGIC
     // =========================================================================
     function renderNav() {
       const nav = document.getElementById('navList');
       nav.innerHTML = pages.map((p, idx) => {
-        const active = idx === currentPage;
+        const active = (currentMode === 'page' && idx === currentPage);
         return `
-          <button onclick="goToPage(${idx})" class="nav-btn w-full text-left px-6 py-4 flex items-start space-x-3.5 ${active ? 'nav-btn-active' : 'nav-btn-inactive'}">
-            <span class="font-mono text-base font-semibold mt-0.5 ${active ? 'text-sky-400' : 'text-slate-500'}">${p.code}</span>
+          <button onclick="goToPage(${idx})" class="nav-btn w-full text-left px-6 py-2.5 flex items-start space-x-3 ${active ? 'nav-btn-active' : 'nav-btn-inactive'}">
+            <span class="font-mono text-sm font-semibold mt-0.5 ${active ? 'text-sky-400' : 'text-slate-500'}">${p.code}</span>
             <div class="flex-1 min-w-0">
-              <div class="text-lg font-semibold truncate">${p.navTitle}</div>
-              <div class="text-sm font-normal truncate mt-0.5 ${active ? 'text-sky-200' : 'text-slate-400'}">${p.navSub}</div>
+              <div class="text-base font-semibold truncate">${p.navTitle}</div>
+              <div class="text-xs font-normal truncate mt-0.5 ${active ? 'text-sky-200' : 'text-slate-400'}">${p.navSub}</div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      const wpNav = document.getElementById('whitepaperList');
+      wpNav.innerHTML = whitepapers.map((wp, idx) => {
+        const active = (currentMode === 'whitepaper' && idx === currentWhitepaper);
+        return `
+          <button onclick="openWhitepaperInPlace(${idx})" class="wp-btn w-full text-left px-6 py-2.5 flex items-start space-x-3 ${active ? 'wp-btn-active' : 'wp-btn-inactive'}">
+            <span class="px-1.5 py-0.5 font-mono text-xs font-semibold rounded mt-0.5 ${active ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-emerald-400 border border-slate-700'}">
+              ${idx + 1}
+            </span>
+            <div class="flex-1 min-w-0">
+              <div class="text-base font-semibold truncate">${wp.title}</div>
+              <div class="text-xs font-normal truncate mt-0.5 ${active ? 'text-emerald-200' : 'text-slate-400'}">${wp.sub}</div>
             </div>
           </button>
         `;
@@ -322,33 +417,104 @@
     }
 
     function goToPage(idx) {
+      currentMode = 'page';
       currentPage = idx;
+      currentWhitepaper = -1;
+
       const sb = document.getElementById('sidebar');
       if (!sb.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
         sb.classList.add('-translate-x-full');
       }
+
       renderNav();
+
       const p = pages[currentPage];
-      document.getElementById('pageBadge').textContent = `PAGE ${p.code}`;
+      const badgeEl = document.getElementById('pageBadge');
+      badgeEl.textContent = `PAGE ${p.code}`;
+      badgeEl.className = 'px-3.5 py-1.5 text-sm font-mono font-semibold bg-brand-blue text-white rounded-lg shadow-sm';
+
       document.getElementById('pageTitle').textContent = p.title;
       document.getElementById('pageSubtitle').textContent = p.subtitle;
-      document.getElementById('pageCounter').textContent = `0${currentPage + 1} / 0${pages.length}`;
-      document.getElementById('prevBtn').disabled = currentPage === 0;
-      document.getElementById('nextBtn').disabled = currentPage === pages.length - 1;
 
+      // Restore Stepper Controls
+      document.getElementById('headerControls').innerHTML = `
+        <button id="prevBtn" onclick="changePage(-1)" class="px-4 py-2 rounded-lg border-2 border-slate-300 hover:border-brand-blue hover:text-brand-blue text-slate-700 font-medium text-base transition disabled:opacity-30" ${currentPage === 0 ? 'disabled' : ''}>
+          ← 上一頁
+        </button>
+        <span id="pageCounter" class="font-mono text-lg font-semibold text-slate-800 px-2">0${currentPage + 1} / 0${pages.length}</span>
+        <button id="nextBtn" onclick="changePage(1)" class="px-4 py-2 rounded-lg bg-brand-blue hover:bg-blue-800 text-white font-medium text-base shadow-sm transition disabled:opacity-30" ${currentPage === pages.length - 1 ? 'disabled' : ''}>
+          下一頁 →
+        </button>
+      `;
+
+      // Switch Viewports: Show Internal Content, Hide Iframe
+      document.getElementById('embedArea').classList.add('hidden');
       const contentArea = document.getElementById('contentArea');
+      contentArea.classList.remove('hidden');
       contentArea.innerHTML = `<div class="page-enter max-w-6xl mx-auto space-y-6">${getPageHTML(currentPage)}</div>`;
       contentArea.scrollTop = 0;
       bindCardSpotlights();
     }
 
+    function openWhitepaperInPlace(idx) {
+      currentMode = 'whitepaper';
+      currentWhitepaper = idx;
+
+      const sb = document.getElementById('sidebar');
+      if (!sb.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+        sb.classList.add('-translate-x-full');
+      }
+
+      renderNav();
+
+      const wp = whitepapers[idx];
+      const badgeEl = document.getElementById('pageBadge');
+      badgeEl.textContent = wp.code;
+      badgeEl.className = 'px-3.5 py-1.5 text-sm font-mono font-semibold bg-brand-teal text-white rounded-lg shadow-sm';
+
+      document.getElementById('pageTitle').textContent = wp.fullTitle;
+      document.getElementById('pageSubtitle').textContent = wp.fullSub;
+
+      // Update Header Controls to "Return to Briefing"
+      document.getElementById('headerControls').innerHTML = `
+        <button onclick="goToPage(${currentPage})" class="px-4 py-2 rounded-lg bg-slate-900 hover:bg-brand-blue text-white font-medium text-base shadow-sm transition flex items-center gap-2">
+          ← 返回主簡報（第 0${currentPage + 1} 頁）
+        </button>
+      `;
+
+      // Switch Viewports: Hide Internal Content, Show Full-Size In-Place Iframe
+      document.getElementById('contentArea').classList.add('hidden');
+      const embedArea = document.getElementById('embedArea');
+      embedArea.classList.remove('hidden');
+
+      const loader = document.getElementById('embedLoader');
+      loader.style.opacity = '1';
+
+      const frame = document.getElementById('whitepaperFrame');
+      if (frame.src !== wp.url) {
+        frame.src = wp.url;
+      } else {
+        hideEmbedLoader();
+      }
+    }
+
+    function hideEmbedLoader() {
+      const loader = document.getElementById('embedLoader');
+      if (loader) loader.style.opacity = '0';
+    }
+
     function changePage(delta) {
+      if (currentMode !== 'page') {
+        goToPage(currentPage);
+        return;
+      }
       const next = currentPage + delta;
       if (next >= 0 && next < pages.length) goToPage(next);
     }
 
-    // Keyboard Navigation Support for Smooth Presentation
+    // Keyboard Navigation Support (Only when in internal page mode so iframe arrow keys don't conflict)
     window.addEventListener('keydown', (e) => {
+      if (currentMode !== 'page') return;
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         e.preventDefault();
         changePage(1);
@@ -534,7 +700,7 @@
               <span class="text-xs font-mono font-semibold text-brand-blue uppercase tracking-wider">PROVEN TRACK RECORD</span>
               <h3 class="text-2xl font-semibold text-slate-900">跨領域專案推進與系統自動化實績列舉（去識別化實戰架構）</h3>
             </div>
-            <span class="px-3 py-1 text-xs font-mono font-medium bg-slate-200 text-slate-700 rounded-lg">現場可提供完整系統實機展示</span>
+            <span class="px-3 py-1 text-xs font-mono font-medium bg-slate-200 text-slate-700 rounded-lg">左側選單可直接原地展開三大專題白皮書</span>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 interactive-grid">
@@ -577,7 +743,6 @@
     // -------------------------------------------------------------------------
     function page02HTML() {
       return `
-        <!-- Core Message Box -->
         <div class="bg-gradient-to-r from-brand-navy via-slate-900 to-brand-blue text-white rounded-2xl p-7 shadow-lg">
           <div class="text-sm font-mono text-sky-300 uppercase tracking-wider mb-2">為什麼這個位置不能請「需要人帶的新手」？</div>
           <h3 class="text-2xl sm:text-3xl font-semibold tracking-tight leading-snug mb-3">
@@ -588,9 +753,7 @@
           </p>
         </div>
 
-        <!-- Two-Column Comparison: CEO vs Yi-Cheng -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 interactive-grid">
-          
           <div class="interactive-card rounded-2xl p-7">
             <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-5">
               <h4 class="text-2xl font-semibold tracking-tight text-slate-900">👑 CEO（您負責的決策面）</h4>
@@ -632,7 +795,6 @@
               </li>
             </ul>
           </div>
-
         </div>
       `;
     }
@@ -642,7 +804,6 @@
     // -------------------------------------------------------------------------
     function page03HTML() {
       return `
-        <!-- Core Stance on AI vs Field Work -->
         <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-6 flex items-start gap-4">
           <span class="px-3 py-1 bg-amber-600 text-white font-mono text-sm font-medium rounded-lg shrink-0 mt-1">真實查核鐵律</span>
           <div class="text-xl font-normal text-amber-950 leading-relaxed">
@@ -650,9 +811,7 @@
           </div>
         </div>
 
-        <!-- 3-Step Gap Resolution Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 interactive-grid">
-          
           <div class="interactive-card rounded-2xl p-6">
             <div class="text-sm font-mono font-semibold text-brand-blue mb-2">STEP 01｜當資料不完整時</div>
             <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">主動抓缺口、跑一線補齊</h4>
@@ -676,10 +835,8 @@
               絕不問您「老闆現在怎麼辦？」。我會直接整理好：<strong class="font-semibold text-slate-900">目前事實是什麼、延遲會有什麼影響、A 方案（快但成本高）與 B 方案（穩但省錢）我建議選哪個</strong>，讓您快速拍板。
             </p>
           </div>
-
         </div>
 
-        <!-- Concrete Comparison Box -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 interactive-grid">
           <div class="interactive-card rounded-2xl p-6 bg-rose-50/40 border-rose-200">
             <div class="text-base font-semibold text-rose-700 mb-2">❌ 讓老闆頭痛的回報方式</div>
@@ -703,7 +860,6 @@
     // -------------------------------------------------------------------------
     function page04HTML() {
       return `
-        <!-- Clear Definition of "Product Launch" -->
         <div class="bg-brand-navy text-white rounded-2xl p-7 shadow-md">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
             <span class="px-3 py-1 text-xs font-mono font-medium bg-sky-500/20 text-sky-300 border border-sky-400/30 rounded">
@@ -719,10 +875,7 @@
           </p>
         </div>
 
-        <!-- Must-Haves vs Accelerators -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 interactive-grid">
-          
-          <!-- Mandatory Must-Haves -->
           <div class="interactive-card rounded-2xl p-7">
             <div class="flex items-center justify-between border-b-2 border-slate-200 pb-4 mb-5">
               <div>
@@ -764,7 +917,6 @@
             </ul>
           </div>
 
-          <!-- Value-Add Accelerators -->
           <div class="interactive-card teal-accent rounded-2xl p-7">
             <div class="flex items-center justify-between border-b-2 border-slate-200 pb-4 mb-5">
               <div>
@@ -805,17 +957,15 @@
               </li>
             </ul>
           </div>
-
         </div>
       `;
     }
 
     // -------------------------------------------------------------------------
-    // PAGE 05: 雙線專案推進｜保爾芬德 × 康立安（深度對接公司產品生態與資料流）
+    // PAGE 05: 雙線專案推進｜保爾芬德 × 康立安
     // -------------------------------------------------------------------------
     function page05HTML() {
       return `
-        <!-- Dual-Engine Architecture Map Banner -->
         <div class="bg-gradient-to-r from-brand-navy via-slate-900 to-brand-blue text-white rounded-2xl p-6 shadow-md border border-slate-700">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
             <span class="px-3 py-1 text-xs font-mono font-medium bg-sky-500/20 text-sky-300 border border-sky-400/30 rounded">
@@ -832,8 +982,6 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 interactive-grid">
-          
-          <!-- Card 1: 保爾芬德 × Bauerfeind 商城與門市 -->
           <div class="interactive-card rounded-2xl p-6 flex flex-col justify-between">
             <div>
               <span class="px-3 py-1 text-xs font-mono font-medium bg-blue-100 text-brand-blue rounded-md">保爾芬德｜Bauerfeind 商城與通路</span>
@@ -847,7 +995,6 @@
             </div>
           </div>
 
-          <!-- Card 2: 康立安 × KNEESUP & MetaSens 臨床專案 -->
           <div class="interactive-card teal-accent rounded-2xl p-6 flex flex-col justify-between">
             <div>
               <span class="px-3 py-1 text-xs font-mono font-medium bg-teal-100 text-teal-900 rounded-md">康立安｜KNEESUP × MetaSens</span>
@@ -861,7 +1008,6 @@
             </div>
           </div>
 
-          <!-- Card 3: 跨公司財務與營運防呆中樞 -->
           <div class="interactive-card rounded-2xl p-6 flex flex-col justify-between">
             <div>
               <span class="px-3 py-1 text-xs font-mono font-medium bg-slate-200 text-slate-800 rounded-md">雙公司中樞｜確定性防呆治理</span>
@@ -874,10 +1020,8 @@
               交付成果：跨公司自動化清洗腳本 ＋ 標準交接手冊
             </div>
           </div>
-
         </div>
 
-        <!-- Bottom Summary Banner -->
         <div class="bg-white border-2 border-slate-200 rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4 shadow-sm">
           <div class="text-xl font-medium text-slate-800">
             📌 推進原則：<span class="font-semibold text-brand-blue">初期先鎖定您最重視的一個核心瓶頸打透</span>（如電商與 ERP 串接或重點院所專案追蹤），做出成果並寫好 SOP 後再快速複製擴展。
@@ -892,7 +1036,6 @@
     // -------------------------------------------------------------------------
     function page06HTML() {
       return `
-        <!-- Core AI Principle -->
         <div class="bg-white border-2 border-brand-blue/30 rounded-2xl p-6 shadow-sm">
           <h3 class="text-2xl font-semibold tracking-tight text-slate-900 mb-2">
             我不把 AI 當聊天玩具，而是拿來建「可重複跑、不會算錯帳」的自動化工作流。
@@ -902,10 +1045,7 @@
           </p>
         </div>
 
-        <!-- Two Main AI Workflows from JD -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 interactive-grid">
-          
-          <!-- Workflow 1 -->
           <div class="interactive-card rounded-2xl p-7">
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 text-sm font-mono font-medium bg-brand-blue text-white rounded-lg">實戰管線 A</span>
@@ -919,7 +1059,6 @@
             </ol>
           </div>
 
-          <!-- Workflow 2 -->
           <div class="interactive-card teal-accent rounded-2xl p-7">
             <div class="flex items-center justify-between mb-4">
               <span class="px-3 py-1 text-sm font-mono font-medium bg-brand-teal text-white rounded-lg">實戰管線 B</span>
@@ -932,7 +1071,6 @@
               <li><strong class="font-semibold text-slate-900">週報一頁呈現：</strong>我先查明是素材疲乏還是主力尺寸缺貨，連同調整建議整理成一頁週報給您看。</li>
             </ol>
           </div>
-
         </div>
       `;
     }
@@ -942,9 +1080,7 @@
     // -------------------------------------------------------------------------
     function page07HTML() {
       return `
-        <!-- 3-Zone Authority Boundary -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 interactive-grid">
-          
           <div class="interactive-card rounded-2xl p-6 border-t-8 border-t-emerald-600">
             <div class="text-sm font-mono font-semibold text-emerald-700 mb-1">GREEN ZONE｜綠燈區</div>
             <h4 class="text-2xl font-semibold tracking-tight text-slate-900 mb-3">我自己直接搞定</h4>
@@ -968,10 +1104,8 @@
               涉及新據點簽約、花錢買廣告或採購預算、定價毛利折讓、對外合作正式承諾與專案優先順序變更。<strong class="font-semibold text-slate-900">一定帶齊數據與 A/B 方案請您核准。</strong>
             </p>
           </div>
-
         </div>
 
-        <!-- Phased Execution Rhythm (No Hardcoded Deadlines) -->
         <div class="bg-brand-navy text-white rounded-2xl p-7 shadow-lg">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <h4 class="text-2xl font-semibold tracking-tight text-white">🚀 階段性推進節奏（務實落地，依實際節奏穩步交付成果）</h4>
