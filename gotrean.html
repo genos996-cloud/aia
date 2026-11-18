@@ -85,12 +85,12 @@
 <body class="min-h-screen selection:bg-white selection:text-black">
 
   <!-- ========================================================= -->
-  <!-- OFFICIAL BRAND HEADER                                     -->
+  <!-- OFFICIAL BRAND HEADER (4 TABS FULL-WIDTH NO SCROLLBAR)    -->
   <!-- ========================================================= -->
   <header class="fixed top-0 left-0 right-0 z-50 bg-[#050608]/95 backdrop-blur-md border-b border-white/15">
     <div class="max-w-[1560px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between gap-4">
 
-      <div class="flex items-center space-x-5 shrink-0">
+      <div class="flex items-center space-x-4 shrink-0">
         <div class="flex items-center space-x-3">
           <span class="w-2.5 h-6 bg-sky-400 inline-block"></span>
           <div>
@@ -98,19 +98,19 @@
             <span class="text-[10px] mono tracking-[0.18em] text-slate-400 block mt-1">GO FURTHER. SMARTER</span>
           </div>
         </div>
-        <div class="hidden 2xl:block border-l border-white/15 pl-5 text-xs mono text-slate-400">
-          <span>AEMS INTERNATIONAL 2026 // ANAHEIM CONVENTION CENTER BOOTH #328</span>
+        <div class="hidden xl:block border-l border-white/15 pl-4 text-xs mono text-slate-400">
+          <span>AEMS 2026 // BOOTH #328</span>
         </div>
       </div>
 
-      <nav class="flex items-center space-x-6 lg:space-x-8 h-full overflow-x-auto">
-        <button onclick="switchTab('flagship')" id="tab-flagship" class="nav-item active h-full px-1 text-sm font-semibold whitespace-nowrap">01. 2026 旗艦新品與 3D 架構</button>
-        <button onclick="switchTab('catalog')" id="tab-catalog" class="nav-item h-full px-1 text-sm font-semibold whitespace-nowrap">02. 全產品矩陣與應用領域</button>
-        <button onclick="switchTab('advisor')" id="tab-advisor" class="nav-item h-full px-1 text-sm font-semibold whitespace-nowrap">03. 工程選型與技術專欄</button>
-        <button onclick="switchTab('media')" id="tab-media" class="nav-item h-full px-1 text-sm font-semibold whitespace-nowrap">04. AEMS #328 展會與發佈稿</button>
+      <nav class="flex items-center justify-center space-x-5 xl:space-x-8 h-full">
+        <button onclick="switchTab('flagship')" id="tab-flagship" class="nav-item active h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap">01. 2026 旗艦新品與 3D 架構</button>
+        <button onclick="switchTab('catalog')" id="tab-catalog" class="nav-item h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap">02. 全產品矩陣與應用領域</button>
+        <button onclick="switchTab('advisor')" id="tab-advisor" class="nav-item h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap">03. 工程選型與技術專欄</button>
+        <button onclick="switchTab('media')" id="tab-media" class="nav-item h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap">04. AEMS #328 展會與發佈稿</button>
       </nav>
 
-      <div class="flex items-center space-x-3 shrink-0">
+      <div class="flex items-center shrink-0">
         <button onclick="toggleLang()" id="lang-toggle" class="px-4 py-2 text-xs mono font-bold border border-white/25 hover:border-white text-white transition">
           EN / 繁中
         </button>
@@ -606,10 +606,10 @@
         ]
       },
       en: {
-        navFlagship: '01. 2026 Flagship Lineup & 3D View',
-        navCatalog: '02. Product Matrix & Applications',
-        navAdvisor: '03. Solution Selector & Articles',
-        navMedia: '04. AEMS #328 & Official Releases',
+        navFlagship: '01. 2026 Flagship & 3D View',
+        navCatalog: '02. Product Matrix & Apps',
+        navAdvisor: '03. Solution Configurator',
+        navMedia: '04. AEMS #328 & Releases',
         heroEyebrow: 'A PROFESSIONAL POWER INDUCTOR MANUFACTURER & DESIGN HOUSE',
         heroTitle: 'We customized, So Your Masterpiece Works!',
         heroDesc: 'As AI PCs integrate CPU, GPU, and NPU capabilities for local AI workloads and AI server core voltages decrease while load currents rise rapidly, GOTREND delivers the GTVM Series, GSTF Series, and TLVR Inductors for next-generation power delivery.',
@@ -818,8 +818,8 @@
       ['flagship', 'catalog', 'advisor', 'media'].forEach(t => {
         document.getElementById('view-' + t).classList.toggle('hidden', t !== tab);
         document.getElementById('tab-' + t).className = t === tab
-          ? 'nav-item active h-full px-1 text-sm font-semibold whitespace-nowrap'
-          : 'nav-item h-full px-1 text-sm font-semibold whitespace-nowrap';
+          ? 'nav-item active h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap'
+          : 'nav-item h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap';
       });
     }
 
