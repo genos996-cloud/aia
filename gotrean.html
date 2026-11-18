@@ -1,338 +1,419 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="dark">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GOTREND 高創科技｜2026 Global AI Power Delivery Flagship Showcase</title>
+  <title>GOTREND TECHNOLOGY | 2026 AI Power Delivery Exhibition System</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
     :root {
-      font-size: 19px; /* 整體基準字級放大約 20%～25%，適配會議室大螢幕 */
+      font-size: 18.5px;
+      --bg-obsidian: #07080a;
+      --bg-panel: #0d0f13;
+      --bg-elevated: #13161c;
+      --border-hairline: rgba(255, 255, 255, 0.12);
+      --border-active: #38bdf8;
+      --accent-cyan: #38bdf8;
+      --accent-copper: #d97706;
     }
 
     body {
-      font-family: 'Inter', 'Noto Sans TC', sans-serif;
-      background-color: #030508;
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, sans-serif;
+      background-color: var(--bg-obsidian);
       color: #f8fafc;
       overflow-x: hidden;
+      letter-spacing: -0.01em;
     }
 
     .mono { font-family: 'JetBrains Mono', monospace; }
 
-    /* 高科技玻璃擬態與光暈 */
-    .glass-nav {
-      background: rgba(6, 10, 18, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+    /* 國際展館工業級 1px 結構格線系統 */
+    .swiss-grid-box {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-hairline);
     }
 
-    .commercial-card {
-      background: linear-gradient(155deg, rgba(17, 24, 39, 0.92) 0%, rgba(7, 10, 18, 0.98) 100%);
-      border: 1px solid rgba(56, 189, 248, 0.18);
-      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.85);
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    .swiss-card {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-hairline);
+      transition: border-color 0.25s ease, background-color 0.25s ease;
     }
 
-    .commercial-card:hover {
-      border-color: rgba(56, 189, 248, 0.55);
-      transform: translateY(-4px);
-      box-shadow: 0 25px 60px -15px rgba(14, 165, 233, 0.22);
+    .swiss-card:hover {
+      border-color: rgba(255, 255, 255, 0.38);
+      background-color: var(--bg-elevated);
     }
 
-    .hero-gradient-text {
-      background: linear-gradient(135deg, #ffffff 0%, #bae6fd 55%, #38bdf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    /* 控制按鈕：極簡工業直角風格 */
+    .kiosk-tab {
+      border-bottom: 2px solid transparent;
+      color: #94a3b8;
+      transition: all 0.2s ease;
+    }
+    .kiosk-tab:hover {
+      color: #ffffff;
+    }
+    .kiosk-tab.active {
+      border-bottom: 2px solid #ffffff;
+      color: #ffffff;
     }
 
-    .gold-gradient-text {
-      background: linear-gradient(135deg, #fef08a 0%, #f59e0b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .kiosk-btn {
+      background-color: #13161c;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #cbd5e1;
+      transition: all 0.2s ease;
+    }
+    .kiosk-btn:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+    }
+    .kiosk-btn.active {
+      background-color: #ffffff;
+      border-color: #ffffff;
+      color: #07080a;
     }
 
-    .stage-glow {
-      background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.18) 0%, rgba(59, 130, 246, 0.05) 45%, transparent 75%);
+    /* 細微工程背景座標網格 */
+    .cad-backdrop {
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 36px 36px;
     }
-
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.06); }
-    }
-    .pulse-badge { animation: pulseGlow 3s infinite ease-in-out; }
   </style>
 </head>
-<body class="min-h-screen selection:bg-sky-400 selection:text-black">
+<body class="min-h-screen selection:bg-white selection:text-black">
 
   <!-- ========================================================= -->
-  <!-- TOP BRAND HEADER (100% 原生高創科技全球商業展廳導覽列)        -->
+  <!-- EXHIBITION KIOSK TOP BAR (極簡國際展館頂部導覽列)           -->
   <!-- ========================================================= -->
-  <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-sky-500/20">
-    <div class="max-w-[1440px] mx-auto px-6 h-20 flex items-center justify-between">
-      <div class="flex items-center space-x-4">
-        <div class="w-3.5 h-3.5 rounded-full bg-sky-400 shadow-[0_0_15px_#38bdf8]"></div>
-        <span class="font-black tracking-wider text-2xl text-white">GOTREND</span>
-        <span class="text-sm px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 mono hidden md:inline-block">
-          Go Further. Smarter
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#07080a]/95 backdrop-blur-md border-b border-white/15">
+    <div class="max-w-[1520px] mx-auto px-8 h-20 flex items-center justify-between">
+      <!-- Brand Identity -->
+      <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-3">
+          <span class="w-2.5 h-2.5 bg-sky-400 inline-block"></span>
+          <span class="font-extrabold tracking-[0.14em] text-xl text-white">GOTREND</span>
+        </div>
+        <span class="hidden xl:inline-block text-xs mono tracking-widest text-slate-400 border-l border-white/15 pl-6 uppercase">
+          MAGNETIC SOLUTIONS // AEMS INTERNATIONAL 2026 BOOTH #328
         </span>
       </div>
 
-      <!-- 商業核心區塊切換 -->
-      <nav class="flex items-center space-x-2 bg-slate-900/90 p-1.5 rounded-full border border-white/10">
-        <button onclick="switchSection('flagship')" id="nav-flagship" class="px-5 py-2 rounded-full text-sm font-bold transition-all bg-sky-400 text-slate-950 shadow-lg">
-          3D 旗艦產品與商業價值
+      <!-- Exhibition Module Switcher -->
+      <nav class="flex items-center space-x-8 h-full">
+        <button onclick="switchSection('flagship')" id="nav-flagship" class="kiosk-tab active h-full px-2 text-sm font-semibold tracking-wide uppercase">
+          01 / 旗艦產品與物理架構
         </button>
-        <button onclick="switchSection('selector')" id="nav-selector" class="px-5 py-2 rounded-full text-sm font-bold transition-all text-slate-300 hover:text-white">
-          客戶痛點選型與競品優勢
+        <button onclick="switchSection('selector')" id="nav-selector" class="kiosk-tab h-full px-2 text-sm font-semibold tracking-wide uppercase">
+          02 / 應用場景選型矩陣
         </button>
-        <button onclick="switchSection('marketing')" id="nav-marketing" class="px-5 py-2 rounded-full text-sm font-bold transition-all text-slate-300 hover:text-white">
-          全球展會視覺與行銷引擎
+        <button onclick="switchSection('marketing')" id="nav-marketing" class="kiosk-tab h-full px-2 text-sm font-semibold tracking-wide uppercase">
+          03 / 全球數位行銷與知識中樞
         </button>
       </nav>
 
-      <!-- 雙語切換 -->
-      <div class="flex items-center space-x-3">
-        <button onclick="toggleLanguage()" class="text-sm mono font-bold px-4 py-2 rounded-xl bg-white/5 hover:bg-sky-500/20 border border-white/15 hover:border-sky-400 text-white transition">
-          繁中 / EN
+      <!-- Language & System Status -->
+      <div class="flex items-center space-x-4">
+        <button onclick="toggleLanguage()" class="px-4 py-1.5 text-xs mono font-semibold tracking-wider border border-white/25 hover:border-white text-white transition uppercase">
+          ZH / EN
         </button>
       </div>
     </div>
   </header>
 
   <!-- ========================================================= -->
-  <!-- SECTION 1: 3D 旗艦產品互動舞台與殺手級商業價值              -->
+  <!-- MODULE 01: 旗艦產品與物理架構 (零重疊瑞士工業格線布局)       -->
   <!-- ========================================================= -->
-  <main id="sec-flagship" class="pt-28 pb-20 px-6 max-w-[1440px] mx-auto">
+  <main id="sec-flagship" class="pt-28 pb-24 px-8 max-w-[1520px] mx-auto">
 
-    <!-- HERO: 左側商業價值宣言 + 右側 WebGL 真 3D 電感全息互動艙 -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center mb-20">
+    <!-- HERO MASTER GRID: 左 5 欄商業定錨 / 右 7 欄 CAD 3D 檢視儀 -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 border border-white/15 bg-[#0d0f13] mb-16">
 
-      <!-- 左側：讓客戶一眼看懂「為什麼非買高創不可」 -->
-      <div class="lg:col-span-6 space-y-6">
-        <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-sky-500/15 border border-sky-400/40 text-sky-300 text-sm font-bold mono">
-          <span>2026 AI POWER DELIVERY FLAGSHIP</span>
-          <span>•</span>
-          <span>AEMS BOOTH #328</span>
+      <!-- 左側欄位：一句話商業定錨 + 關鍵規格 + 產品線切換 -->
+      <div class="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/15">
+        <div>
+          <div class="flex items-center justify-between text-xs mono text-slate-400 pb-4 mb-6 border-b border-white/10">
+            <span>SERIES // 2026 AI POWER DELIVERY</span>
+            <span class="text-sky-400">VERIFIED SPEC</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-[1.15] mb-5"
+              data-zh="極致低損耗，釋放每一瓦 AI 算力潛能。"
+              data-en="Ultra-Low Loss Power Delivery for Next-Gen AI.">
+            極致低損耗，釋放每一瓦 AI 算力潛能。
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8"
+             data-zh="專為高密度 AI 伺服器與次世代 AI PC（CPU / GPU / NPU）打造，徹底解決低電壓、超大瞬態電流下的壓降與高溫磁飽和瓶頸。"
+             data-en="Engineered for high-density AI servers and AI PCs (CPU/GPU/NPU), eliminating voltage drop and thermal saturation under extreme transient currents.">
+            專為高密度 AI 伺服器與次世代 AI PC（CPU / GPU / NPU）打造，徹底解決低電壓、超大瞬態電流下的壓降與高溫磁飽和瓶頸。
+          </p>
+
+          <!-- 3 大硬核數據橫條（一句話＋單一精準數字） -->
+          <div class="grid grid-cols-3 border border-white/15 bg-[#07080a] mb-8">
+            <div class="p-4 border-r border-white/15">
+              <div class="text-[11px] mono text-slate-400 uppercase">GTVM 最小感值</div>
+              <div class="text-2xl sm:text-3xl font-bold mono text-white mt-1">0.065<span class="text-xs text-sky-400 ml-1">µH</span></div>
+              <div class="text-xs text-slate-400 mt-1">極速瞬態電流響應</div>
+            </div>
+            <div class="p-4 border-r border-white/15">
+              <div class="text-[11px] mono text-slate-400 uppercase">GSTF 繞組工藝</div>
+              <div class="text-2xl sm:text-3xl font-bold mono text-white mt-1">FLAT</div>
+              <div class="text-xs text-slate-400 mt-1">扁平線超低直流電阻</div>
+            </div>
+            <div class="p-4">
+              <div class="text-[11px] mono text-slate-400 uppercase">支援拓撲架構</div>
+              <div class="text-2xl sm:text-3xl font-bold mono text-sky-400 mt-1">4-TYPE</div>
+              <div class="text-xs text-slate-400 mt-1">Buck/Boost/SEPIC/Cuk</div>
+            </div>
+          </div>
         </div>
 
-        <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-[1.15] hero-gradient-text"
-            data-zh="決定 AI 算力極限的<br>心臟級電源基石。"
-            data-en="The Power Engine Behind<br>Every AI Teraflop.">
-          決定 AI 算力極限的<br>心臟級電源基石。
-        </h1>
-
-        <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-normal"
-           data-zh="再強大的 GPU、ASIC 與本地端 NPU，一旦遭遇壓降與高溫磁飽和，算力瞬間歸零。高創科技（GOTREND）以突破性的極低感值一體成型工藝與扁平線磁芯架構，為全球 AI 伺服器與次世代 AI PC 提供最純淨、零延遲的巨量電流。"
-           data-en="Even the most advanced GPUs, ASICs, and local NPUs fail under voltage drop and thermal saturation. GOTREND delivers ultra-low inductance shielded molded inductors and flat-wire magnetic architectures to power next-gen AI Servers and AI PCs.">
-          再強大的 GPU、ASIC 與本地端 NPU，一旦遭遇壓降與高溫磁飽和，算力瞬間歸零。高創科技（GOTREND）以突破性的極低感值一體成型工藝與扁平線磁芯架構，為全球 AI 伺服器與次世代 AI PC 提供最純淨、零延遲的巨量電流。
-        </p>
-
-        <!-- 三大商業殺手級指標（一眼秒懂好在哪） -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-          <div class="p-4 rounded-2xl bg-slate-900/90 border border-sky-500/30">
-            <div class="text-xs mono text-sky-400 font-bold">瞬態極速響應 (GTVM)</div>
-            <div class="text-3xl font-black mono text-white my-1">0.065 <span class="text-base text-sky-400">µH</span></div>
-            <div class="text-sm text-slate-300">完美壓制 CPU/GPU/NPU 瞬間抽載壓降</div>
+        <!-- 主力產品線切換器（100% 工業規格列表按鈕） -->
+        <div>
+          <div class="text-xs mono text-slate-400 uppercase tracking-wider mb-3">
+            SELECT PRODUCT ARCHITECTURE // 點擊切換 3D 模型與技術參數
           </div>
-          <div class="p-4 rounded-2xl bg-slate-900/90 border border-amber-500/30">
-            <div class="text-xs mono text-amber-400 font-bold">極致減損降溫 (GSTF)</div>
-            <div class="text-3xl font-black mono gold-gradient-text my-1">Flat-Wire</div>
-            <div class="text-sm text-slate-300">超低直流電阻 DCR，大幅砍低系統銅損發熱</div>
-          </div>
-          <div class="p-4 rounded-2xl bg-slate-900/90 border border-emerald-500/30">
-            <div class="text-xs mono text-emerald-400 font-bold">全拓撲無縫導入</div>
-            <div class="text-3xl font-black mono text-emerald-400 my-1">4-in-1</div>
-            <div class="text-sm text-slate-300">相容 Buck / Boost / SEPIC / Cuk 架構</div>
-          </div>
-        </div>
-
-        <!-- 產品線快速切換器（聯動右側 3D 模型與雷射雕刻） -->
-        <div class="pt-2">
-          <div class="text-sm text-slate-400 mb-3 font-medium">點擊切換 2026 主力旗艦產品（即時連動右側 3D 結構與物理參數）：</div>
-          <div class="flex flex-wrap gap-3">
-            <button onclick="set3DProduct('gtvm')" id="prod-btn-gtvm" class="px-5 py-3 rounded-xl font-bold text-sm bg-sky-400 text-slate-950 shadow-[0_0_25px_rgba(56,189,248,0.4)] transition">
-              ⚡ GTVM 系列｜AI PC & 伺服器多相 VRM
+          <div class="space-y-2">
+            <button onclick="set3DProduct('gtvm')" id="prod-btn-gtvm" class="kiosk-btn active w-full text-left p-4 flex items-center justify-between">
+              <div>
+                <div class="text-xs mono opacity-70">01 // PUBLISHED 2026.11.14</div>
+                <div class="text-base font-bold mt-0.5">GTVM Series — AI PC 與伺服器多相 VRM 功率電感</div>
+              </div>
+              <span class="mono text-xs font-bold px-2 py-1 border border-current">0.065–0.100 µH</span>
             </button>
-            <button onclick="set3DProduct('gstf')" id="prod-btn-gstf" class="px-5 py-3 rounded-xl font-bold text-sm bg-slate-800 text-slate-200 hover:bg-slate-700 border border-white/10 transition">
-              🔥 GSTF 系列｜高電流扁平線功率電感
+
+            <button onclick="set3DProduct('gstf')" id="prod-btn-gstf" class="kiosk-btn w-full text-left p-4 flex items-center justify-between">
+              <div>
+                <div class="text-xs mono opacity-70">02 // PUBLISHED 2026.09.17</div>
+                <div class="text-base font-bold mt-0.5">GSTF Series — 高功率扁平線合金磁芯功率電感</div>
+              </div>
+              <span class="mono text-xs font-bold px-2 py-1 border border-current">FLAT-WIRE</span>
             </button>
-            <button onclick="set3DProduct('tlvr')" id="prod-btn-tlvr" class="px-5 py-3 rounded-xl font-bold text-sm bg-slate-800 text-slate-200 hover:bg-slate-700 border border-white/10 transition">
-              🚀 TLVR & PDN｜AI 伺服器極速耦合方案
+
+            <button onclick="set3DProduct('tlvr')" id="prod-btn-tlvr" class="kiosk-btn w-full text-left p-4 flex items-center justify-between">
+              <div>
+                <div class="text-xs mono opacity-70">03 // PUBLISHED 2026.09.14</div>
+                <div class="text-base font-bold mt-0.5">TLVR & AI PDN — 高密度伺服器先進電源傳輸方案</div>
+              </div>
+              <span class="mono text-xs font-bold px-2 py-1 border border-current">LPD / VPD / IVR</span>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- 右側：真 3D WebGL 互動展示艙 (Three.js 即時渲染) -->
-      <div class="lg:col-span-6">
-        <div class="rounded-3xl commercial-card p-5 relative overflow-hidden stage-glow">
-          <!-- 頂部狀態列 -->
-          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-white/10">
-            <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-              <span class="text-xs mono font-bold text-sky-300" id="stage-model-badge">LIVE 3D ENGINE｜GTVM-R065 SHIELDED MOLDED</span>
-            </div>
-            <span class="text-xs mono text-slate-400">滑鼠拖拽 360° 旋轉｜點擊下方切換透視</span>
-          </div>
+      <!-- 右側欄位：物理隔離遙測頂欄（保證零重疊）+ 3D CAD 視窗 + 底部控制塢 -->
+      <div class="lg:col-span-7 flex flex-col justify-between bg-[#07080a]">
 
-          <!-- 3D 畫布容器 -->
-          <div id="webgl-container" class="w-full h-[380px] sm:h-[430px] rounded-2xl bg-black/70 border border-sky-500/20 relative cursor-grab active:cursor-grabbing overflow-hidden">
-            <!-- 浮動即時電氣儀表板 -->
-            <div class="absolute top-4 left-4 bg-slate-950/85 border border-white/15 rounded-xl p-3.5 backdrop-blur-md pointer-events-none space-y-1">
-              <div class="text-xs mono text-slate-400">主力感值區間 (INDUCTANCE)</div>
-              <div class="text-xl font-black mono text-sky-400" id="hud-inductance">0.065 – 0.100 µH</div>
-              <div class="text-xs text-slate-300" id="hud-application">AI PC CPU/GPU/NPU Multiphase VRM</div>
+        <!-- 【防重疊物理隔離區】雙欄對稱遙測資訊列 (獨立於 3D 畫布上方，絕不交疊) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 border-b border-white/15 bg-[#0d0f13]">
+          <!-- 左欄：電氣規格與應用場景 -->
+          <div class="p-5 border-b sm:border-b-0 sm:border-r border-white/15 min-w-0">
+            <div class="flex items-center justify-between text-xs mono text-slate-400 mb-1">
+              <span>ELECTRICAL PARAMETER</span>
+              <span id="stage-model-code" class="text-sky-400 font-semibold">MODEL: GTVM-R065</span>
             </div>
-
-            <div class="absolute top-4 right-4 bg-slate-950/85 border border-white/15 rounded-xl p-3.5 backdrop-blur-md pointer-events-none text-right space-y-1">
-              <div class="text-xs mono text-slate-400">結構與繞線狀態</div>
-              <div class="text-base font-bold text-amber-400 mono" id="hud-structure">全屏蔽一體成型封裝</div>
-              <div class="text-xs text-emerald-400 mono" id="hud-ripple">輸出漣波抑制：極優 (Ultra-Low Ripple)</div>
+            <div class="text-xl font-bold mono text-white truncate" id="hud-inductance">
+              0.065 – 0.100 µH (0.065 / 0.085 µH)
+            </div>
+            <div class="text-xs text-slate-400 mt-1 truncate" id="hud-application">
+              Target: AI PC (CPU/GPU/NPU) Multiphase VRM & POL DC-DC
             </div>
           </div>
 
-          <!-- 3D 互動控制面板（面試現場一鍵展示內部工藝） -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
-            <button onclick="set3DView('exterior')" id="view-exterior" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 transition">
-              1. 旗艦全屏蔽外觀
-            </button>
-            <button onclick="set3DView('xray')" id="view-xray" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-800 text-slate-200 hover:bg-slate-700 border border-white/10 transition">
-              2. X-Ray 內部繞線透視
-            </button>
-            <button onclick="set3DView('winding')" id="view-winding" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-800 text-slate-200 hover:bg-slate-700 border border-white/10 transition">
-              3. 密繞 vs. 間繞對比
-            </button>
-            <button onclick="triggerSurgeTest()" id="view-surge" class="py-2.5 px-3 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-400/40 transition">
-              ⚡ 4. AI 滿載電流衝擊
-            </button>
-          </div>
-
-          <!-- 動態電流波形與溫升對比儀 (Oscilloscope) -->
-          <div class="mt-4 p-4 rounded-2xl bg-slate-950/90 border border-white/10">
-            <div class="flex flex-wrap items-center justify-between text-xs mb-2">
-              <span class="font-bold text-slate-200">AI 算力瞬態抽載模擬：電源軌輸出穩定度即時監測</span>
-              <div class="flex items-center space-x-4 mono">
-                <span class="flex items-center"><span class="w-3 h-1 bg-sky-400 inline-block mr-1.5"></span>高創 GTVM / GSTF（平穩低漣波）</span>
-                <span class="flex items-center"><span class="w-3 h-1 bg-rose-500/80 inline-block mr-1.5"></span>傳統一般電感（嚴重壓降與震盪）</span>
-              </div>
+          <!-- 右欄：物理結構與輸出穩定度 -->
+          <div class="p-5 min-w-0">
+            <div class="flex items-center justify-between text-xs mono text-slate-400 mb-1">
+              <span>MECHANICAL & WINDING STATE</span>
+              <span class="text-emerald-400" id="hud-ripple">STATUS: NOMINAL</span>
             </div>
-            <canvas id="scope-canvas" height="65" class="w-full rounded-lg bg-black/80"></canvas>
+            <div class="text-xl font-bold text-white truncate" id="hud-structure">
+              Compact Shielded Molded (全屏蔽一體成型)
+            </div>
+            <div class="text-xs text-slate-400 mt-1 truncate" id="hud-substructure">
+              低電磁干擾 (Low EMI) / 高密度主機板空間適配
+            </div>
           </div>
         </div>
+
+        <!-- 中央：無遮擋純淨 3D CAD 檢視視窗 -->
+        <div id="webgl-container" class="w-full h-[360px] sm:h-[400px] relative cad-backdrop cursor-grab active:cursor-grabbing overflow-hidden">
+          <!-- 左下角極簡座標提示 -->
+          <div class="absolute bottom-3 left-4 pointer-events-none text-[11px] mono text-slate-500">
+            CAD INTERACTIVE VIEWPORT // 360° ORBIT ENABLED
+          </div>
+        </div>
+
+        <!-- 下方：4 鍵工業級結構透視切換塢 + 即時波形比對儀 -->
+        <div class="border-t border-white/15 bg-[#0d0f13]">
+          <!-- 4 鍵控制列 -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 border-b border-white/15">
+            <button onclick="set3DView('exterior')" id="view-exterior" class="kiosk-btn active py-3.5 px-4 text-xs mono font-semibold uppercase border-0 border-r border-b sm:border-b-0 border-white/15">
+              01 / 外觀全屏蔽結構
+            </button>
+            <button onclick="set3DView('xray')" id="view-xray" class="kiosk-btn py-3.5 px-4 text-xs mono font-semibold uppercase border-0 sm:border-r border-b sm:border-b-0 border-white/15">
+              02 / X-RAY 內部磁芯透視
+            </button>
+            <button onclick="set3DView('winding')" id="view-winding" class="kiosk-btn py-3.5 px-4 text-xs mono font-semibold uppercase border-0 border-r border-white/15">
+              03 / 密繞 vs 間繞切換
+            </button>
+            <button onclick="triggerSurgeTest()" id="view-surge" class="kiosk-btn py-3.5 px-4 text-xs mono font-semibold uppercase border-0 text-sky-400">
+              04 / 瞬態大電流負載模擬
+            </button>
+          </div>
+
+          <!-- 底部：電流漣波抑制示波器 -->
+          <div class="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="sm:w-5/12 space-y-1">
+              <div class="text-xs mono text-slate-400 uppercase">TRANSIENT RESPONSE TELEMETRY</div>
+              <div class="text-sm font-bold text-white">高負載抽載下之電源軌穩定度對比</div>
+              <div class="flex items-center space-x-4 text-xs mono pt-1">
+                <span class="flex items-center text-sky-400"><span class="w-3 h-0.5 bg-sky-400 inline-block mr-1.5"></span>GOTREND</span>
+                <span class="flex items-center text-slate-500"><span class="w-3 h-0.5 bg-slate-500 inline-block mr-1.5"></span>CONVENTIONAL</span>
+              </div>
+            </div>
+            <div class="sm:w-7/12">
+              <canvas id="scope-canvas" height="54" class="w-full bg-[#07080a] border border-white/10"></canvas>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
     <!-- ========================================================= -->
-    <!-- 殺手級商業價值對照矩陣（痛點 vs. 產品牛在哪 vs. 解決場景）     -->
+    <!-- 核心產品線規格化矩陣 (一句話痛點 + 一句話解方 + 硬核參數)      -->
     <!-- ========================================================= -->
-    <section class="mt-16">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 border-b border-white/10 pb-6">
+    <section>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between pb-5 mb-8 border-b border-white/15">
         <div>
-          <span class="text-sm mono font-bold text-sky-400">COMMERCIAL VALUE PROPOSITION</span>
-          <h2 class="text-3xl sm:text-4xl font-black text-white mt-1">為什麼全球一線客戶選擇高創科技？</h2>
+          <div class="text-xs mono text-sky-400 uppercase tracking-widest">PRODUCT LINEUP SPECIFICATIONS</div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">四大核心產品方案：一句話看懂場景價值</h2>
         </div>
-        <p class="text-base text-slate-400 mt-2 md:mt-0">將複雜電氣規格轉化為客戶一眼秒懂的「痛點終結方案」</p>
+        <div class="text-xs mono text-slate-400 mt-2 sm:mt-0">SOURCE: GOTREND 2026 OFFICIAL TECHNICAL RELEASES</div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- 4 欄式瑞士工業規格矩陣 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <!-- 旗艦卡 1: GTVM Series -->
-        <div class="rounded-3xl commercial-card p-8 flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 px-4 py-1.5 bg-sky-500 text-slate-950 font-black text-xs mono rounded-bl-2xl">
-            2026/11/14 最新發布
-          </div>
+        <!-- Card 01: GTVM -->
+        <div class="swiss-card p-8 flex flex-col justify-between">
           <div>
-            <div class="text-sm mono font-bold text-sky-400 mb-2">AI PC & SERVER MULTIPHASE VRM</div>
-            <h3 class="text-2xl sm:text-3xl font-black text-white mb-4">【GTVM 系列】超低電感、高電流一體成型電感</h3>
-
-            <!-- 痛點 vs 解方 視覺化對比 -->
-            <div class="space-y-3 my-5">
-              <div class="p-4 rounded-2xl bg-rose-950/35 border border-rose-500/30">
-                <div class="text-xs font-bold text-rose-400 mono mb-1">❌ 客戶面臨的致命場景痛點</div>
-                <p class="text-base text-slate-200">
-                  AI PC 同時塞入 CPU、GPU 與本地 NPU，主機板空間極度擁擠；當 AI 運算瞬間滿載時，核心電壓極低、電流暴衝，傳統電感反應太慢導致系統壓降當機。
-                </p>
-              </div>
-              <div class="p-4 rounded-2xl bg-emerald-950/35 border border-emerald-500/30">
-                <div class="text-xs font-bold text-emerald-400 mono mb-1">✅ 高創 GTVM 殺手級商業優勢</div>
-                <p class="text-base text-slate-100 font-medium">
-                  將感值精準下探至 <strong class="text-sky-300 mono">0.065 µH – 0.100 µH</strong>（主力規格 <strong class="text-sky-300 mono">0.065 µH / 0.085 µH</strong>），極速提升多相 VRM 與 POL DC-DC 瞬態響應；緊湊全屏蔽結構完美適配嚴苛 Layout 與散熱要求。
-                </p>
-              </div>
+            <div class="flex items-center justify-between text-xs mono text-slate-400 pb-4 mb-5 border-b border-white/10">
+              <span>01 // GTVM SERIES</span>
+              <span class="text-sky-400">RELEASED 2026.11.14</span>
             </div>
-          </div>
-
-          <div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-sm">
-            <span class="text-slate-400">鎖定買家：<strong class="text-white">AI 筆電／桌機大廠、伺服器電源研發部</strong></span>
-            <span class="px-3 py-1 rounded-lg bg-sky-500/20 text-sky-300 mono font-bold">Compact Shielded Molded</span>
-          </div>
-        </div>
-
-        <!-- 旗艦卡 2: GSTF Series -->
-        <div class="rounded-3xl commercial-card p-8 flex flex-col justify-between relative overflow-hidden">
-          <div class="absolute top-0 right-0 px-4 py-1.5 bg-amber-400 text-slate-950 font-black text-xs mono rounded-bl-2xl">
-            高功率算力與車用首選
-          </div>
-          <div>
-            <div class="text-sm mono font-bold text-amber-400 mb-2">HIGH-CURRENT FLAT-WIRE TECHNOLOGY</div>
-            <h3 class="text-2xl sm:text-3xl font-black text-white mb-4">【GSTF 系列】高電流扁平線功率電感</h3>
-
-            <div class="space-y-3 my-5">
-              <div class="p-4 rounded-2xl bg-rose-950/35 border border-rose-500/30">
-                <div class="text-xs font-bold text-rose-400 mono mb-1">❌ 客戶面臨的致命場景痛點</div>
-                <p class="text-base text-slate-200">
-                  在 AI 算力中心、新能源與車用電子中，高湧浪電流（Inrush Current）容易讓傳統圓線電感產生高銅損、嚴重發燙甚至磁飽和，威脅整機壽命。
-                </p>
-              </div>
-              <div class="p-4 rounded-2xl bg-emerald-950/35 border border-emerald-500/30">
-                <div class="text-xs font-bold text-emerald-400 mono mb-1">✅ 高創 GSTF 殺手級商業優勢</div>
-                <p class="text-base text-slate-100 font-medium">
-                  結合<strong class="text-amber-300">扁平線繞組（Flat-Wire）</strong>與<strong class="text-amber-300">特殊合金粉末磁芯</strong>，實現超低直流電阻（DCR）與高飽和電流，大幅降低系統銅損並抑制輸出漣波，且 100% 相容 <strong class="mono text-amber-300">Buck / Boost / SEPIC / Cuk</strong> 四大拓撲。
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-sm">
-            <span class="text-slate-400">鎖定買家：<strong class="text-white">AI 電源模組廠、車用 Tier-1、新能源設備商</strong></span>
-            <span class="px-3 py-1 rounded-lg bg-amber-500/20 text-amber-300 mono font-bold">Alloy Powder Core</span>
-          </div>
-        </div>
-
-        <!-- 旗艦卡 3: LPD / VPD / IVR & TLVR -->
-        <div class="rounded-3xl commercial-card p-8 flex flex-col justify-between">
-          <div>
-            <div class="text-sm mono font-bold text-purple-400 mb-2">HYPERSCALE AI SERVER PDN</div>
-            <h3 class="text-2xl sm:text-3xl font-black text-white mb-4">【TLVR & 先進 PDN】AI 伺服器供電網路方案</h3>
-            <p class="text-base text-slate-300 leading-relaxed mb-5">
-              針對 GPU、ASIC 與 HPC 高效能運算平台「低電壓、超大電流」趨勢，突破傳統橫向供電限制，支援 <strong class="text-purple-300">LPD（橫向供電）、VPD（垂直供電）與 IVR（整合電壓調節器）</strong> 架構，徹底最小化 PDN 寄生電阻、寄生電感與物理傳輸距離壓降。
+            <h3 class="text-2xl font-bold text-white mb-2">AI PC 與伺服器超低感值一體成型電感</h3>
+            <p class="text-base text-sky-400 font-semibold mb-6">
+              一句話價值：在極小主機板空間內，解決 CPU / GPU / NPU 瞬間抽載造成的電壓驟降。
             </p>
-          </div>
-          <div class="p-4 rounded-2xl bg-purple-950/30 border border-purple-500/30 flex items-center justify-between">
-            <div>
-              <div class="text-xs mono text-purple-300">精準繞線物理調控（2026/11/08 技術專欄）</div>
-              <div class="text-sm text-white font-medium mt-0.5">密繞（Close Winding）極大化空間利用率｜間繞（Spaced Winding）精準調控寄生電容與頻率響應</div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/10 text-sm">
+              <div>
+                <div class="text-xs mono text-slate-400 uppercase mb-1">解決場景問題</div>
+                <div class="text-slate-200">本地端 AI 多核心同時滿載，傳統電感瞬態響應過慢且佔用空間。</div>
+              </div>
+              <div>
+                <div class="text-xs mono text-slate-400 uppercase mb-1">關鍵工程規格</div>
+                <div class="text-white font-medium mono">0.065 – 0.100 µH (主力 0.065 / 0.085 µH) 緊湊全屏蔽結構</div>
+              </div>
             </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs mono text-slate-400">
+            <span>TARGET ARCHITECTURE</span>
+            <span class="text-white">Multiphase VRM / Point-of-Load (POL) DC-DC</span>
           </div>
         </div>
 
-        <!-- 旗艦卡 4: GTX-EP06P Ultrasonic & Custom Design -->
-        <div class="rounded-3xl commercial-card p-8 flex flex-col justify-between">
+        <!-- Card 02: GSTF -->
+        <div class="swiss-card p-8 flex flex-col justify-between">
           <div>
-            <div class="text-sm mono font-bold text-emerald-400 mb-2">AUTOMOTIVE & SENSING PRECISION</div>
-            <h3 class="text-2xl sm:text-3xl font-black text-white mb-4">【GTX-EP06P 系列】超音波感測驅動變壓器</h3>
-            <p class="text-base text-slate-300 leading-relaxed mb-5">
-              專為智能車用雷達與工業超音波感測系統打造。在極致緊湊的尺寸下，高效將低壓脈衝轉換為換能器（Transducer）所需之高壓驅動訊號，顯著提升<strong class="text-emerald-300">聲壓級（SPL）、感測距離與回波偵測精準度</strong>。
-            </p>
-          </div>
-          <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 flex items-center justify-between">
-            <div>
-              <div class="text-xs mono text-emerald-300">CUSTOM DESIGN HOUSE ADVANTAGE</div>
-              <div class="text-sm text-white font-medium mt-0.5">We customized, So Your Masterpiece Works! 支援客戶特殊規格客製化開發與競品料號快速替換（Crossing Reference）。</div>
+            <div class="flex items-center justify-between text-xs mono text-slate-400 pb-4 mb-5 border-b border-white/10">
+              <span>02 // GSTF SERIES</span>
+              <span class="text-sky-400">RELEASED 2026.09.17</span>
             </div>
+            <h3 class="text-2xl font-bold text-white mb-2">高電流扁平線合金磁芯功率電感</h3>
+            <p class="text-base text-sky-400 font-semibold mb-6">
+              一句話價值：以扁平線繞組大幅砍低系統銅損與溫升，承受極端湧浪電流不飽和。
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/10 text-sm">
+              <div>
+                <div class="text-xs mono text-slate-400 uppercase mb-1">解決場景問題</div>
+                <div class="text-slate-200">高功率算力、新能源與車用電源在高電流下嚴重發熱與磁飽和。</div>
+              </div>
+              <div>
+                <div class="text-xs mono text-slate-400 uppercase mb-1">關鍵工程規格</div>
+                <div class="text-white font-medium">扁平線繞組 + 特殊合金粉末磁芯 / 超低直流電阻 (DCR)</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs mono text-slate-400">
+            <span>COMPATIBLE TOPOLOGIES</span>
+            <span class="text-white">Buck / Boost / SEPIC / Cuk</span>
+          </div>
+        </div>
+
+        <!-- Card 03: Winding & PDN -->
+        <div class="swiss-card p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs mono text-slate-400 pb-4 mb-5 border-b border-white/10">
+              <span>03 // AI SERVER PDN & WINDING</span>
+              <span class="text-sky-400">RELEASED 2026.09.14 & 11.08</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">LPD / VPD / IVR 供電網路與精密繞線調控</h3>
+            <p class="text-base text-sky-400 font-semibold mb-6">
+              一句話價值：縮短高功率晶片供電物理距離並精準控制寄生電容，極小化傳輸損耗。
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/10 text-sm">
+              <div>
+                <div class="text-xs mono text-slate-400 uppercase mb-1">密繞 (Close Winding)</div>
+                <div class="text-slate-200">相鄰線圈緊密排布，最大化微型封裝之繞線空間利用率。</div>
+              </div>
+              <div>
+                <div class="text-xs mono text-slate-400 uppercase mb-1">間繞 (Spaced Winding)</div>
+                <div class="text-white font-medium">維持特定線圈間距，精準調控繞組寄生電容與高頻響應。</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs mono text-slate-400">
+            <span>TARGET PLATFORM</span>
+            <span class="text-white">AI Servers / GPUs / ASICs / HPC Clusters</span>
+          </div>
+        </div>
+
+        <!-- Card 04: GTX-EP06P -->
+        <div class="swiss-card p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs mono text-slate-400 pb-4 mb-5 border-b border-white/10">
+              <span>04 // GTX-EP06P SERIES</span>
+              <span class="text-sky-400">RELEASED 2026.08.11</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">緊湊型超音波感測高壓驅動變壓器</h3>
+            <p class="text-base text-sky-400 font-semibold mb-6">
+              一句話價值：將低壓脈衝高效轉換為高壓驅動訊號，直接倍增車用與工業雷達感測距離。
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-white/10 text-sm">
+              <div>
+                <div class="text-xs mono text-slate-400 uppercase mb-1">解決場景問題</div>
+                <div class="text-slate-200">超音波換能器驅動電壓不足，導致聲壓級偏低、回波訊號模糊。</div>
+              </div>
+              <div>
+                <div class="text-xs mono text-slate-400 uppercase mb-1">關鍵工程效益</div>
+                <div class="text-white font-medium">顯著提升聲壓級 (SPL)、最遠感測距離與回波偵測精準度。</div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs mono text-slate-400">
+            <span>APPLICATION</span>
+            <span class="text-white">Ultrasonic Transducers & Automotive Sensing</span>
           </div>
         </div>
 
@@ -341,201 +422,205 @@
   </main>
 
   <!-- ========================================================= -->
-  <!-- SECTION 2: 客戶痛點 3 秒智能選型導購與業務實戰應對系統        -->
+  <!-- MODULE 02: 應用場景選型矩陣 (展場買家 3 秒快速導購系統)      -->
   <!-- ========================================================= -->
-  <section id="sec-selector" class="hidden pt-28 pb-20 px-6 max-w-[1440px] mx-auto">
-    <div class="mb-10">
-      <span class="text-sm mono font-bold text-sky-400">INTERACTIVE SOLUTION ADVISOR & SALES ENABLEMENT</span>
-      <h2 class="text-3xl sm:text-5xl font-black text-white mt-1 mb-3">3 秒智能客戶選型導購 × 業務實戰應對武器庫</h2>
-      <p class="text-lg text-slate-300">
-        讓全球買家在官網 3 秒找到對應料號，並讓新進業務與行銷團隊即時掌握最精準的產品技術話術。
-      </p>
+  <section id="sec-selector" class="hidden pt-28 pb-24 px-8 max-w-[1520px] mx-auto">
+    <div class="pb-6 mb-10 border-b border-white/15 flex flex-col sm:flex-row sm:items-end justify-between">
+      <div>
+        <div class="text-xs mono text-sky-400 uppercase tracking-widest">SOLUTION CONFIGURATION MATRIX</div>
+        <h2 class="text-3xl font-black text-white mt-1">展會現場買家選型系統：依工程場景精準配對料號</h2>
+      </div>
+      <div class="text-xs mono text-slate-400">INTERACTIVE FAE DECISION ENGINE</div>
     </div>
 
-    <!-- 互動選型器：點擊客戶場景，即時給出高創最佳解方與銷售話術 -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-14">
-      <div class="lg:col-span-5 space-y-3">
-        <div class="text-base font-bold text-sky-300 mb-2">Step 1｜選擇客戶端提出的應用場景或工程痛點：</div>
-        <button onclick="matchSolution(0)" id="sol-btn-0" class="w-full text-left p-5 rounded-2xl bg-sky-500 text-slate-950 font-bold transition shadow-lg">
-          💻 場景 A：客戶正在設計次世代 AI PC（CPU+GPU+NPU），需要極小體積、耐大電流的多相 VRM 電感
-        </button>
-        <button onclick="matchSolution(1)" id="sol-btn-1" class="w-full text-left p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 font-bold transition">
-          🔥 場景 B：客戶的高功率 AI 電源或車用轉換器遭遇高湧浪電流，傳統電感銅損發燙且易磁飽和
-        </button>
-        <button onclick="matchSolution(2)" id="sol-btn-2" class="w-full text-left p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 font-bold transition">
-          📡 場景 C：客戶詢問高頻電源如何降低繞組寄生電容，或提升繞線空間利用率
-        </button>
-        <button onclick="matchSolution(3)" id="sol-btn-3" class="w-full text-left p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 font-bold transition">
-          🚗 場景 D：客戶正在開發車用倒車雷達或超音波感測器，需要提升感測距離與回波訊號強度
-        </button>
+    <div class="grid grid-cols-1 lg:grid-cols-12 border border-white/15 bg-[#0d0f13] mb-16">
+      <!-- 左欄：場景選擇 -->
+      <div class="lg:col-span-5 border-b lg:border-b-0 lg:border-r border-white/15">
+        <div class="p-5 border-b border-white/15 text-xs mono text-slate-400 uppercase">
+          STEP 01 // 選擇客戶端應用場景與設計瓶頸
+        </div>
+        <div class="divide-y divide-white/15">
+          <button onclick="matchSolution(0)" id="sol-btn-0" class="kiosk-btn active w-full text-left p-6 border-0">
+            <div class="text-xs mono opacity-70 mb-1">SCENARIO 01 // AI PC & SERVER</div>
+            <div class="text-base font-bold">CPU / GPU / NPU 多相 VRM 空間受限且需極低感值</div>
+          </button>
+          <button onclick="matchSolution(1)" id="sol-btn-1" class="kiosk-btn w-full text-left p-6 border-0">
+            <div class="text-xs mono opacity-70 mb-1">SCENARIO 02 // HIGH-POWER & AUTOMOTIVE</div>
+            <div class="text-base font-bold">高湧浪電流下需降低直流電阻銅損、抑制輸出漣波</div>
+          </button>
+          <button onclick="matchSolution(2)" id="sol-btn-2" class="kiosk-btn w-full text-left p-6 border-0">
+            <div class="text-xs mono opacity-70 mb-1">SCENARIO 03 // HIGH-FREQUENCY RF & PDN</div>
+            <div class="text-base font-bold">需調控繞組寄生電容與頻率響應，或極大化空間利用率</div>
+          </button>
+          <button onclick="matchSolution(3)" id="sol-btn-3" class="kiosk-btn w-full text-left p-6 border-0">
+            <div class="text-xs mono opacity-70 mb-1">SCENARIO 04 // ULTRASONIC SENSING</div>
+            <div class="text-base font-bold">超音波換能器需高壓脈衝驅動以提升聲壓級與感測距離</div>
+          </button>
+        </div>
       </div>
 
-      <!-- 右側：即時配對結果與業務成交話術 -->
-      <div class="lg:col-span-7 rounded-3xl commercial-card p-8 flex flex-col justify-between border-2 border-sky-400/40">
+      <!-- 右欄：配對規格輸出 -->
+      <div class="lg:col-span-7 p-8 sm:p-10 flex flex-col justify-between">
         <div>
-          <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
-            <span class="text-sm mono font-bold text-emerald-400" id="sol-badge">RECOMMENDED FLAGSHIP SOLUTION</span>
-            <span class="text-xs mono px-3 py-1 rounded-full bg-white/10 text-white">100% 官網規格驗證</span>
+          <div class="flex items-center justify-between text-xs mono text-sky-400 pb-4 mb-6 border-b border-white/10">
+            <span id="sol-badge">MATCHED SOLUTION // GTVM SERIES</span>
+            <span>OFFICIAL DATASHEET VERIFIED</span>
           </div>
-          <h3 class="text-3xl font-black text-white mb-3" id="sol-title">推薦方案：【GTVM Series】低電感高電流一體成型功率電感</h3>
-          <p class="text-lg text-slate-200 leading-relaxed mb-6" id="sol-desc"></p>
 
-          <div class="p-5 rounded-2xl bg-sky-950/40 border border-sky-400/30 mb-6">
-            <div class="text-xs mono font-bold text-sky-400 mb-2">💬 業務第一線成交必殺話術 (ELEVATOR PITCH)</div>
-            <p class="text-base text-white font-medium leading-relaxed" id="sol-pitch"></p>
+          <h3 class="text-2xl sm:text-3xl font-black text-white mb-4" id="sol-title"></h3>
+          <p class="text-base text-slate-300 leading-relaxed mb-8" id="sol-desc"></p>
+
+          <div class="p-6 border border-white/15 bg-[#07080a] mb-8">
+            <div class="text-xs mono text-sky-400 uppercase mb-2">EXECUTIVE VALUE STATEMENT // 展會一句話成交重點</div>
+            <p class="text-base text-white font-semibold leading-relaxed" id="sol-pitch"></p>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/10 text-sm">
-          <div>
-            <span class="text-slate-400 block">核心規格指標</span>
-            <strong class="text-sky-300 mono text-base" id="sol-spec1">0.065 – 0.100 µH</strong>
+        <div class="grid grid-cols-3 border border-white/15 bg-[#07080a]">
+          <div class="p-4 border-r border-white/15">
+            <span class="text-xs mono text-slate-400 block">KEY PARAMETER</span>
+            <strong class="text-white mono text-sm sm:text-base mt-1 block" id="sol-spec1"></strong>
           </div>
-          <div>
-            <span class="text-slate-400 block">結構／工藝特色</span>
-            <strong class="text-white mono text-base" id="sol-spec2">Shielded Molded</strong>
+          <div class="p-4 border-r border-white/15">
+            <span class="text-xs mono text-slate-400 block">ARCHITECTURE</span>
+            <strong class="text-sky-400 mono text-sm sm:text-base mt-1 block" id="sol-spec2"></strong>
           </div>
-          <div>
-            <span class="text-slate-400 block">適用電源架構</span>
-            <strong class="text-emerald-400 mono text-base" id="sol-spec3">Multiphase VRM / POL</strong>
+          <div class="p-4">
+            <span class="text-xs mono text-slate-400 block">TARGET STAGE</span>
+            <strong class="text-white mono text-sm sm:text-base mt-1 block" id="sol-spec3"></strong>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 內部人員隨堂實戰測驗（視覺放大版） -->
-    <div class="pt-8 border-t border-white/10">
-      <h3 class="text-2xl font-black text-white mb-6">內部行銷與業務團隊：新品規格實戰快篩檢核</h3>
+    <!-- 內部教育訓練與業務規格檢核 -->
+    <div>
+      <div class="text-xs mono text-sky-400 uppercase tracking-widest mb-1">INTERNAL KNOWLEDGE VERIFICATION</div>
+      <h3 class="text-2xl font-bold text-white mb-6">業務與 FAE 團隊：新品規格精準度快篩</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="quiz-grid"></div>
     </div>
   </section>
 
   <!-- ========================================================= -->
-  <!-- SECTION 3: 全球展會視覺素材與多語系數位行銷引擎              -->
+  <!-- MODULE 03: 全球數位行銷與展會視覺中樞                        -->
   <!-- ========================================================= -->
-  <section id="sec-marketing" class="hidden pt-28 pb-20 px-6 max-w-[1440px] mx-auto">
-    <div class="mb-10">
-      <span class="text-sm mono font-bold text-sky-400">GLOBAL DIGITAL MARKETING & VISUAL STUDIO</span>
-      <h2 class="text-3xl sm:text-5xl font-black text-white mt-1 mb-3">全球數位行銷、展會視覺 Banner 與多語系內容中樞</h2>
-      <p class="text-lg text-slate-300">
-        將高創科技的硬核產品直接轉化為國際展會海報（AEMS #328）、社群配圖與高轉換雙語開發信，建立風格一致的品牌視覺與內容管線。
-      </p>
+  <section id="sec-marketing" class="hidden pt-28 pb-24 px-8 max-w-[1520px] mx-auto">
+    <div class="pb-6 mb-10 border-b border-white/15 flex flex-col sm:flex-row sm:items-end justify-between">
+      <div>
+        <div class="text-xs mono text-sky-400 uppercase tracking-widest">GLOBAL CAMPAIGN & CONTENT AUTOMATION</div>
+        <h2 class="text-3xl font-black text-white mt-1">國際展會視覺體系與多語系技術行銷工作流</h2>
+      </div>
+      <div class="text-xs mono text-slate-400">STANDARDIZED PROMPT & ASSET PIPELINE</div>
     </div>
 
-    <!-- 商業視覺海報 Banner 預覽區（展示把電感變精品的視覺企劃力） -->
+    <!-- 三張國際展館級 KV 視覺規範卡 -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-      <!-- Banner 1: AEMS 2026 美國展會海報概念 -->
-      <div class="rounded-3xl commercial-card p-6 flex flex-col justify-between relative overflow-hidden group">
-        <div class="h-48 rounded-2xl bg-gradient-to-br from-sky-900 via-slate-900 to-black border border-sky-400/30 p-5 flex flex-col justify-between relative overflow-hidden mb-5">
-          <div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-sky-400/20 blur-2xl"></div>
-          <div class="flex justify-between items-center">
-            <span class="text-xs mono font-black px-2.5 py-1 rounded bg-sky-400 text-black">AEMS 2026 • ANAHEIM</span>
-            <span class="text-sm mono font-bold text-sky-300">BOOTH #328</span>
+      <div class="swiss-card p-6 flex flex-col justify-between">
+        <div class="h-44 bg-[#07080a] border border-white/15 p-6 flex flex-col justify-between mb-5 relative overflow-hidden">
+          <div class="flex justify-between items-center text-xs mono">
+            <span class="text-white font-bold">AEMS INTERNATIONAL 2026</span>
+            <span class="text-sky-400">BOOTH #328</span>
           </div>
           <div>
-            <div class="text-2xl font-black text-white leading-tight">Powering the AI Era.</div>
-            <div class="text-xs text-sky-200 mt-1">Meet GOTREND’s Advanced Magnetic Solutions</div>
+            <div class="text-2xl font-black text-white tracking-tight">POWERING AI SERVERS.</div>
+            <div class="text-xs mono text-slate-400 mt-1">ANAHEIM CONVENTION CENTER // GOTREND</div>
           </div>
         </div>
         <div>
-          <div class="text-xs mono text-sky-400 font-bold mb-1">KV 視覺模板 01｜北美展會與 LinkedIn 廣告 Banner</div>
-          <p class="text-sm text-slate-300">鎖定美國加州 AEMS International 2026 展會預熱，突出 #328 攤位與 AI 伺服器電源主題。</p>
+          <div class="text-xs mono text-sky-400 uppercase mb-1">KV SYSTEM 01 // 展會主視覺規範</div>
+          <p class="text-sm text-slate-300">一句話定位：鎖定北美 AEMS #328 展位，以高對比黑鈦視覺建立 Tier-1 伺服器電源供應商形象。</p>
         </div>
       </div>
 
-      <!-- Banner 2: GTVM AI PC 產品主視覺 -->
-      <div class="rounded-3xl commercial-card p-6 flex flex-col justify-between relative overflow-hidden group">
-        <div class="h-48 rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-black border border-indigo-400/30 p-5 flex flex-col justify-between relative overflow-hidden mb-5">
-          <div class="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-indigo-400/20 blur-2xl"></div>
-          <div class="flex justify-between items-center">
-            <span class="text-xs mono font-black px-2.5 py-1 rounded bg-indigo-400 text-black">NEW LAUNCH • GTVM</span>
-            <span class="text-sm mono font-bold text-indigo-300">0.065 – 0.100 µH</span>
+      <div class="swiss-card p-6 flex flex-col justify-between">
+        <div class="h-44 bg-[#07080a] border border-white/15 p-6 flex flex-col justify-between mb-5 relative overflow-hidden">
+          <div class="flex justify-between items-center text-xs mono">
+            <span class="text-white font-bold">GTVM SERIES</span>
+            <span class="text-sky-400">0.065 – 0.100 µH</span>
           </div>
           <div>
-            <div class="text-2xl font-black text-white leading-tight">Built for AI PC & NPU.</div>
-            <div class="text-xs text-indigo-200 mt-1">Compact Shielded Molded Power Inductors</div>
+            <div class="text-2xl font-black text-white tracking-tight">BUILT FOR LOCAL NPU.</div>
+            <div class="text-xs mono text-slate-400 mt-1">MULTIPHASE VRM & POL DC-DC INDUCTORS</div>
           </div>
         </div>
         <div>
-          <div class="text-xs mono text-indigo-400 font-bold mb-1">KV 視覺模板 02｜GTVM 新品上市產品海報</div>
-          <p class="text-sm text-slate-300">以微距金屬光影凸顯一體成型屏蔽結構與 0.065 µH 超低感值，強化高階硬體品牌形象。</p>
+          <div class="text-xs mono text-sky-400 uppercase mb-1">KV SYSTEM 02 // GTVM 新品圖卡規範</div>
+          <p class="text-sm text-slate-300">一句話定位：聚焦 0.065 µH 與 0.085 µH 主力規格，精準觸達筆電與桌機電源架構師。</p>
         </div>
       </div>
 
-      <!-- Banner 3: GSTF 扁平線高功率主視覺 -->
-      <div class="rounded-3xl commercial-card p-6 flex flex-col justify-between relative overflow-hidden group">
-        <div class="h-48 rounded-2xl bg-gradient-to-br from-amber-950 via-slate-900 to-black border border-amber-400/30 p-5 flex flex-col justify-between relative overflow-hidden mb-5">
-          <div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-amber-400/20 blur-2xl"></div>
-          <div class="flex justify-between items-center">
-            <span class="text-xs mono font-black px-2.5 py-1 rounded bg-amber-400 text-black">GSTF FLAT-WIRE</span>
-            <span class="text-sm mono font-bold text-amber-300">ULTRA-LOW DCR</span>
+      <div class="swiss-card p-6 flex flex-col justify-between">
+        <div class="h-44 bg-[#07080a] border border-white/15 p-6 flex flex-col justify-between mb-5 relative overflow-hidden">
+          <div class="flex justify-between items-center text-xs mono">
+            <span class="text-white font-bold">GSTF SERIES</span>
+            <span class="text-sky-400">FLAT-WIRE CORE</span>
           </div>
           <div>
-            <div class="text-2xl font-black text-white leading-tight">Zero Compromise on Current.</div>
-            <div class="text-xs text-amber-200 mt-1">Alloy Powder Core × Buck / Boost / SEPIC / Cuk</div>
+            <div class="text-2xl font-black text-white tracking-tight">ULTRA-LOW COPPER LOSS.</div>
+            <div class="text-xs mono text-slate-400 mt-1">BUCK / BOOST / SEPIC / CUK READY</div>
           </div>
         </div>
         <div>
-          <div class="text-xs mono text-amber-400 font-bold mb-1">KV 視覺模板 03｜GSTF 高電流扁平線技術圖卡</div>
-          <p class="text-sm text-slate-300">以赤金銅線流光視覺呈現扁平線繞組的低銅損與耐湧浪電流優勢，吸引車用與電源工程師目光。</p>
+          <div class="text-xs mono text-sky-400 uppercase mb-1">KV SYSTEM 03 // GSTF 高功率圖卡規範</div>
+          <p class="text-sm text-slate-300">一句話定位：凸顯扁平線繞組與合金粉末磁芯之耐湧浪電流優勢，直攻車用與新能源買家。</p>
         </div>
       </div>
     </div>
 
-    <!-- 多語系行銷文案與視覺 Prompt 一鍵切換台 -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      <div class="lg:col-span-4 space-y-3">
-        <div class="text-base font-bold text-white mb-2">選擇要產出的商業行銷資產：</div>
-        <button onclick="selectMarketingAsset('linkedin')" id="mkt-btn-linkedin" class="w-full text-left p-4 rounded-2xl bg-sky-400 text-slate-950 font-bold text-base transition">
-          🌎 1. LinkedIn 國際展會與新品曝光貼文 (EN)
+    <!-- 多語系行銷內容自動生成輸出台 -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 border border-white/15 bg-[#0d0f13]">
+      <div class="lg:col-span-4 border-b lg:border-b-0 lg:border-r border-white/15 divide-y divide-white/15">
+        <div class="p-5 text-xs mono text-slate-400 uppercase">
+          SELECT PIPELINE OUTPUT // 選擇行銷資產範本
+        </div>
+        <button onclick="selectMarketingAsset('linkedin')" id="mkt-btn-linkedin" class="kiosk-btn active w-full text-left p-5 border-0 text-sm font-bold">
+          01 / LinkedIn 國際展會與新品發佈文案 (EN)
         </button>
-        <button onclick="selectMarketingAsset('email')" id="mkt-btn-email" class="w-full text-left p-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 font-bold text-base transition">
-          ✉️ 2. Tier-1 電源研發／採購雙語開發信
+        <button onclick="selectMarketingAsset('email')" id="mkt-btn-email" class="kiosk-btn w-full text-left p-5 border-0 text-sm font-bold">
+          02 / 跨國研發與採購高管開發信範本 (ZH/EN)
         </button>
-        <button onclick="selectMarketingAsset('visual')" id="mkt-btn-visual" class="w-full text-left p-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 font-bold text-base transition">
-          🎨 3. AI 商業產品視覺生成標準 Prompt 庫
+        <button onclick="selectMarketingAsset('visual')" id="mkt-btn-visual" class="kiosk-btn w-full text-left p-5 border-0 text-sm font-bold">
+          03 / 產品微距工業攝影 AI 生成標準 Prompt
         </button>
       </div>
 
-      <div class="lg:col-span-8 rounded-3xl commercial-card p-8">
-        <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
-          <span class="text-sm mono font-bold text-sky-400" id="mkt-tag">GLOBAL LINKEDIN CAMPAIGN COPY</span>
-          <span class="text-xs mono text-emerald-400">✓ 已鎖定官方真實規格參數</span>
+      <div class="lg:col-span-8 p-8">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-5 text-xs mono">
+          <span class="text-sky-400" id="mkt-tag">PIPELINE OUTPUT // LINKEDIN GLOBAL CAMPAIGN</span>
+          <span class="text-slate-400">ZERO-HALLUCINATION LOCKED</span>
         </div>
-        <div id="mkt-body" class="text-base text-slate-100 leading-relaxed whitespace-pre-line font-normal"></div>
+        <div id="mkt-body" class="text-sm sm:text-base text-slate-200 leading-relaxed whitespace-pre-line font-normal"></div>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="border-t border-white/10 py-10 px-6 text-sm text-slate-400 mt-16">
-    <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+  <footer class="border-t border-white/15 py-8 px-8 text-xs mono text-slate-400">
+    <div class="max-w-[1520px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <div>
-        <span class="text-white font-bold">高創科技股份有限公司 GOTREND TECHNOLOGY CO., LTD.</span>
-        <span class="ml-3 text-sky-400">We customized, So Your Masterpiece Works!</span>
+        <span class="text-white font-bold">GOTREND TECHNOLOGY CO., LTD. 高創科技股份有限公司</span>
+        <span class="ml-4 text-slate-500">// WE CUSTOMIZED, SO YOUR MASTERPIECE WORKS.</span>
       </div>
-      <div class="mono space-x-4 text-xs sm:text-sm">
+      <div class="space-x-6">
         <span>TEL: +886-2-82271808</span>
         <span>FAX: +886-2-82271908</span>
-        <span>service@gotrend.com.tw</span>
+        <span>SERVICE@GOTREND.COM.TW</span>
       </div>
     </div>
   </footer>
 
   <!-- ========================================================= -->
-  <!-- SCRIPTS: THREE.JS 3D 實體引擎 + 示波器 + 商業互動邏輯         -->
+  <!-- SCRIPTS: 工業級 3D CAD 檢視引擎 + 零重疊遙測連動              -->
   <!-- ========================================================= -->
   <script>
-    // ---------------------------------------------------------
-    // 1. 頂部區塊切換與雙語切換
-    // ---------------------------------------------------------
+    // 1. 頂部頁籤切換
     function switchSection(sec) {
       ['flagship', 'selector', 'marketing'].forEach(s => {
         document.getElementById('sec-' + s).classList.toggle('hidden', s !== sec);
         const btn = document.getElementById('nav-' + s);
         btn.className = s === sec
-          ? 'px-5 py-2 rounded-full text-sm font-bold transition-all bg-sky-400 text-slate-950 shadow-lg'
-          : 'px-5 py-2 rounded-full text-sm font-bold transition-all text-slate-300 hover:text-white';
+          ? 'kiosk-tab active h-full px-2 text-sm font-semibold tracking-wide uppercase'
+          : 'kiosk-tab h-full px-2 text-sm font-semibold tracking-wide uppercase';
       });
     }
 
@@ -547,37 +632,32 @@
       });
     }
 
-    // ---------------------------------------------------------
-    // 2. THREE.JS 真 3D 互動功率電感全息引擎
-    // ---------------------------------------------------------
+    // 2. THREE.JS 工業級 3D 電感 CAD 檢視視窗
     const container = document.getElementById('webgl-container');
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.set(4.8, 3.6, 5.8);
-    camera.lookAt(0, 0, 0);
+    const camera = new THREE.PerspectiveCamera(38, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(5.2, 3.8, 6.0);
+    camera.lookAt(0, -0.1, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 燈光配置
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-    scene.add(ambientLight);
+    // 精密工業燈光
+    scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
+    keyLight.position.set(6, 10, 8);
+    scene.add(keyLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0x38bdf8, 1.8);
-    dirLight1.position.set(6, 10, 7);
-    scene.add(dirLight1);
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.1);
+    rimLight.position.set(-7, -3, -6);
+    scene.add(rimLight);
 
-    const dirLight2 = new THREE.DirectionalLight(0xf59e0b, 1.2);
-    dirLight2.position.set(-6, -4, -5);
-    scene.add(dirLight2);
-
-    // 主群組
     const inductorGroup = new THREE.Group();
     scene.add(inductorGroup);
 
-    // 動態產生頂部雷射刻印貼圖 (CanvasTexture)
+    // 頂部雷射刻印紋理
     const labelCanvas = document.createElement('canvas');
     labelCanvas.width = 512;
     labelCanvas.height = 512;
@@ -585,226 +665,211 @@
     const labelTexture = new THREE.CanvasTexture(labelCanvas);
 
     function drawLaserMarking(modelCode, subSpec, dateStr) {
-      lCtx.fillStyle = '#181c24';
+      lCtx.fillStyle = '#14171f';
       lCtx.fillRect(0, 0, 512, 512);
 
-      // 金屬微紋理框線
-      lCtx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
-      lCtx.lineWidth = 6;
-      lCtx.strokeRect(28, 28, 456, 456);
+      lCtx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+      lCtx.lineWidth = 4;
+      lCtx.strokeRect(32, 32, 448, 448);
 
-      // GOTREND 品牌大字
       lCtx.fillStyle = '#ffffff';
-      lCtx.font = '900 58px Inter, sans-serif';
+      lCtx.font = '800 52px Inter, sans-serif';
       lCtx.textAlign = 'center';
       lCtx.fillText('GOTREND', 256, 165);
 
-      // 型號雷射雕刻
       lCtx.fillStyle = '#38bdf8';
-      lCtx.font = '800 68px "JetBrains Mono", monospace';
-      lCtx.fillText(modelCode, 256, 275);
+      lCtx.font = '700 64px "JetBrains Mono", monospace';
+      lCtx.fillText(modelCode, 256, 270);
 
-      // 規格標示
-      lCtx.fillStyle = '#cbd5e1';
-      lCtx.font = '600 34px "JetBrains Mono", monospace';
-      lCtx.fillText(subSpec, 256, 355);
+      lCtx.fillStyle = '#94a3b8';
+      lCtx.font = '500 32px "JetBrains Mono", monospace';
+      lCtx.fillText(subSpec, 256, 350);
 
       lCtx.fillStyle = '#64748b';
-      lCtx.font = '600 24px "JetBrains Mono", monospace';
-      lCtx.fillText(dateStr, 256, 425);
+      lCtx.font = '500 22px "JetBrains Mono", monospace';
+      lCtx.fillText(dateStr, 256, 420);
 
       labelTexture.needsUpdate = true;
     }
-    drawLaserMarking('GTVM-R065', '0.065 - 0.100 uH', 'AI PC / SERVER VRM');
+    drawLaserMarking('GTVM-R065', '0.065 - 0.100 uH', 'SHIELDED MOLDED');
 
-    // A. 外層一體成型屏蔽磁芯殼 (Shielded Molded Body)
-    const bodyGeo = new THREE.BoxGeometry(3.0, 1.75, 2.8);
-    const sideMat = new THREE.MeshStandardMaterial({ color: 0x1e2430, metalness: 0.75, roughness: 0.3, transparent: true, opacity: 1.0 });
-    const topMat = new THREE.MeshStandardMaterial({ map: labelTexture, metalness: 0.6, roughness: 0.35, transparent: true, opacity: 1.0 });
-    const bodyMaterials = [sideMat, sideMat, topMat, sideMat, sideMat, sideMat];
-    const outerBody = new THREE.Mesh(bodyGeo, bodyMaterials);
+    // A. 外殼本體
+    const bodyGeo = new THREE.BoxGeometry(3.1, 1.75, 2.9);
+    const sideMat = new THREE.MeshStandardMaterial({ color: 0x181b22, metalness: 0.7, roughness: 0.35, transparent: true, opacity: 1.0 });
+    const topMat = new THREE.MeshStandardMaterial({ map: labelTexture, metalness: 0.55, roughness: 0.4, transparent: true, opacity: 1.0 });
+    const outerBody = new THREE.Mesh(bodyGeo, [sideMat, sideMat, topMat, sideMat, sideMat, sideMat]);
     inductorGroup.add(outerBody);
 
-    // 外框科技稜線
+    // 精密結構線框
     const edgeGeo = new THREE.EdgesGeometry(bodyGeo);
-    const edgeMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.45 });
-    const bodyEdges = new THREE.LineSegments(edgeGeo, edgeMat);
-    inductorGroup.add(bodyEdges);
+    const edgeMat = new THREE.LineBasicMaterial({ color: 0x64748b, transparent: true, opacity: 0.45 });
+    inductorGroup.add(new THREE.LineSegments(edgeGeo, edgeMat));
 
-    // B. 兩側高導電鍍錫／銅電極端子 (Terminals)
-    const termGeo = new THREE.BoxGeometry(0.32, 1.45, 2.2);
-    const termMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, metalness: 0.9, roughness: 0.15 });
+    // B. 兩側 SMD 金屬電極端子
+    const termGeo = new THREE.BoxGeometry(0.28, 1.4, 2.3);
+    const termMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.92, roughness: 0.18 });
     const leftTerm = new THREE.Mesh(termGeo, termMat);
-    leftTerm.position.set(-1.55, -0.05, 0);
+    leftTerm.position.set(-1.58, -0.08, 0);
     const rightTerm = new THREE.Mesh(termGeo, termMat);
-    rightTerm.position.set(1.55, -0.05, 0);
+    rightTerm.position.set(1.58, -0.08, 0);
     inductorGroup.add(leftTerm, rightTerm);
 
-    // C. 內部特殊合金粉末磁芯柱 (Inner Alloy Core - X-Ray 可見)
+    // C. 內部合金粉末磁芯柱
     const innerCoreGeo = new THREE.CylinderGeometry(0.65, 0.65, 1.35, 32);
-    const innerCoreMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8, roughness: 0.25 });
-    const innerCore = new THREE.Mesh(innerCoreGeo, innerCoreMat);
-    inductorGroup.add(innerCore);
+    const innerCoreMat = new THREE.MeshStandardMaterial({ color: 0x27272a, metalness: 0.75, roughness: 0.3 });
+    inductorGroup.add(new THREE.Mesh(innerCoreGeo, innerCoreMat));
 
-    // D. 內部扁平線銅繞組 (Flat-Wire Copper Winding Turns - 支援密繞/間繞動態調整)
+    // D. 內部扁平線銅繞組 (Flat-Wire Copper Coils)
     const coilGroup = new THREE.Group();
     const coilTurns = [];
     const turnCount = 6;
     for (let i = 0; i < turnCount; i++) {
-      // 扁平線截面 Torus
-      const torusGeo = new THREE.TorusGeometry(0.88, 0.085, 16, 48);
-      torusGeo.scale(1, 1, 0.55); // 壓扁呈現 Flat-wire 扁平線質感
+      const torusGeo = new THREE.TorusGeometry(0.9, 0.085, 16, 48);
+      torusGeo.scale(1, 1, 0.52);
       const torusMat = new THREE.MeshStandardMaterial({
-        color: 0xf59e0b,
-        emissive: 0xd97706,
-        emissiveIntensity: 0.35,
-        metalness: 0.92,
-        roughness: 0.12
+        color: 0xd97706,
+        emissive: 0xb45309,
+        emissiveIntensity: 0.28,
+        metalness: 0.95,
+        roughness: 0.14
       });
       const turn = new THREE.Mesh(torusGeo, torusMat);
       turn.rotation.x = Math.PI / 2;
-      turn.position.y = (i - (turnCount - 1) / 2) * 0.15; // 預設密繞間距
+      turn.position.y = (i - (turnCount - 1) / 2) * 0.14;
       coilGroup.add(turn);
       coilTurns.push(turn);
     }
     inductorGroup.add(coilGroup);
 
-    // E. 底部 AI 主機板多相 VRM 電源軌與高速電流脈衝粒子
-    const pcbGrid = new THREE.GridHelper(9, 18, 0x0ea5e9, 0x1e293b);
-    pcbGrid.position.y = -1.25;
-    scene.add(pcbGrid);
+    // E. 底部 CAD 工程基準網格與電流粒子軌跡
+    const cadGrid = new THREE.GridHelper(9.5, 19, 0x334155, 0x1e293b);
+    cadGrid.position.y = -1.2;
+    scene.add(cadGrid);
 
-    const particleCount = 90;
+    const particleCount = 75;
     const pGeo = new THREE.BufferGeometry();
     const pPositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount; i++) {
-      pPositions[i * 3] = (Math.random() - 0.5) * 8;
-      pPositions[i * 3 + 1] = -1.18 + Math.random() * 0.3;
-      pPositions[i * 3 + 2] = (Math.random() - 0.5) * 3.5;
+      pPositions[i * 3] = (Math.random() - 0.5) * 8.5;
+      pPositions[i * 3 + 1] = -1.15;
+      pPositions[i * 3 + 2] = (Math.random() - 0.5) * 3.0;
     }
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
-    const pMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.12, transparent: true, opacity: 0.9 });
+    const pMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.09, transparent: true, opacity: 0.85 });
     const currentParticles = new THREE.Points(pGeo, pMat);
     scene.add(currentParticles);
 
-    // 滑鼠拖拽旋轉互動
-    let isDragging = false;
-    let prevX = 0, prevY = 0;
-    let targetRotY = 0.45, targetRotX = 0.15;
-    let autoRotate = true;
+    // 滑鼠拖拽控制
+    let isDragging = false, prevX = 0, prevY = 0;
+    let targetRotY = 0.52, targetRotX = 0.14, autoRotate = true;
 
     container.addEventListener('pointerdown', e => {
-      isDragging = true;
-      autoRotate = false;
-      prevX = e.clientX;
-      prevY = e.clientY;
+      isDragging = true; autoRotate = false;
+      prevX = e.clientX; prevY = e.clientY;
     });
     window.addEventListener('pointerup', () => { isDragging = false; });
     window.addEventListener('pointermove', e => {
       if (!isDragging) return;
       targetRotY += (e.clientX - prevX) * 0.01;
-      targetRotX = Math.max(-0.6, Math.min(0.8, targetRotX + (e.clientY - prevY) * 0.008));
-      prevX = e.clientX;
-      prevY = e.clientY;
+      targetRotX = Math.max(-0.5, Math.min(0.75, targetRotX + (e.clientY - prevY) * 0.008));
+      prevX = e.clientX; prevY = e.clientY;
     });
 
-    // 3D 狀態控制變數
     let targetOpacity = 1.0;
-    let targetCoilSpacing = 0.15; // 0.12 = Close Winding (密繞), 0.25 = Spaced Winding (間繞)
+    let targetCoilSpacing = 0.14;
     let isSpacedWinding = false;
     let surgeSpeedMultiplier = 1.0;
 
-    // 切換 3D 產品系列
     const productSpecs = {
       gtvm: {
-        badge: 'LIVE 3D ENGINE｜GTVM-R065 SHIELDED MOLDED',
+        code: 'MODEL: GTVM-R065',
         inductance: '0.065 – 0.100 µH (0.065 / 0.085 µH)',
-        app: 'AI PC (CPU/GPU/NPU) & Server Multiphase VRM',
-        structure: '緊湊型一體成型全屏蔽結構',
+        app: 'Target: AI PC (CPU/GPU/NPU) Multiphase VRM & POL DC-DC',
+        structure: 'Compact Shielded Molded (全屏蔽一體成型)',
+        sub: '低電磁干擾 (Low EMI) / 高密度主機板空間適配',
         markCode: 'GTVM-R065',
         markSub: '0.065 - 0.100 uH',
-        markDate: 'PUBLISHED 2026.11.14',
-        termColor: 0x38bdf8
+        markDate: 'SHIELDED MOLDED'
       },
       gstf: {
-        badge: 'LIVE 3D ENGINE｜GSTF HIGH-CURRENT FLAT-WIRE',
+        code: 'MODEL: GSTF-FLAT',
         inductance: 'Ultra-Low DCR / High Saturation Current',
-        app: 'AI Computing / New Energy / Automotive (Buck/Boost/SEPIC/Cuk)',
-        structure: '扁平線繞組 × 特殊合金粉末磁芯',
+        app: 'Target: Buck, Boost, SEPIC & Cuk Switching Topologies',
+        structure: 'Flat-Wire Winding + Alloy Powder Core',
+        sub: '耐高湧浪電流 / 大幅降低系統銅損與抑制輸出漣波',
         markCode: 'GSTF-FLAT',
-        markSub: 'HIGH CURRENT SERIES',
-        markDate: 'BUCK / BOOST / SEPIC / CUK',
-        termColor: 0xf59e0b
+        markSub: 'FLAT-WIRE SERIES',
+        markDate: 'ALLOY POWDER CORE'
       },
       tlvr: {
-        badge: 'LIVE 3D ENGINE｜TLVR & AI SERVER PDN',
-        inductance: 'LPD / VPD / IVR High-Speed Coupled PDN',
-        app: 'AI Servers / GPUs / ASICs / HPC Clusters',
-        structure: '極低壓降與瞬態耦合電源架構',
+        code: 'MODEL: TLVR-PDN',
+        inductance: 'LPD / VPD / IVR High-Density Power Delivery',
+        app: 'Target: AI Servers, GPUs, ASICs & HPC Platforms',
+        structure: 'Ultra-Fast Transient Coupled Architecture',
+        sub: '最小化 PDN 寄生電阻、寄生電感與物理距離壓降',
         markCode: 'TLVR-PDN',
         markSub: 'LPD / VPD / IVR',
-        markDate: 'AI SERVER SERIES',
-        termColor: 0xa855f7
+        markDate: 'AI SERVER PDN'
       }
     };
 
     function set3DProduct(key) {
       const p = productSpecs[key];
-      document.getElementById('stage-model-badge').textContent = p.badge;
+      document.getElementById('stage-model-code').textContent = p.code;
       document.getElementById('hud-inductance').textContent = p.inductance;
       document.getElementById('hud-application').textContent = p.app;
       document.getElementById('hud-structure').textContent = p.structure;
+      document.getElementById('hud-substructure').textContent = p.sub;
       drawLaserMarking(p.markCode, p.markSub, p.markDate);
-      termMat.color.setHex(p.termColor);
-      pMat.color.setHex(p.termColor);
 
       ['gtvm', 'gstf', 'tlvr'].forEach(k => {
         const b = document.getElementById('prod-btn-' + k);
         b.className = k === key
-          ? 'px-5 py-3 rounded-xl font-bold text-sm bg-sky-400 text-slate-950 shadow-[0_0_25px_rgba(56,189,248,0.4)] transition'
-          : 'px-5 py-3 rounded-xl font-bold text-sm bg-slate-800 text-slate-200 hover:bg-slate-700 border border-white/10 transition';
+          ? 'kiosk-btn active w-full text-left p-4 flex items-center justify-between'
+          : 'kiosk-btn w-full text-left p-4 flex items-center justify-between';
       });
     }
 
-    // 切換 3D 透視與繞線視角
     function set3DView(mode) {
       ['exterior', 'xray', 'winding'].forEach(m => {
         const btn = document.getElementById('view-' + m);
         btn.className = m === mode
-          ? 'py-2.5 px-3 rounded-xl text-xs font-bold bg-sky-500 text-slate-950 transition'
-          : 'py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-800 text-slate-200 hover:bg-slate-700 border border-white/10 transition';
+          ? 'kiosk-btn active py-3.5 px-4 text-xs mono font-semibold uppercase border-0 border-r border-b sm:border-b-0 border-white/15'
+          : 'kiosk-btn py-3.5 px-4 text-xs mono font-semibold uppercase border-0 border-r border-b sm:border-b-0 border-white/15';
       });
 
       if (mode === 'exterior') {
         targetOpacity = 1.0;
-        document.getElementById('hud-structure').textContent = '全屏蔽一體成型封裝 (Shielded Molded)';
+        document.getElementById('hud-structure').textContent = 'Compact Shielded Molded (全屏蔽一體成型)';
+        document.getElementById('hud-substructure').textContent = '外部高密度磁屏蔽結構，阻絕高頻電磁干擾';
       } else if (mode === 'xray') {
-        targetOpacity = 0.16;
-        document.getElementById('hud-structure').textContent = 'X-Ray 透視：扁平線銅繞組 × 合金磁芯';
+        targetOpacity = 0.14;
+        document.getElementById('hud-structure').textContent = 'X-Ray View: Flat-Wire + Alloy Powder Core';
+        document.getElementById('hud-substructure').textContent = '內部扁平線銅繞組與特殊合金粉末磁芯透視';
       } else if (mode === 'winding') {
         targetOpacity = 0.14;
         isSpacedWinding = !isSpacedWinding;
-        targetCoilSpacing = isSpacedWinding ? 0.24 : 0.13;
+        targetCoilSpacing = isSpacedWinding ? 0.23 : 0.13;
         document.getElementById('hud-structure').textContent = isSpacedWinding
-          ? '間繞 (Spaced Winding)：調控寄生電容與頻率響應'
-          : '密繞 (Close Winding)：極大化繞線空間利用率';
+          ? 'Spaced Winding (間繞架構)'
+          : 'Close Winding (密繞架構)';
+        document.getElementById('hud-substructure').textContent = isSpacedWinding
+          ? '維持特定線圈間距，精準調控繞組寄生電容與頻率響應'
+          : '相鄰線圈緊密排列，實現最高繞線空間利用率';
       }
     }
 
-    // 觸發 AI 滿載電流衝擊測試
     function triggerSurgeTest() {
-      targetOpacity = 0.18;
-      surgeSpeedMultiplier = 4.5;
-      document.getElementById('hud-ripple').textContent = '⚡ 100% 湧浪電流衝擊中：溫升與漣波完美鎖定！';
+      targetOpacity = 0.16;
+      surgeSpeedMultiplier = 4.2;
+      document.getElementById('hud-ripple').textContent = 'STATUS: HIGH INRUSH LOAD';
       setTimeout(() => {
         surgeSpeedMultiplier = 1.0;
-        document.getElementById('hud-ripple').textContent = '輸出漣波抑制：極優 (Ultra-Low Ripple)';
-      }, 3500);
+        document.getElementById('hud-ripple').textContent = 'STATUS: NOMINAL';
+      }, 3200);
     }
 
-    // ---------------------------------------------------------
-    // 3. 動態示波器渲染 (GOTREND vs 傳統電感壓降對比)
-    // ---------------------------------------------------------
+    // 3. 示波器與渲染迴圈
     const scopeCanvas = document.getElementById('scope-canvas');
     const sCtx = scopeCanvas.getContext('2d');
     let phase = 0;
@@ -812,58 +877,51 @@
     function renderLoop() {
       requestAnimationFrame(renderLoop);
 
-      // 更新 3D 模型平滑動畫
-      if (autoRotate) targetRotY += 0.005;
+      if (autoRotate) targetRotY += 0.004;
       inductorGroup.rotation.y += (targetRotY - inductorGroup.rotation.y) * 0.08;
       inductorGroup.rotation.x += (targetRotX - inductorGroup.rotation.x) * 0.08;
 
-      // 外殼透明度平滑過渡 (X-Ray)
       sideMat.opacity += (targetOpacity - sideMat.opacity) * 0.1;
       topMat.opacity += (targetOpacity - topMat.opacity) * 0.1;
 
-      // 密繞 vs 間繞平滑過渡
       coilTurns.forEach((turn, i) => {
         const targetY = (i - (turnCount - 1) / 2) * targetCoilSpacing;
         turn.position.y += (targetY - turn.position.y) * 0.12;
-        turn.material.emissiveIntensity = surgeSpeedMultiplier > 1 ? 0.95 : 0.35;
+        turn.material.emissiveIntensity = surgeSpeedMultiplier > 1 ? 0.85 : 0.28;
       });
 
-      // 高速電流粒子流動
       const posArr = currentParticles.geometry.attributes.position.array;
       for (let i = 0; i < particleCount; i++) {
-        posArr[i * 3] += 0.06 * surgeSpeedMultiplier;
-        if (posArr[i * 3] > 4) posArr[i * 3] = -4;
+        posArr[i * 3] += 0.055 * surgeSpeedMultiplier;
+        if (posArr[i * 3] > 4.2) posArr[i * 3] = -4.2;
       }
       currentParticles.geometry.attributes.position.needsUpdate = true;
 
       renderer.render(scene, camera);
 
-      // 繪製下方即時電流穩定度波形
       if (scopeCanvas.width !== scopeCanvas.clientWidth) {
         scopeCanvas.width = scopeCanvas.clientWidth;
       }
-      const w = scopeCanvas.width;
-      const h = scopeCanvas.height;
+      const w = scopeCanvas.width, h = scopeCanvas.height;
       sCtx.clearRect(0, 0, w, h);
+      phase += 0.07 * surgeSpeedMultiplier;
 
-      phase += 0.08 * surgeSpeedMultiplier;
-
-      // 傳統電感波形（劇烈震盪壓降 - 紅色）
+      // 傳統電感震盪波形 (灰色虛線感)
       sCtx.beginPath();
-      sCtx.strokeStyle = 'rgba(244, 63, 94, 0.75)';
-      sCtx.lineWidth = 2;
+      sCtx.strokeStyle = 'rgba(100, 116, 139, 0.55)';
+      sCtx.lineWidth = 1.5;
       for (let x = 0; x < w; x++) {
-        const y = h / 2 + Math.sin(x * 0.04 + phase) * (14 * (surgeSpeedMultiplier > 1 ? 1.6 : 1)) + Math.cos(x * 0.11 - phase) * 7;
+        const y = h / 2 + Math.sin(x * 0.045 + phase) * (12 * (surgeSpeedMultiplier > 1 ? 1.5 : 1)) + Math.cos(x * 0.12 - phase) * 5;
         x === 0 ? sCtx.moveTo(x, y) : sCtx.lineTo(x, y);
       }
       sCtx.stroke();
 
-      // 高創 GTVM / GSTF 波形（極致平穩純淨電力 - 亮藍色）
+      // 高創穩定波形 (銳利冰藍直線微幅)
       sCtx.beginPath();
       sCtx.strokeStyle = '#38bdf8';
-      sCtx.lineWidth = 3;
+      sCtx.lineWidth = 2.5;
       for (let x = 0; x < w; x++) {
-        const y = h / 2 + Math.sin(x * 0.03 + phase) * 2.2;
+        const y = h / 2 + Math.sin(x * 0.03 + phase) * 1.8;
         x === 0 ? sCtx.moveTo(x, y) : sCtx.lineTo(x, y);
       }
       sCtx.stroke();
@@ -876,44 +934,42 @@
       renderer.setSize(container.clientWidth, container.clientHeight);
     });
 
-    // ---------------------------------------------------------
-    // 4. 第二頁籤：3 秒客戶痛點選型導購與業務實戰測驗
-    // ---------------------------------------------------------
+    // 4. 選型導購與業務檢核資料
     const solutions = [
       {
-        badge: 'AI PC & SERVER VRM BEST MATCH (2026/11/14)',
-        title: '推薦方案：【GTVM Series】低電感、高電流一體成型功率電感',
-        desc: '專為整合 CPU、GPU 與 NPU 的次世代 AI PC 及伺服器打造。提供緊湊型全屏蔽結構，感值鎖定 0.065 µH 至 0.100 µH，能完美適配高密度筆電與桌機的多相 VRM 及負載點 (POL) DC-DC 電源軌。',
-        pitch: '「針對貴司 AI PC 平台 NPU 瞬間抽載的需求，我們剛發布的 GTVM 系列提供 0.065 µH 與 0.085 µH 主力規格，能在極小的主機板空間內提供最快的瞬態電流響應，同時全屏蔽結構不會對高速訊號造成任何干擾。」',
+        badge: 'MATCHED SOLUTION // GTVM SERIES (2026.11.14)',
+        title: 'GTVM Series — 低電感、高電流一體成型功率電感',
+        desc: '一句話優勢：專為整合 CPU、GPU 與 NPU 的 AI PC 及伺服器設計，以 0.065–0.100 µH 超低感值提供最快瞬態響應。',
+        pitch: '「針對貴司 AI PC 平台多相 VRM 與 POL 轉換級需求，GTVM 系列提供 0.065 µH 與 0.085 µH 主力規格，在緊湊全屏蔽封裝下兼顧電氣、熱特性與高密度 Layout。」',
         spec1: '0.065 – 0.100 µH',
-        spec2: '0.065 / 0.085 µH 主力選項',
+        spec2: 'Shielded Molded',
         spec3: 'Multiphase VRM / POL'
       },
       {
-        badge: 'HIGH-POWER & AUTOMOTIVE BEST MATCH (2026/09/17)',
-        title: '推薦方案：【GSTF Series】高電流扁平線功率電感',
-        desc: '採用扁平線繞組（Flat-Wire Winding）結合特殊合金粉末磁芯架構，實現超低直流電阻（DCR）與高飽和電流，能輕鬆耐受高湧浪電流衝擊並維持優異的溫升穩定度，大幅降低銅損與輸出漣波。',
-        pitch: '「如果貴司高功率電源遇到發熱或磁飽和瓶頸，我們的 GSTF 扁平線系列能直接幫您把直流電阻與銅損降到最低，而且原生相容 Buck、Boost、SEPIC 與 Cuk 四大拓撲，不需大改線路即可替換升級。」',
-        spec1: '超低 DCR / 高飽和電流',
-        spec2: '扁平線 × 特殊合金粉末磁芯',
+        badge: 'MATCHED SOLUTION // GSTF SERIES (2026.09.17)',
+        title: 'GSTF Series — 高電流扁平線功率電感',
+        desc: '一句話優勢：採用扁平線繞組與特殊合金粉末磁芯，實現超低直流電阻與高飽和電流，全面相容四大主流電源拓撲。',
+        pitch: '「面對高功率算力與車用電源的湧浪電流挑戰，GSTF 系列能大幅降低系統銅損並抑制輸出漣波，且原生支援 Buck、Boost、SEPIC 與 Cuk 架構。」',
+        spec1: 'Ultra-Low DCR',
+        spec2: 'Flat-Wire Alloy Core',
         spec3: 'Buck / Boost / SEPIC / Cuk'
       },
       {
-        badge: 'WINDING PHYSICS OPTIMIZATION (2026/11/08)',
-        title: '推薦方案：高創精密繞線工藝調控（Close vs. Spaced Winding）',
-        desc: '依據客戶目標頻率響應與空間需求精準客製：密繞（Close Winding）透過極小線圈間距榨出最高空間利用率；間繞（Spaced Winding）則維持特定線圈間距，精準調控繞組寄生電容（Parasitic Capacitance）。',
-        pitch: '「高創具備完整的客製化磁芯與繞線設計能力，不論貴司需要密繞來極大化微型空間利用率，還是需要間繞來降低高頻寄生電容、優化頻率響應，我們的工程團隊都能精準匹配。」',
-        spec1: '物理級寄生電容調控',
+        badge: 'MATCHED SOLUTION // WINDING OPTIMIZATION (2026.11.08)',
+        title: 'Close vs. Spaced Winding — 精密繞線物理調控方案',
+        desc: '一句話優勢：依據目標頻率響應客製密繞（極大化空間利用率）或間繞（調控繞組寄生電容）。',
+        pitch: '「高創提供完整的磁芯與繞線客製化服務，能針對貴司電源軌的高頻諧振與空間限制，精準配置密繞或間繞結構。」',
+        spec1: 'Parasitic Cap Control',
         spec2: 'Close / Spaced Winding',
         spec3: 'High-Frequency PDN'
       },
       {
-        badge: 'ULTRASONIC SENSING SOLUTION (2026/08/11)',
-        title: '推薦方案：【GTX-EP06P-Series】超音波驅動變壓器',
-        desc: '專為超音波感測系統設計的緊湊型驅動變壓器，能高效將低壓脈衝轉換為超音波換能器所需的高壓驅動訊號，直接強化聲壓級（SPL）、感測距離與回波偵測表現。',
-        pitch: '「針對車用與工業超音波感測器，我們的 GTX-EP06P 驅動變壓器能在極小封裝下提供穩定的高壓脈衝轉換，直接幫貴司提升感測距離與回波訊號清晰度。」',
-        spec1: '高壓脈衝高效轉換',
-        spec2: '提升聲壓級 (SPL) 與回波',
+        badge: 'MATCHED SOLUTION // GTX-EP06P SERIES (2026.08.11)',
+        title: 'GTX-EP06P Series — 超音波感測驅動變壓器',
+        desc: '一句話優勢：在極小封裝下將低壓脈衝轉換為換能器所需高壓訊號，顯著強化聲壓級與回波偵測距離。',
+        pitch: '「針對智能車用雷達與工業超音波感測系統，GTX-EP06P 能有效提升聲壓級 (SPL) 與回波訊號清晰度。」',
+        spec1: 'High-Voltage Pulse',
+        spec2: 'Compact Transformer',
         spec3: 'Ultrasonic Transducers'
       }
     ];
@@ -929,47 +985,45 @@
       document.getElementById('sol-spec3').textContent = s.spec3;
 
       for (let i = 0; i < 4; i++) {
-        const b = document.getElementById('sol-btn-' + i);
-        b.className = i === idx
-          ? 'w-full text-left p-5 rounded-2xl bg-sky-500 text-slate-950 font-bold transition shadow-lg'
-          : 'w-full text-left p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 font-bold transition';
+        document.getElementById('sol-btn-' + i).className = i === idx
+          ? 'kiosk-btn active w-full text-left p-6 border-0'
+          : 'kiosk-btn w-full text-left p-6 border-0';
       }
     }
     matchSolution(0);
 
-    // 業務實戰應對測驗
     const quizList = [
       {
-        q: '展會實戰 Q1：買家在 AEMS #328 攤位詢問【GTVM 系列】支援的感值範圍與主力評估規格？',
+        q: '01 // 買家於展會詢問【GTVM 系列】支援之感值範圍與主力評估規格？',
         opts: [
           'A. 感值 0.065 µH – 0.100 µH（主力評估規格 0.065 µH 與 0.085 µH）',
-          'B. 感值 10 µH – 100 µH（僅供傳統低頻家電使用）'
+          'B. 感值 10 µH – 100 µH（傳統低頻濾波規格）'
         ],
         ans: 0,
-        feedback: '完全正確！GTVM 鎖定 0.065–0.100 µH，專攻 AI PC 與伺服器多相 VRM 及 POL DC-DC。'
+        feedback: 'VERIFIED: GTVM 鎖定 0.065–0.100 µH，專攻 AI PC 與伺服器多相 VRM 及 POL DC-DC。'
       },
       {
-        q: '展會實戰 Q2：車用與高功率客戶詢問【GSTF 扁平線系列】相容哪些切換式電源拓撲？',
+        q: '02 // 客戶詢問【GSTF 扁平線系列】相容哪些切換式電源拓撲架構？',
         opts: [
           'A. 僅支援單一 Buck 降壓線路',
           'B. 全面相容 Buck、Boost、SEPIC 與 Cuk 四大拓撲'
         ],
         ans: 1,
-        feedback: '完全正確！GSTF 結合扁平線繞組與特殊合金粉末磁芯，四大主流電源拓撲皆可直接導入。'
+        feedback: 'VERIFIED: GSTF 結合扁平線繞組與特殊合金粉末磁芯，四大主流電源拓撲皆可直接導入。'
       }
     ];
 
     document.getElementById('quiz-grid').innerHTML = quizList.map((item, qIdx) => `
-      <div class="rounded-3xl commercial-card p-6">
+      <div class="swiss-card p-6">
         <div class="text-base font-bold text-white mb-4">${item.q}</div>
-        <div class="space-y-2.5">
+        <div class="space-y-2">
           ${item.opts.map((opt, oIdx) => `
-            <button onclick="verifyQuiz(${qIdx}, ${oIdx})" class="w-full text-left p-3.5 rounded-xl bg-white/5 hover:bg-sky-500/20 border border-white/10 text-sm text-slate-200 transition">
+            <button onclick="verifyQuiz(${qIdx}, ${oIdx})" class="kiosk-btn w-full text-left p-3.5 text-sm">
               ${opt}
             </button>
           `).join('')}
         </div>
-        <div id="quiz-fb-${qIdx}" class="hidden mt-4 p-3.5 rounded-xl text-sm font-bold"></div>
+        <div id="quiz-fb-${qIdx}" class="hidden mt-4 p-3.5 text-xs mono font-semibold border"></div>
       </div>
     `).join('');
 
@@ -977,29 +1031,28 @@
       const fb = document.getElementById('quiz-fb-' + qIdx);
       fb.classList.remove('hidden');
       if (oIdx === quizList[qIdx].ans) {
-        fb.className = 'mt-4 p-3.5 rounded-xl text-sm font-bold bg-emerald-500/20 border border-emerald-400/40 text-emerald-300';
-        fb.textContent = '✅ ' + quizList[qIdx].feedback;
+        fb.className = 'mt-4 p-3.5 text-xs mono font-semibold border border-sky-400/50 bg-sky-950/30 text-sky-300';
+        fb.textContent = itemFeedback(qIdx, true);
       } else {
-        fb.className = 'mt-4 p-3.5 rounded-xl text-sm font-bold bg-rose-500/20 border border-rose-400/40 text-rose-300';
-        fb.textContent = '❌ 請再確認官網最新發布規格！';
+        fb.className = 'mt-4 p-3.5 text-xs mono font-semibold border border-white/20 bg-white/5 text-slate-300';
+        fb.textContent = 'INCORRECT // 請核對高創科技 2026 官方規格表。';
       }
     }
+    function itemFeedback(qIdx) { return quizList[qIdx].feedback; }
 
-    // ---------------------------------------------------------
-    // 5. 第三頁籤：全球數位行銷資產與視覺 Prompt 庫
-    // ---------------------------------------------------------
+    // 5. 行銷資產資料庫
     const marketingAssets = {
       linkedin: {
-        tag: 'GLOBAL LINKEDIN & EXHIBITION CAMPAIGN (ENGLISH)',
-        body: `🚀 Powering the Next Generation of AI PCs & Hyperscale Servers — Meet GOTREND’s 2026 Flagship Lineup!\n\nAs AI PCs integrate CPU, GPU, and NPU capabilities for local AI workloads, and AI server core voltages scale down while load currents surge, power delivery networks (PDN) face unprecedented challenges.\n\nHere is how GOTREND Technology solves critical power bottlenecks for global hardware innovators:\n\n🔹 【GTVM Series】(Released 2026/11/14): Compact, shielded molded power inductors with ultra-low inductance from 0.065 µH to 0.100 µH (key options: 0.065 µH & 0.085 µH) — engineered for notebook & desktop multiphase VRM and POL DC-DC stages.\n🔹 【GSTF Series】: High-current flat-wire power inductors with specialized alloy powder cores. Ultra-low DCR, high saturation current, and 100% compatibility with Buck, Boost, SEPIC, and Cuk topologies.\n🔹 【TLVR & AI Server PDN】: Optimized for LPD, VPD, and IVR power delivery architectures.\n\n📍 Meet our technical team at AEMS International 2026 (Anaheim Convention Center, Booth #328) or contact us at service@gotrend.com.tw!`
+        tag: 'PIPELINE OUTPUT // LINKEDIN GLOBAL CAMPAIGN (ENGLISH)',
+        body: `Powering the Next Wave of Local AI & Hyperscale Server Workloads — GOTREND 2026 Power Delivery Lineup.\n\nAs AI PCs integrate CPU, GPU, and NPU capabilities for local AI workloads, and AI server core voltages scale down while load currents surge, power delivery networks (PDN) demand unprecedented efficiency.\n\n• [GTVM Series] (Released 2026/11/14): Compact, shielded molded power inductors with ultra-low inductance from 0.065 µH to 0.100 µH (key evaluation options: 0.065 µH & 0.085 µH) for multiphase VRM and POL DC-DC stages.\n• [GSTF Series]: High-current flat-wire power inductors with specialized alloy powder cores. Ultra-low DCR, high saturation current, and full compatibility with Buck, Boost, SEPIC, and Cuk topologies.\n• [TLVR & AI Server PDN]: Engineered for LPD, VPD, and IVR power delivery architectures.\n\nVisit GOTREND at AEMS International 2026 (Anaheim Convention Center, Booth #328) or contact service@gotrend.com.tw.`
       },
       email: {
-        tag: 'TIER-1 CLIENT OUTREACH EMAIL TEMPLATE (雙語高轉換業務開發信)',
-        body: `主旨：解決貴司次世代 AI PC / Server 多相 VRM 壓降與溫升瓶頸 — 高創科技 GTVM (0.065–0.100 µH) 與 GSTF 扁平線方案\n\n研發與採購主管您好：\n\n面對新一代 AI PC（CPU + GPU + NPU 本地運算）與高功率伺服器對「極小空間、超大瞬態電流」的嚴苛要求，高創科技（GOTREND）推出兩大主力量產方案，協助貴司大幅提升電源轉換效率：\n\n1. 【GTVM 系列｜極速瞬態響應】：感值涵蓋 0.065 µH 至 0.100 µH（主力規格 0.065 µH / 0.085 µH），緊湊全屏蔽結構完美適配 Multiphase VRM 與 POL DC-DC 轉換級。\n2. 【GSTF 系列｜極致降溫抗湧浪】：採用扁平線繞組與特殊合金粉末磁芯，具備超低直流電阻與高飽和電流，全面相容 Buck、Boost、SEPIC 與 Cuk 拓撲。\n\n我們可立即針對貴司的目標電源軌（Target Rail）提供樣品與競品料號對照（Crossing Reference），歡迎隨時聯繫！\n\n高創科技股份有限公司 GOTREND TECHNOLOGY CO., LTD.\nTEL: +886-2-82271808 | service@gotrend.com.tw`
+        tag: 'PIPELINE OUTPUT // TIER-1 R&D AND PROCUREMENT OUTREACH',
+        body: `Subject: Next-Gen AI PC & Server Power Delivery — GOTREND GTVM (0.065–0.100 µH) & GSTF Flat-Wire Inductors\n\n針對貴司次世代 AI PC（CPU + GPU + NPU 本地運算）與高功率伺服器對「極小空間、超大瞬態電流」之設計需求，高創科技（GOTREND）提供兩大主力量產方案：\n\n01 / 【GTVM 系列】：感值涵蓋 0.065 µH 至 0.100 µH（主力評估規格 0.065 µH / 0.085 µH），緊湊全屏蔽結構適配 Multiphase VRM 與 POL DC-DC 轉換級。\n02 / 【GSTF 系列】：結合扁平線繞組與特殊合金粉末磁芯，具備超低直流電阻與高飽和電流，全面相容 Buck、Boost、SEPIC 與 Cuk 拓撲。\n\n我們可立即針對貴司目標電源軌（Target Rail）提供樣品與競品料號對照（Crossing Reference）。\n\nGOTREND TECHNOLOGY CO., LTD. | TEL: +886-2-82271808 | service@gotrend.com.tw`
       },
       visual: {
-        tag: 'AI VISUAL & CREATIVE PRODUCTION PROMPT LIBRARY (Midjourney / Runway 標準化視覺庫)',
-        body: `【企業級產品商業攝影 AI 提示詞範本 — 讓電子元件呈現國際精品視覺】\n\n• 視覺母題 01（GTVM 系列微距科技海報）：\n"Macro commercial product photography of a precision dark titanium shielded molded SMD power inductor mounted on a futuristic black AI motherboard, glowing cyan energy traces flowing into a central NPU processor, laser-etched text 'GOTREND GTVM', studio rim lighting, ultra-detailed metallic texture, 8k resolution --ar 16:9 --v 6.1"\n\n• 視覺母題 02（GSTF 扁平線高電流X光結構圖）：\n"Exploded X-ray technical 3D render of a high-current power inductor revealing gleaming flat-wire copper winding coils inside an alloy powder magnetic core, golden electric pulse aura, dark engineering background, cinematic commercial lighting --ar 16:9"`
+        tag: 'PIPELINE OUTPUT // INDUSTRIAL PRODUCT PHOTOGRAPHY PROMPT STANDARD',
+        body: `[Standard 01 // GTVM Series Macro Engineering Key Visual]\n"Architectural macro photography of a matte obsidian shielded molded SMD power inductor mounted on a dark high-density AI server motherboard, subtle laser-etched typography 'GOTREND GTVM R065', precision brushed titanium terminals, clean studio rim lighting, Leica APO-Macro-Elmarit 100mm, industrial exhibition aesthetic, 8k --ar 16:9"\n\n[Standard 02 // GSTF Series X-Ray Cutaway Render]\n"Precision CAD cutaway 3D engineering render of a high-current power inductor revealing rectangular flat-wire copper winding coils inside a dark alloy powder magnetic core, monochrome technical grid background, German industrial design award style --ar 16:9"`
       }
     };
 
@@ -1007,10 +1060,9 @@
       document.getElementById('mkt-tag').textContent = marketingAssets[key].tag;
       document.getElementById('mkt-body').textContent = marketingAssets[key].body;
       ['linkedin', 'email', 'visual'].forEach(k => {
-        const b = document.getElementById('mkt-btn-' + k);
-        b.className = k === key
-          ? 'w-full text-left p-4 rounded-2xl bg-sky-400 text-slate-950 font-bold text-base transition'
-          : 'w-full text-left p-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-white/10 font-bold text-base transition';
+        document.getElementById('mkt-btn-' + k).className = k === key
+          ? 'kiosk-btn active w-full text-left p-5 border-0 text-sm font-bold'
+          : 'kiosk-btn w-full text-left p-5 border-0 text-sm font-bold';
       });
     }
     selectMarketingAsset('linkedin');
