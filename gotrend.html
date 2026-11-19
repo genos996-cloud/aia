@@ -85,33 +85,34 @@
 <body class="min-h-screen selection:bg-white selection:text-black">
 
   <!-- ========================================================= -->
-  <!-- OFFICIAL BRAND HEADER (4 TABS FULL-WIDTH NO SCROLLBAR)    -->
+  <!-- OFFICIAL BRAND HEADER (5 TABS FULL-WIDTH NO SCROLLBAR)    -->
   <!-- ========================================================= -->
   <header class="fixed top-0 left-0 right-0 z-50 bg-[#050608]/95 backdrop-blur-md border-b border-white/15">
-    <div class="max-w-[1560px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between gap-4">
+    <div class="max-w-[1560px] mx-auto px-5 lg:px-8 h-20 flex items-center justify-between gap-3">
 
-      <div class="flex items-center space-x-4 shrink-0">
-        <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-3 shrink-0">
+        <div class="flex items-center space-x-2.5">
           <span class="w-2.5 h-6 bg-sky-400 inline-block"></span>
           <div>
-            <span class="font-extrabold tracking-[0.16em] text-xl text-white block leading-none">GOTREND</span>
-            <span class="text-[10px] mono tracking-[0.18em] text-slate-400 block mt-1">GO FURTHER. SMARTER</span>
+            <span class="font-extrabold tracking-[0.16em] text-lg xl:text-xl text-white block leading-none">GOTREND</span>
+            <span class="text-[10px] mono tracking-[0.16em] text-slate-400 block mt-1">GO FURTHER. SMARTER</span>
           </div>
         </div>
-        <div class="hidden xl:block border-l border-white/15 pl-4 text-xs mono text-slate-400">
+        <div class="hidden 2xl:block border-l border-white/15 pl-3 text-xs mono text-slate-400">
           <span>AEMS 2026 // BOOTH #328</span>
         </div>
       </div>
 
-      <nav class="flex items-center justify-center space-x-5 xl:space-x-8 h-full">
-        <button onclick="switchTab('flagship')" id="tab-flagship" class="nav-item active h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap">01. 2026 旗艦新品與 3D 架構</button>
-        <button onclick="switchTab('catalog')" id="tab-catalog" class="nav-item h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap">02. 全產品矩陣與應用領域</button>
-        <button onclick="switchTab('advisor')" id="tab-advisor" class="nav-item h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap">03. 工程選型與技術專欄</button>
-        <button onclick="switchTab('media')" id="tab-media" class="nav-item h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap">04. AEMS #328 展會與發佈稿</button>
+      <nav class="flex items-center justify-center space-x-3 lg:space-x-4 xl:space-x-6 h-full">
+        <button onclick="switchTab('flagship')" id="tab-flagship" class="nav-item active h-full px-1 text-[12px] xl:text-[13px] font-semibold whitespace-nowrap">01. 2026 旗艦與 3D</button>
+        <button onclick="switchTab('catalog')" id="tab-catalog" class="nav-item h-full px-1 text-[12px] xl:text-[13px] font-semibold whitespace-nowrap">02. 全產品與應用</button>
+        <button onclick="switchTab('advisor')" id="tab-advisor" class="nav-item h-full px-1 text-[12px] xl:text-[13px] font-semibold whitespace-nowrap">03. 工程選型與 Q&A</button>
+        <button onclick="switchTab('media')" id="tab-media" class="nav-item h-full px-1 text-[12px] xl:text-[13px] font-semibold whitespace-nowrap">04. AEMS #328 展會</button>
+        <button onclick="switchTab('film')" id="tab-film" class="nav-item h-full px-1 text-[12px] xl:text-[13px] font-semibold whitespace-nowrap text-sky-400">05. GTLVR 最新影音</button>
       </nav>
 
       <div class="flex items-center shrink-0">
-        <button onclick="toggleLang()" id="lang-toggle" class="px-4 py-2 text-xs mono font-bold border border-white/25 hover:border-white text-white transition">
+        <button onclick="toggleLang()" id="lang-toggle" class="px-3.5 py-2 text-xs mono font-bold border border-white/25 hover:border-white text-white transition">
           EN / 繁中
         </button>
       </div>
@@ -387,6 +388,102 @@
     </div>
   </section>
 
+  <!-- ========================================================= -->
+  <!-- MODULE 05: GTLVR 最新官方產品形象影音與現場業務精華簡報       -->
+  <!-- ========================================================= -->
+  <section id="view-film" class="hidden pt-28 pb-24 px-6 lg:px-10 max-w-[1560px] mx-auto">
+    <div class="pb-6 mb-10 border-b border-white/15 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <div class="text-xs mono text-sky-400 uppercase tracking-widest">OFFICIAL BRAND FILM // RELEASED 2026/11/18</div>
+        <h2 id="film-heading" class="text-3xl font-black text-white mt-1">GTLVR 系列最新官方形象影片與現場產品提案精華</h2>
+      </div>
+      <div class="text-xs mono text-emerald-400">IN-PAGE PLAYBACK // ZERO CONTEXT SWITCH</div>
+    </div>
+
+    <!-- Top Theater + Live Spec Telemetry -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 arch-panel mb-12">
+      <!-- Left: Embedded YouTube Video (7 cols) -->
+      <div class="lg:col-span-7 bg-[#050608] border-b lg:border-b-0 lg:border-r border-white/15 flex flex-col">
+        <div class="px-5 py-3.5 border-b border-white/15 bg-[#0b0d12] flex items-center justify-between text-xs mono">
+          <span class="text-sky-400 font-bold">YOUTUBE OFFICIAL // GOTREND GTLVR SERIES</span>
+          <span class="text-slate-400">DURATION 02:21</span>
+        </div>
+        <div class="relative w-full aspect-video bg-black">
+          <iframe
+            class="absolute inset-0 w-full h-full"
+            src="https://www.youtube.com/embed/b_OL22HRhCo?rel=0&modestbranding=1"
+            title="GOTREND GTLVR Series | High-Performance Coupled Inductors for Advanced Power Solutions"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="px-5 py-3.5 border-t border-white/15 bg-[#0b0d12] flex flex-wrap items-center justify-between gap-2 text-xs mono text-slate-400">
+          <span id="film-caption">GOTREND GTLVR Series — 高性能耦合功率電感（AI 資料中心與高功耗 GPU 供電首選）</span>
+          <a href="https://www.youtube.com/watch?v=b_OL22HRhCo" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-white underline underline-offset-4">
+            YouTube 原始連結 ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Executive Opening Pitch & 4 Hard Numbers from Film (5 cols) -->
+      <div class="lg:col-span-5 p-8 lg:p-10 flex flex-col justify-between bg-[#0b0d12]">
+        <div>
+          <div class="text-xs mono text-amber-400 uppercase tracking-wider pb-3 mb-5 border-b border-white/10">
+            <span id="film-pitch-eyebrow">FIELD SPECIALIST OPENING // 現場業務核心開場白</span>
+          </div>
+          <h3 id="film-pitch-title" class="text-2xl sm:text-3xl font-black text-white leading-tight mb-4"></h3>
+          <p id="film-pitch-lead" class="text-base text-slate-300 leading-relaxed mb-8"></p>
+        </div>
+
+        <!-- 4 Verified Film Metrics -->
+        <div class="grid grid-cols-2 border border-white/15 bg-[#050608]">
+          <div class="p-4 border-r border-b border-white/15">
+            <div id="fm1-lbl" class="text-[11px] mono text-slate-400 uppercase">超低直流電阻 (DCR)</div>
+            <div class="text-2xl font-black mono text-sky-400 mt-1">0.1<span class="text-xs text-slate-300 ml-1">mΩ</span></div>
+            <div id="fm1-sub" class="text-xs text-slate-400 mt-0.5">直連銅端子大幅壓低銅損</div>
+          </div>
+          <div class="p-4 border-b border-white/15">
+            <div id="fm2-lbl" class="text-[11px] mono text-slate-400 uppercase">飽和電流上限</div>
+            <div class="text-2xl font-black mono text-white mt-1">125<span class="text-xs text-sky-400 ml-1">A</span></div>
+            <div id="fm2-sub" class="text-xs text-slate-400 mt-0.5">精巧體積扛住重載電流</div>
+          </div>
+          <div class="p-4 border-r border-white/15">
+            <div id="fm3-lbl" class="text-[11px] mono text-slate-400 uppercase">低溫升額定電流</div>
+            <div class="text-2xl font-black mono text-emerald-400 mt-1">78<span class="text-xs text-slate-300 ml-1">A</span></div>
+            <div id="fm3-sub" class="text-xs text-slate-400 mt-0.5">維持主板涼爽與高效率</div>
+          </div>
+          <div class="p-4">
+            <div id="fm4-lbl" class="text-[11px] mono text-slate-400 uppercase">極速瞬態穩壓</div>
+            <div class="text-xl sm:text-2xl font-black mono text-amber-400 mt-1">830→30<span class="text-xs text-slate-300 ml-1">A</span></div>
+            <div id="fm4-sub" class="text-xs text-slate-400 mt-0.5">緊鎖電壓並減少輸出電容</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Field Sales Specialist 4-Step Narrative Breakdown -->
+    <div class="mb-12">
+      <div class="text-xs mono text-sky-400 uppercase tracking-widest mb-1">FIELD PRODUCT PRESENTATION SCRIPT</div>
+      <h3 id="film-script-heading" class="text-2xl font-black text-white mb-6">現場產品顧問解說四步曲（全程緊扣影片核心亮點）</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="film-pitch-cards"></div>
+    </div>
+
+    <!-- Closing Statement Banner (Perfect Mic-Drop Finale Inside the Page) -->
+    <div class="arch-panel p-8 lg:p-10 bg-gradient-to-r from-[#0b0d12] via-[#0e1522] to-[#0b0d12] border-sky-400/35 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div class="max-w-3xl">
+        <div class="text-xs mono text-sky-400 uppercase tracking-widest mb-2">CLOSING STATEMENT // NEXT-GEN AI COMPUTING</div>
+        <h3 id="film-closing-title" class="text-2xl sm:text-3xl font-black text-white mb-3"></h3>
+        <p id="film-closing-desc" class="text-base text-slate-300 leading-relaxed"></p>
+      </div>
+      <div class="shrink-0 flex flex-col sm:flex-row gap-3">
+        <button onclick="switchTab('flagship')" id="film-back-3d" class="px-6 py-3.5 bg-white text-black font-bold text-xs mono uppercase tracking-wider hover:bg-sky-300 transition">
+          ← 返回 3D 結構即時互動
+        </button>
+      </div>
+    </div>
+  </section>
+
   <!-- OFFICIAL FOOTER -->
   <footer class="border-t border-white/15 py-8 px-6 lg:px-10 text-xs mono text-slate-400">
     <div class="max-w-[1560px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -414,10 +511,11 @@
 
     const i18n = {
       zh: {
-        navFlagship: '01. 2026 旗艦新品與 3D 架構',
-        navCatalog: '02. 全產品矩陣與應用領域',
-        navAdvisor: '03. 工程選型與技術專欄',
-        navMedia: '04. AEMS #328 展會與發佈稿',
+        navFlagship: '01. 2026 旗艦與 3D',
+        navCatalog: '02. 全產品與應用',
+        navAdvisor: '03. 工程選型與 Q&A',
+        navMedia: '04. AEMS #328 展會',
+        navFilm: '05. GTLVR 最新影音',
         heroEyebrow: 'A PROFESSIONAL POWER INDUCTOR MANUFACTURER & DESIGN HOUSE',
         heroTitle: 'We customized, So Your Masterpiece Works!',
         heroDesc: '面對 AI PC（整合 CPU、GPU、NPU 本地運算）與 AI 伺服器處理器核心電壓下降、負載電流快速攀升的趨勢，高創科技推出 GTVM Series、GSTF Series 與 TLVR Inductors，提供緊湊全屏蔽與超低直流電阻解決方案。',
@@ -454,6 +552,46 @@
         medBtnAems: '01. AEMS International 2026 參展官方公告 (2026/10/28)',
         medBtnGtvm: '02. 【GTVM Series】AI PC 與伺服器功率電感發佈稿 (2026/11/14)',
         medBtnGstf: '03. [GSTF Series] 高電流扁平線功率電感發佈稿 (2026/09/17)',
+        // MODULE 05: FILM & FIELD SALES PITCH (ZH)
+        filmHeading: 'GTLVR 系列最新官方形象影片與現場產品提案精華',
+        filmCaption: 'GOTREND GTLVR Series — AI 資料中心與高功耗 GPU 專屬 1:1 耦合功率電感（2026/11/18 官方發佈）',
+        filmPitchEyebrow: 'FIELD SPECIALIST OPENING // 現場業務核心開場白',
+        filmPitchTitle: 'AI 算力時代的供電難題，讓高創 GTLVR 幫您的 GPU 一次穩住。',
+        filmPitchLead: '現在 AI 資料中心每一顆 GPU 的耗電量都在刷新天花板，傳統各自為政的分立電感早就跟不上節奏了。我們最新推出的 GTLVR 系列，是專為次世代 AI 供電打造的 1:1 耦合電感（TLVR）——在極致精巧的體積裡，直接支援 5 MHz 以上超高開關頻率，讓多相電源像一支訓練有素的團隊一樣同步反應。',
+        fm1Lbl: '超低直流電阻 (DCR)', fm1Sub: '直連銅端子大幅壓低銅損',
+        fm2Lbl: '飽和電流上限', fm2Sub: '精巧體積扛住重載電流',
+        fm3Lbl: '低溫升額定電流', fm3Sub: '維持主板涼爽與高效率',
+        fm4Lbl: '極速瞬態穩壓', fm4Sub: '緊鎖電壓並減少輸出電容',
+        filmScriptHeading: '現場產品顧問解說四步曲（不背規格表，直接講客戶最在乎的價值）',
+        filmPitchCards: [
+          {
+            step: 'PITCH 01 // 結構核心優勢',
+            tag: '雙鐵氧體磁芯 × 巢狀雙 U 型銅夾',
+            title: '打開這顆 GTLVR，您會看到我們在工藝上下的真功夫',
+            body: '我們用左右兩顆鐵氧體磁芯，緊密包覆一組「巢狀雙 U 型銅夾繞組」。外層大銅夾透過直連端子直接承載每一相的主電流，把銅損壓到極限（DCR 低至 0.1 mΩ）；而藏在裡面的內層銅夾，則是負責把所有相位的次級繞組串聯起來的關鍵大腦，讓整排電感不再單打獨鬥，而是「牽一髮、動全身」同步響應。再加上一處精密氣隙設計，即使面對重載大電流衝擊，磁芯照樣穩如泰山。'
+          },
+          {
+            step: 'PITCH 02 // 主板實戰運作',
+            tag: '12V 輸入直驅 GPU 核心 × 多相即時協作',
+            title: '在 AI 伺服器主板上，它就是緊貼 GPU 旁最可靠的電力心臟',
+            body: '實際上板時，一排 GTLVR 就緊鄰在 GPU 身旁組成多相電壓調節器，將 12V 輸入電源分相、高效率地直送進 GPU 核心。重點來了——當 AI 運算突然拉滿、負載瞬間暴衝的那一毫秒，內層次級迴路會立刻把這個變化分攤給所有串聯相數一起扛。簡單說，以前是一個人硬撐，現在是整個團隊瞬間一起補位，供電反應速度完全不在同一個檔次。'
+          },
+          {
+            step: 'PITCH 03 // 幫客戶省成本、解痛點',
+            tag: '830A → 30A 瞬態鎖壓 × 減少輸出電容',
+            title: '為什麼一線伺服器設計團隊看過數據就會點頭？因為它直接幫主板省空間',
+            body: '做高階 GPU 供電最怕的就是「負載劇烈抽載」造成電壓飄移。實測當電流瞬間從 830A 驟降到 30A 時，GTLVR 依然能把輸出電壓牢牢鎖在目標區間內。這對您的研發團隊代表什麼？代表您不需要再為了撐住瞬態壓降，在寸土寸金的主板上塞滿一大堆輸出電容——用更少的電容、更低的板溫（78A 額定低溫升、125A 高飽和耐受），直接換取更高的系統效率與佈線餘裕。'
+          },
+          {
+            step: 'PITCH 04 // 全系列佈局與薄型新品',
+            tag: '5 MHz+ 高頻支援 × 全新 Low-Profile 薄型款',
+            title: '從標準高功耗機架到極致限高空間，整個 GTLVR 家族已經為您準備好',
+            body: '不管您現在手上的專案是追求極致電流密度的標準 AI 伺服器，還是對機構高度錙銖必較的新世代算力平台，我們整個 GTLVR 家族——包含最新推出的薄型（Low-Profile）型號——都已經全面就位。高創科技不只是賣一顆電感，我們是用磁性創新幫您的次世代 AI 運算平台把最核心的供電底盤打穩。'
+          }
+        ],
+        filmClosingTitle: 'GOTREND — Your Partner in Magnetic Innovation',
+        filmClosingDesc: '從 3D 結構拆解、2026 旗艦新品規格、工程選型配置到最新 GTLVR 官方影音提案，所有資料已整合在您眼前的這套系統裡——歡迎隨時指定任一型號，我們現場直接針對您的主板規格深入評估。',
+        filmBack3d: '← 返回 01. 3D 結構即時互動',
         products: {
           gtvm: {
             v1: 'GTVM Series (0.065 – 0.100 µH)', s1: '評估選項：0.065 µH 與 0.085 µH',
@@ -606,10 +744,11 @@
         ]
       },
       en: {
-        navFlagship: '01. 2026 Flagship & 3D View',
-        navCatalog: '02. Product Matrix & Apps',
-        navAdvisor: '03. Solution Configurator',
-        navMedia: '04. AEMS #328 & Releases',
+        navFlagship: '01. 2026 Flagship & 3D',
+        navCatalog: '02. Matrix & Apps',
+        navAdvisor: '03. Configurator',
+        navMedia: '04. AEMS #328',
+        navFilm: '05. GTLVR Film',
         heroEyebrow: 'A PROFESSIONAL POWER INDUCTOR MANUFACTURER & DESIGN HOUSE',
         heroTitle: 'We customized, So Your Masterpiece Works!',
         heroDesc: 'As AI PCs integrate CPU, GPU, and NPU capabilities for local AI workloads and AI server core voltages decrease while load currents rise rapidly, GOTREND delivers the GTVM Series, GSTF Series, and TLVR Inductors for next-generation power delivery.',
@@ -646,6 +785,46 @@
         medBtnAems: '01. Meet us at AEMS International 2026! (2026/10/28)',
         medBtnGtvm: '02. 【GTVM Series】AI PC & Server Power Inductors (2026/11/14)',
         medBtnGstf: '03. [GSTF Series] High Current Flat Wire Inductors (2026/09/17)',
+        // MODULE 05: FILM & FIELD SALES PITCH (EN)
+        filmHeading: 'GTLVR Series Official Brand Film & Field Specialist Pitch',
+        filmCaption: 'GOTREND GTLVR Series — 1:1 Coupled Power Inductors for AI Data Center GPUs (Released 2026/11/18)',
+        filmPitchEyebrow: 'FIELD SPECIALIST OPENING // LIVE PRESENTATION HOOK',
+        filmPitchTitle: 'AI GPUs demand unprecedented power—GOTREND GTLVR keeps every phase locked in sync.',
+        filmPitchLead: 'AI is reshaping the modern data center, pushing every GPU to demand more power than ever before. Our GTLVR Series—a 1:1 coupled Trans-Inductor Voltage Regulator (TLVR) built specifically for AI power—delivers high saturation current inside a compact footprint and runs effortlessly at switching frequencies of 5 MHz and beyond.',
+        fm1Lbl: 'ULTRA-LOW DCR', fm1Sub: 'Direct terminals minimize copper loss',
+        fm2Lbl: 'SATURATION CURRENT', fm2Sub: 'Heavy current in a compact body',
+        fm3Lbl: 'LOW TEMP-RISE RATED', fm3Sub: 'Keeps server boards cool & efficient',
+        fm4Lbl: 'TRANSIENT CONTROL', fm4Sub: 'Tight voltage with fewer capacitors',
+        filmScriptHeading: '4-Step Field Sales Presentation (Direct Value Delivery Straight from the Film)',
+        filmPitchCards: [
+          {
+            step: 'PITCH 01 // INSIDE THE ARCHITECTURE',
+            tag: 'DUAL FERRITE CORES × NESTED U-SHAPED CLIPS',
+            title: 'What makes GTLVR outperform conventional discrete inductors?',
+            body: 'Look inside the package: left and right ferrite cores enclose a pair of nested U-shaped clip windings. The large outer clip carries each phase current through direct terminals to slash copper loss down to an ultra-low 0.1 mΩ DCR. Inside it, the secondary inner clip links every phase in series so the entire bank responds as one—while a precision air gap keeps the magnetic core rock-steady under heavy current.'
+          },
+          {
+            step: 'PITCH 02 // ON THE SERVER MOTHERBOARD',
+            tag: '12V INPUT TO GPU CORE × INSTANT PHASE SHARING',
+            title: 'Lined up right beside the GPU, turning individual phases into one unified engine',
+            body: 'On the AI server motherboard, GTLVR inductors line up next to the GPU to form a multi-phase voltage regulator, channeling power from the 12V input straight to the GPU core. The real magic happens the microsecond a compute load spikes: the linked secondary loops instantly share that load shift across every connected phase, eliminating the lag of traditional independent rails.'
+          },
+          {
+            step: 'PITCH 03 // TRANSIENT RESPONSE & BOARD SAVINGS',
+            tag: '830A → 30A LOAD DROP × FEWER OUTPUT CAPACITORS',
+            title: 'Hold voltage steady under extreme load swings—and free up valuable PCB real estate',
+            body: 'When a GPU drops suddenly from 830A down to 30A, keeping output voltage tightly controlled is the ultimate test of a power stage. GTLVR nails that fast transient response while letting your engineering team use fewer output capacitors. Combined with up to 125A saturation current and up to 78A rated current for low temperature rise, your board stays cooler, leaner, and far more efficient.'
+          },
+          {
+            step: 'PITCH 04 // FULL FAMILY & LOW-PROFILE EXPANSION',
+            tag: '5 MHz+ READY × NEW LOW-PROFILE MODEL',
+            title: 'Ready across the entire GTLVR family for next-generation AI computing',
+            body: 'Whether your next platform demands maximum power density or strict Z-height clearance, the GTLVR lineup—including our brand-new low-profile model—is ready to drop right into your high-frequency (5 MHz+) roadmap. With GOTREND, you are not just sourcing a component; you are partnering with a magnetic innovation specialist built for next-gen AI.'
+          }
+        ],
+        filmClosingTitle: 'GOTREND — Your Partner in Magnetic Innovation',
+        filmClosingDesc: 'Everything from interactive 3D architecture and 2026 flagship specifications to our latest GTLVR product film lives right inside this workspace—tell us your target rail or height budget, and let us map out the ideal solution right here.',
+        filmBack3d: '← Back to 01. Interactive 3D View',
         products: {
           gtvm: {
             v1: 'GTVM Series (0.065 – 0.100 µH)', s1: 'Evaluation Options: 0.065 µH and 0.085 µH',
@@ -815,12 +994,14 @@
     };
 
     function switchTab(tab) {
-      ['flagship', 'catalog', 'advisor', 'media'].forEach(t => {
+      ['flagship', 'catalog', 'advisor', 'media', 'film'].forEach(t => {
         document.getElementById('view-' + t).classList.toggle('hidden', t !== tab);
+        const isFilm = t === 'film';
         document.getElementById('tab-' + t).className = t === tab
-          ? 'nav-item active h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap'
-          : 'nav-item h-full px-1 text-[13px] xl:text-sm font-semibold whitespace-nowrap';
+          ? 'nav-item active h-full px-1 text-[12px] xl:text-[13px] font-semibold whitespace-nowrap'
+          : `nav-item h-full px-1 text-[12px] xl:text-[13px] font-semibold whitespace-nowrap${isFilm ? ' text-sky-400' : ''}`;
       });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function applyTranslations() {
@@ -829,6 +1010,7 @@
       document.getElementById('tab-catalog').textContent = d.navCatalog;
       document.getElementById('tab-advisor').textContent = d.navAdvisor;
       document.getElementById('tab-media').textContent = d.navMedia;
+      document.getElementById('tab-film').textContent = d.navFilm;
 
       document.getElementById('hero-eyebrow').textContent = d.heroEyebrow;
       document.getElementById('hero-title').textContent = d.heroTitle;
@@ -874,6 +1056,38 @@
       document.getElementById('med-btn-aems').textContent = d.medBtnAems;
       document.getElementById('med-btn-gtvm').textContent = d.medBtnGtvm;
       document.getElementById('med-btn-gstf').textContent = d.medBtnGstf;
+
+      // Module 05 Translations
+      document.getElementById('film-heading').textContent = d.filmHeading;
+      document.getElementById('film-caption').textContent = d.filmCaption;
+      document.getElementById('film-pitch-eyebrow').textContent = d.filmPitchEyebrow;
+      document.getElementById('film-pitch-title').textContent = d.filmPitchTitle;
+      document.getElementById('film-pitch-lead').textContent = d.filmPitchLead;
+      document.getElementById('fm1-lbl').textContent = d.fm1Lbl;
+      document.getElementById('fm1-sub').textContent = d.fm1Sub;
+      document.getElementById('fm2-lbl').textContent = d.fm2Lbl;
+      document.getElementById('fm2-sub').textContent = d.fm2Sub;
+      document.getElementById('fm3-lbl').textContent = d.fm3Lbl;
+      document.getElementById('fm3-sub').textContent = d.fm3Sub;
+      document.getElementById('fm4-lbl').textContent = d.fm4Lbl;
+      document.getElementById('fm4-sub').textContent = d.fm4Sub;
+      document.getElementById('film-script-heading').textContent = d.filmScriptHeading;
+      document.getElementById('film-closing-title').textContent = d.filmClosingTitle;
+      document.getElementById('film-closing-desc').textContent = d.filmClosingDesc;
+      document.getElementById('film-back-3d').textContent = d.filmBack3d;
+
+      document.getElementById('film-pitch-cards').innerHTML = d.filmPitchCards.map(c => `
+        <div class="arch-card p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs mono pb-4 mb-5 border-b border-white/10">
+              <span class="text-sky-400 font-bold">${c.step}</span>
+              <span class="text-amber-300">${c.tag}</span>
+            </div>
+            <h4 class="text-xl font-black text-white leading-snug mb-4">${c.title}</h4>
+            <p class="text-base text-slate-300 leading-relaxed">${c.body}</p>
+          </div>
+        </div>
+      `).join('');
 
       document.getElementById('matrix-cards-container').innerHTML = d.matrixCards.map(c => `
         <div class="arch-card p-8 flex flex-col justify-between">
